@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.enjoytrip.member.model.mapper.MemberMapper">
+
+    <resultMap id="member" type="memberDto">
+        <result column="member_id" property="memberId"></result>
+        <result column="name" property="name"></result>
+        <result column="password" property="password"></result>
+        <result column="role" property="role"></result>
+        <result column="email" property="email"></result>
+        <result column="nickname" property="nickname"></result>
+    </resultMap>
+
+    <select id="findMemberById" parameterType="String" resultMap="member">
+        select member_id, name, password, role, email, nickname
+        from member
+        where member_id = #{id}
+    </select>
+
+    <insert id = "registerMember" parameterType = "memberDto">
+        insert into member
+        values(#{memberId}, #{name}, #{password}, #{role}, #{email}, #{nickname});
+    </insert>
+
+</mapper>
