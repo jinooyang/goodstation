@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.enjoytrip.board.model.mapper.BoardMapper">
+    <resultMap id="boardWriting" type="boardWritingDto">
+        <result column="board_id" property="boardId"></result>
+        <result column="title" property="title"></result>
+        <result column="content" property="content"></result>
+        <result column="member_id" property="memberId"></result>
+        <result column="trip_id" property="tripId"></result>
+    </resultMap>
+
+    <insert id="writeBoard" parameterType="boardWritingDto">
+        <selectKey keyProperty="boardId" order="AFTER" resultType="int">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into board (title, content, member_id, trip_id)
+        values (#{title}, #{content}, #{memberId}, #{tripId})
+    </insert>
+</mapper>
