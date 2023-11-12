@@ -1,8 +1,11 @@
 package com.enjoytrip.member.model.service;
 
+import com.enjoytrip.jwt.JwtTokenProvider;
 import com.enjoytrip.member.model.dto.MemberDto;
+import com.enjoytrip.member.model.dto.Role;
 import com.enjoytrip.member.model.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -19,7 +22,9 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public void registerMember(String memberId) throws SQLException {
-        memberMapper.registerMember(memberId);
+    public void registerMember(MemberDto member) throws Exception {
+
+
+        memberMapper.registerMember(member);
     }
 }

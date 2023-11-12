@@ -9,6 +9,6 @@ import java.sql.SQLException;
 
 public interface MemberService {
     MemberDto findMemberById (String memberId) throws SQLException;
-    void registerMember(String memberId) throws SQLException;
+    void registerMember(MemberDto memberId) throws Exception;
 
 }

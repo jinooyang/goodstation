@@ -8,6 +8,6 @@ import java.sql.SQLException;
 @Mapper
 public interface MemberMapper {
     MemberDto findMemberById (String memberId) throws SQLException;
-    void registerMember(String memberId) throws SQLException;
+    void registerMember(MemberDto memberId) throws SQLException;
 
 }

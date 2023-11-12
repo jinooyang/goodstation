@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="data.DataMapper">
+    <resultMap id="stationInfo" type="stationInfoDto">
+        <result column="station_id" property="stationId"/>
+        <result column="name" property="stationName"/>
+        <result column="address" property="address"/>
+        <result column="sido_code" property="sidoCode"/>
+        <result column="longitude" property="longitude"/>
+        <result column="latitude" property="latitude"/>
+
+    </resultMap>
+
+    <insert id="insInfNoLonLat"
+            parameterType="stationInfoDto">
+        insert into station_info(station_id, address, name, sido_code)
+        values(#{stationId},#{address},#{stationName},#{sidoCode})
+    </insert>
+
+    <select id = "selectAll" resultMap="stationInfo">
+        select station_id, address, name, longitude, latitude, sido_code
+        from station_info
+    </select>
+
+    <update id = "addLongLat" parameterType = "stationInfoDto">
+        update station_info
+        set longitude = #{longitude} , latitude = #{latitude}
+        where station_id = #{stationId}
+    </update>
+
+    <select id = "findStationPos" resultMap = "stationInfo">
+        select station_id, longitude, latitude, sido_code
+        from station_info
+        order by sido_code
+    </select>
+
+    <select id = "findAttractionBySidoCode" parameterType="String" resultType="data.AttractionBySidoDto">
+        select content_id, sido_code, longitude, latitude
+        from attraction_info
+        where sido_code = #{sidoCode}
+    </select>
+
+<!--    <insert id="addStTourSpot" parameterType="java.util.Map">-->
+<!--        <if test="attractionNearStation != null">-->
+<!--        INSERT INTO station_tour_spot (station_id, content_id)-->
+<!--        VALUES-->
+
+<!--        <foreach collection="attractionNearStation" item="value" index = "key" separator=",">-->
+<!--            <foreach collection="value" item="listvalue" separator=",">-->
+<!--                (#{key}, #{listvalue})-->
+<!--            </foreach>-->
+<!--        </foreach>-->
+<!--        </if>-->
+
+<!--    </insert>-->
+    <insert id="addStTourSpot" parameterType="data.TourSpotInsertDto">
+
+            INSERT INTO station_tour_spot (station_id, content_id)
+            VALUES
+
+        <if test="contentIDs != null">
+            <foreach collection="contentIDs" item="item" separator=",">
+                (#{name}, #{item})
+            </foreach>
+
+        </if>
+
+    </insert>
+
+</mapper>

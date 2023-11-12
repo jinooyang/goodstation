@@ -2,6 +2,7 @@ package com.enjoytrip.member.controller;
 
 import com.enjoytrip.jwt.JwtTokenProvider;
 import com.enjoytrip.member.model.dto.MemberDto;
+import com.enjoytrip.member.model.dto.Role;
 import com.enjoytrip.member.model.mapper.MemberMapper;
 import com.enjoytrip.member.model.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +26,22 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/login")
-    public String login(@RequestBody Map<String,String> user)throws SQLException {
+    public String login(@RequestBody Map<String, String> user) throws SQLException {
         MemberDto member = memberService.findMemberById(user.get("id"));
-        if(!passwordEncoder.matches(user.get("password"), member.getPassword())){
+        if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
             throw new IllegalArgumentException("이메일 또는 비밀번호가 맞지 않습니다.");
         }
         return jwtTokenProvider.createToken(member.getMemberId(), member.getRole());
     }
 
+    @PostMapping("/signup")
+    public String signUp(@RequestBody MemberDto member) throws Exception {
+        member.setRole(Role.USER);
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
+        memberService.registerMember(member);
+        return "회원가입성공";
+
+
+    }
 
 }
