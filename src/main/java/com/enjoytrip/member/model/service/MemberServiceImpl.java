@@ -40,4 +40,16 @@ public class MemberServiceImpl implements MemberService {
         return memberMapper.findMemberByNickname(nickname);
     }
 
+    @Override
+    public void updateMemberInfo(Map<String, String> map) throws Exception {
+        MemberDto member = memberMapper.findMemberById(map.get("memberId"));
+        if (map.get("password") != null && map.get("password").length()>0)
+            member.setPassword(map.get("password"));
+        if (map.get("name") != null && map.get("name").length()>0)
+            member.setName(map.get("name"));
+        if (map.get("nickname") != null && map.get("nickname").length()>0)
+            member.setNickname(map.get("nickname"));
+        memberMapper.updateMemberInfo(member);
+    }
+
 }

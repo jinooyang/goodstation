@@ -16,5 +16,5 @@ public interface MemberService {
     int findMemberByEmail(String email) throws Exception;
 
     int findMemberByNickname(String nickname) throws Exception;
-
+    void updateMemberInfo(Map<String,String> map) throws Exception;
 }

@@ -12,4 +12,6 @@ public interface MemberMapper {
      int findMemberByEmail(String email) throws Exception ;
 
     int findMemberByNickname(String nickname) throws Exception;
+
+    void updateMemberInfo(MemberDto member) throws Exception;
 }

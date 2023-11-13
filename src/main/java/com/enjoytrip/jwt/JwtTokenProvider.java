@@ -34,8 +34,12 @@ public class JwtTokenProvider {
 
     // JWT 토큰 생성
     public String createToken(String userPK, Role role) {
+        SecurityUser userDetails = (SecurityUser) userDetailsService.loadUserByUsername(userPK);
         Claims claims = Jwts.claims().setSubject(userPK); // JWT payload에 저장되는 정보 단위
         claims.put("roles", role); // 정보 저장 (key-value)
+        claims.put("name", userDetails.getMember().getName());
+        claims.put("nickname", userDetails.getMember().getNickname());
+        claims.put("email", userDetails.getMember().getEmail());
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims)

@@ -36,4 +36,10 @@
         from member
         where nickname = #{nickname}
     </select>
+
+    <update id = "updateMemberInfo" parameterType = "memberDto">
+        update member
+        set name = #{name}, password = #{password}, nickname = #{nickname}
+        where member_id = #{memberId}
+    </update>
 </mapper>
