@@ -10,6 +10,14 @@
         <result column="member_id" property="memberId"></result>
         <result column="trip_id" property="tripId"></result>
     </resultMap>
+    
+    <resultMap id="boardReading" type="boardReadDto">
+        <result column="title" property="title"></result>
+        <result column="content" property="content"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="member_id" property="memberId"></result>
+        <result column="trip_id" property="tripId"></result>
+    </resultMap>
 
     <insert id="writeBoard" parameterType="boardWritingDto">
         <selectKey keyProperty="boardId" order="AFTER" resultType="int">
@@ -18,4 +26,10 @@
         insert into board (title, content, member_id, trip_id)
         values (#{title}, #{content}, #{memberId}, #{tripId})
     </insert>
+    
+    <select id="readBoard" parameterType="int" resultMap="boardReading">
+        select title, content, create_time, member_id, trip_id
+        from board
+        where board_id = #{boardId}
+    </select>
 </mapper>

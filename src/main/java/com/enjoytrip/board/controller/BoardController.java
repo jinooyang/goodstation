@@ -1,5 +1,6 @@
 package com.enjoytrip.board.controller;
 
+import com.enjoytrip.board.model.dto.BoardReadDto;
 import com.enjoytrip.board.model.dto.BoardWritingDto;
 import com.enjoytrip.board.model.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -19,4 +20,8 @@ public class BoardController {
         return boardService.writeBoard(boardWritingDto);
     }
 
+    @GetMapping("/{boardId}")
+    public BoardReadDto readBoard(@PathVariable int boardId) {
+        return boardService.readBoard(boardId);
+    }
 }
