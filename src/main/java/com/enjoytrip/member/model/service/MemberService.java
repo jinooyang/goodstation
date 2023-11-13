@@ -5,10 +5,16 @@ import com.enjoytrip.member.model.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 
 public interface MemberService {
-    MemberDto findMemberById (String memberId) throws SQLException;
+    MemberDto findMemberById(String memberId) throws SQLException;
+
     void registerMember(MemberDto memberId) throws Exception;
+
+    int findMemberByEmail(String email) throws Exception;
+
+    int findMemberByNickname(String nickname) throws Exception;
 
 }

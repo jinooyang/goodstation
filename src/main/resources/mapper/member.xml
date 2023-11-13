@@ -24,4 +24,16 @@
         values(#{memberId}, #{name}, #{password}, #{role}, #{email}, #{nickname});
     </insert>
 
+
+    <select id = "findMemberByEmail" parameterType="String" resultType="int">
+        select count(*)
+        from member
+        where email = #{email}
+    </select>
+
+    <select id = "findMemberByNickname" parameterType="String" resultType="int">
+        select count(*)
+        from member
+        where nickname = #{nickname}
+    </select>
 </mapper>

@@ -9,5 +9,7 @@ import java.sql.SQLException;
 public interface MemberMapper {
     MemberDto findMemberById (String memberId) throws SQLException;
     void registerMember(MemberDto memberId) throws SQLException;
+     int findMemberByEmail(String email) throws Exception ;
 
+    int findMemberByNickname(String nickname) throws Exception;
 }
