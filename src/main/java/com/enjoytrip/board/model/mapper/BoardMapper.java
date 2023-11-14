@@ -9,5 +9,6 @@ public interface BoardMapper {
 
     int writeBoard(BoardWritingDto boardWritingDto);
     BoardReadDto readBoard(int boardId);
+    void updateBoard(int boardId, BoardWritingDto updatedBoardDto);
 
 }

@@ -8,5 +8,8 @@ import java.sql.SQLException;
 public interface BoardService {
 
     int writeBoard(BoardWritingDto boardWritingDto);
+
     BoardReadDto readBoard(int boardId);
+
+    void updateBoard(int boardId, BoardWritingDto updatedBoardDto);
 }

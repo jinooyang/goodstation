@@ -32,4 +32,9 @@ public class BoardServiceImpl implements BoardService {
 
         return boardReadDto;
     }
+
+    @Override
+    public void updateBoard(int boardId, BoardWritingDto updatedBoardDto) {
+
+    }
 }

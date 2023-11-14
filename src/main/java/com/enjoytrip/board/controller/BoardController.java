@@ -24,4 +24,9 @@ public class BoardController {
     public BoardReadDto readBoard(@PathVariable int boardId) {
         return boardService.readBoard(boardId);
     }
+
+    @PutMapping("/{boardId}")
+    public void updateBoard(@PathVariable int boardId, @Valid @RequestBody BoardWritingDto updatedBoardDto) {
+        boardService.updateBoard(boardId, updatedBoardDto);
+    }
 }
