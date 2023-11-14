@@ -6,7 +6,7 @@ import java.sql.Date;
 
 @Data
 public class TripDto {
-    private Integer trip_id;
+    private Integer tripId;
     private String tripName;
     private Date startDate;
     private Date endDate;
