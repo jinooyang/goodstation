@@ -35,6 +35,15 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void updateBoard(int boardId, BoardWritingDto updatedBoardDto) {
+        BoardReadDto boardReadDto = boardMapper.readBoard(boardId);
 
+        if (boardReadDto == null) {
+            throw new RuntimeException();
+        }
+
+        BoardWritingDto boardUpdateDto = new BoardWritingDto(boardId, updatedBoardDto.getTitle(),
+                updatedBoardDto.getContent(), updatedBoardDto.getMemberId(), updatedBoardDto.getTripId());
+
+        boardMapper.updateBoard(boardUpdateDto);
     }
 }

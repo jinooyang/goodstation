@@ -25,6 +25,7 @@ public class BoardController {
         return boardService.readBoard(boardId);
     }
 
+    //구현
     @PutMapping("/{boardId}")
     public void updateBoard(@PathVariable int boardId, @Valid @RequestBody BoardWritingDto updatedBoardDto) {
         boardService.updateBoard(boardId, updatedBoardDto);

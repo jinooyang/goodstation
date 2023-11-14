@@ -32,4 +32,12 @@
         from board
         where board_id = #{boardId}
     </select>
+
+    <update id="updateBoard" parameterType="boardWritingDto">
+        update board
+        set title = #{title},
+            content = #{content},
+            trip_id = #{tripId}
+        where board_id = #{boardId}
+    </update>
 </mapper>
