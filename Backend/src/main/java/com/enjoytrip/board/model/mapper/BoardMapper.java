@@ -20,4 +20,6 @@ public interface BoardMapper {
 
     List<BoardListDto> getBoardList();
 
+    List<BoardListDto> searchBoard(String searchType, String keyword);
+
 }

@@ -18,4 +18,6 @@ public interface BoardService {
     void deleteBoard(int boardId);
 
     List<BoardListDto> getBoardList();
+
+    List<BoardListDto> searchBoard(String searchType, String keyword);
 }

@@ -70,4 +70,9 @@ public class BoardServiceImpl implements BoardService {
 
         return boardMapper.getBoardList();
     }
+
+    @Override
+    public List<BoardListDto> searchBoard(String searchType, String keyword) {
+        return boardMapper.searchBoard(searchType, keyword);
+    }
 }

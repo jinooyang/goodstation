@@ -41,4 +41,11 @@ public class BoardController {
     public List<BoardListDto> getBoardList() {
         return boardService.getBoardList();
     }
+
+    @GetMapping("/search")
+    public List<BoardListDto> searchBoard(@RequestParam String searchType,
+                                          @RequestParam String keyword) {
+
+        return boardService.searchBoard(searchType, keyword);
+    }
 }

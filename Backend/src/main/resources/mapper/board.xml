@@ -60,4 +60,20 @@
         order by create_time desc
         limit 20;
     </select>
+    
+    <select id="searchBoard" resultMap="boardList">
+        select board_id, title, member_id, create_time
+        from board
+        <where>
+            <if test="searchType == 'title'">
+                and title like concat('%', #{keyword}, '%')
+            </if>
+            <if test="searchType == 'memberId'">
+                and member_id like concat('%', #{keyword}, '%')
+            </if>
+            <if test="searchType == 'content'">
+                and content like concat('%', #{keyword}, '%')
+            </if>
+        </where>
+    </select>
 </mapper>
