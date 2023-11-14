@@ -1,10 +1,13 @@
 package com.enjoytrip.board.model.service;
 
+import com.enjoytrip.board.model.dto.BoardListDto;
 import com.enjoytrip.board.model.dto.BoardReadDto;
 import com.enjoytrip.board.model.dto.BoardWritingDto;
 import com.enjoytrip.board.model.mapper.BoardMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -56,5 +59,15 @@ public class BoardServiceImpl implements BoardService {
         }
 
         boardMapper.deleteBoard(boardId);
+    }
+
+    @Override
+    public List<BoardListDto> getBoardList() {
+        List<BoardListDto> boardList = boardMapper.getBoardList();
+        if (boardList.isEmpty()) {
+            throw new RuntimeException();
+        }
+
+        return boardMapper.getBoardList();
     }
 }

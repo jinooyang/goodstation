@@ -18,6 +18,13 @@
         <result column="member_id" property="memberId"></result>
         <result column="trip_id" property="tripId"></result>
     </resultMap>
+    
+    <resultMap id="boardList" type="boardListDto">
+        <result column="board_id" property="boardId"></result>
+        <result column="title" property="title"></result>
+        <result column="member_id" property="memberId"></result>
+        <result column="create_time" property="createTime"></result>
+    </resultMap>
 
     <insert id="writeBoard" parameterType="boardWritingDto">
         <selectKey keyProperty="boardId" order="AFTER" resultType="int">
@@ -46,4 +53,11 @@
         from board
         where board_id = #{boardId}
     </delete>
+    
+    <select id="getBoardList" resultMap="boardList">
+        select board_id, title, member_id, create_time
+        from board
+        order by create_time desc
+        limit 20;
+    </select>
 </mapper>

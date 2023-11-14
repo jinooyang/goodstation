@@ -1,5 +1,6 @@
 package com.enjoytrip.board.controller;
 
+import com.enjoytrip.board.model.dto.BoardListDto;
 import com.enjoytrip.board.model.dto.BoardReadDto;
 import com.enjoytrip.board.model.dto.BoardWritingDto;
 import com.enjoytrip.board.model.service.BoardService;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/board")
@@ -33,5 +35,10 @@ public class BoardController {
     @DeleteMapping("/{boardId}")
     public void deleteBoard(@PathVariable int boardId) {
         boardService.deleteBoard(boardId);
+    }
+
+    @GetMapping()
+    public List<BoardListDto> getBoardList() {
+        return boardService.getBoardList();
     }
 }
