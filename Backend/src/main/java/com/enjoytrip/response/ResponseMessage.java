@@ -1,5 +1,6 @@
 package com.enjoytrip.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.lang.Nullable;
 
@@ -7,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
+@AllArgsConstructor
 public class ResponseMessage {
     private String message;
     private Map<String,Object> data;

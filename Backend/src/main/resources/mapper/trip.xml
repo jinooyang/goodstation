@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.enjoytrip.trip.model.mapper.TripMapper">
+    <update id = "makeNewTrip" parameterType="tripDto">
+        insert into trip (trip_name, start_date, end_date, member_id,start_station_id, end_station_id)
+        values(#{tripName},#{startDate},#{endDate},#{memberId},#{startStationId},#{endStationId});
+    </update>
+
+</mapper>
