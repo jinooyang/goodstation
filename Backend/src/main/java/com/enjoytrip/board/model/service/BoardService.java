@@ -12,4 +12,6 @@ public interface BoardService {
     BoardReadDto readBoard(int boardId);
 
     void updateBoard(int boardId, BoardWritingDto updatedBoardDto);
+
+    void deleteBoard(int boardId);
 }

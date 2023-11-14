@@ -8,7 +8,11 @@ import org.apache.ibatis.annotations.Mapper;
 public interface BoardMapper {
 
     int writeBoard(BoardWritingDto boardWritingDto);
+
     BoardReadDto readBoard(int boardId);
+
     void updateBoard(BoardWritingDto boardUpdateDto);
+
+    void deleteBoard(int boardId);
 
 }

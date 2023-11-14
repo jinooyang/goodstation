@@ -46,4 +46,15 @@ public class BoardServiceImpl implements BoardService {
 
         boardMapper.updateBoard(boardUpdateDto);
     }
+
+    @Override
+    public void deleteBoard(int boardId) {
+        BoardReadDto boardReadDto = boardMapper.readBoard(boardId);
+
+        if (boardReadDto == null) {
+            throw new RuntimeException();
+        }
+
+        boardMapper.deleteBoard(boardId);
+    }
 }

@@ -10,7 +10,7 @@
         <result column="member_id" property="memberId"></result>
         <result column="trip_id" property="tripId"></result>
     </resultMap>
-    
+
     <resultMap id="boardReading" type="boardReadDto">
         <result column="title" property="title"></result>
         <result column="content" property="content"></result>
@@ -26,7 +26,7 @@
         insert into board (title, content, member_id, trip_id)
         values (#{title}, #{content}, #{memberId}, #{tripId})
     </insert>
-    
+
     <select id="readBoard" parameterType="int" resultMap="boardReading">
         select title, content, create_time, member_id, trip_id
         from board
@@ -35,9 +35,15 @@
 
     <update id="updateBoard" parameterType="boardWritingDto">
         update board
-        set title = #{title},
+        set title   = #{title},
             content = #{content},
             trip_id = #{tripId}
         where board_id = #{boardId}
     </update>
+
+    <delete id="deleteBoard" parameterType="int">
+        delete
+        from board
+        where board_id = #{boardId}
+    </delete>
 </mapper>
