@@ -64,22 +64,36 @@ public class TripController {
     public ResponseEntity<ResponseMessage> addStationsToTrip(@RequestBody Map<String,Object> map){
         ResponseMessage rm = new ResponseMessage();
         try{
+            
+            
+            //기존 여행 역들은 삭제하고 새롭게 추가하기
+            //완료시 주석 삭제
             tripService.addStationToTrip(map);
 
             rm.setMessage("여행 저장 성공!");
             rm.setStatus(StatusEnum.OK);
             return new ResponseEntity<>(rm, HttpStatus.OK);
         }catch (Exception e){
-//            e.printStackTrace();
             rm.setMessage("기차역 추가 실패");
             rm.setStatus(StatusEnum.FAIL);
             return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);
         }
-
-
-
-
     }
+
+//    @PostMapping("/attraction")
+//    public ResponseEntity<ResponseMessage> addAttractionToTripStation(@RequestBody Map<String,Object> map){
+//        ResponseMessage rm = new ResponseMessage();
+//        try{
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            rm.setMessage("관광지 추가 실패");
+//            rm.setStatus(StatusEnum.FAIL);
+//            return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);
+//        }
+//
+//        return null;
+//    }
 
 
 }

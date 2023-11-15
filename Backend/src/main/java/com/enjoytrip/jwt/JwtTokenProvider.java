@@ -1,6 +1,7 @@
 package com.enjoytrip.jwt;
 
 
+import com.enjoytrip.member.model.dto.MemberDto;
 import com.enjoytrip.member.model.dto.Role;
 import com.enjoytrip.security.SecurityUser;
 import io.jsonwebtoken.Claims;
@@ -10,11 +11,14 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
@@ -51,11 +55,34 @@ public class JwtTokenProvider {
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
-//        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPK(token));
-        SecurityUser userDetails = (SecurityUser) userDetailsService.loadUserByUsername(this.getUserPK(token));
-//        System.out.println(userDetails.getAuthorities());
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+//        SecurityUser userDetails = (SecurityUser) userDetailsService.loadUserByUsername(this.getUserPK(token));
+//        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        String userPK = this.getUserPK(token);
+        Collection<? extends GrantedAuthority> authorities = this.extractAuthoritiesFromToken(token);
+        MemberDto member = new MemberDto();
+        member.setMemberId(userPK);
+        member.setPassword("");
+        member.setRole(Role.USER);
+        SecurityUser userDetails = new SecurityUser(member);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
+
     }
+
+    //토큰에서 회원 권한 정보 추출
+    public Collection<? extends GrantedAuthority> extractAuthoritiesFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody();
+        String rolesAsString = claims.get("roles", String.class);
+//        System.out.println(rolesAsString);
+        List<String> roles = Arrays.asList(rolesAsString.split(","));
+        return roles.stream()
+                .map(role -> "ROLE_" + role)
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
 
     // 토큰에서 회원 정보 추출
     public String getUserPK(String token) {

@@ -124,7 +124,7 @@ public class MemberController {
 
     @GetMapping("/info")
     public ResponseEntity<ResponseMessage> getMemberInfo(@AuthenticationPrincipal SecurityUser securityUser) {
-        System.out.println(securityUser.getMember().toString());
+//        System.out.println(securityUser.getMember().toString());
         ResponseMessage rm = new ResponseMessage();
         try {
             MemberDto member = memberService.findMemberById(securityUser.getUsername());
