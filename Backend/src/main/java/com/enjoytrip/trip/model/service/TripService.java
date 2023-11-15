@@ -16,4 +16,10 @@ public interface TripService {
     List<TripDto> findTripByMemberId(String memberId) throws  SQLException;
 
     void addStationToTrip(Map<String, Object> map) throws Exception;
+
+    void deleteTripStation(Integer tripId) throws SQLException;
+
+    void insertAttraction(Map<String,Object> map) throws SQLException;
+
+    void deleteAttraction(Integer tripId) throws SQLException;
 }

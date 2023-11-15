@@ -1,5 +1,6 @@
 package com.enjoytrip.trip.model.service;
 
+import com.enjoytrip.trip.model.dto.TripAttractionDto;
 import com.enjoytrip.trip.model.dto.TripDto;
 import com.enjoytrip.trip.model.dto.TripStationDto;
 import com.enjoytrip.trip.model.mapper.TripMapper;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class TripServiceImpl implements TripService{
+public class TripServiceImpl implements TripService {
     private final TripMapper tripMapper;
 
     @Override
@@ -40,12 +41,12 @@ public class TripServiceImpl implements TripService{
     @Override
     public void addStationToTrip(Map<String, Object> map) throws Exception {
         DateConverter dateConverter = new DateConverter();
-        Integer tripId = (Integer)map.get("tripId");
-        List<Map<String,String>> list = (List<Map<String,String>>)map.get("stationList");
+        Integer tripId = (Integer) map.get("tripId");
+        List<Map<String, String>> list = (List<Map<String, String>>) map.get("stationList");
 
         List<TripStationDto> stationList = new ArrayList<>();
-        for(int i=0;i<list.size();i++){
-            Map<String,String> eachStationInfo = list.get(i);
+        for (int i = 0; i < list.size(); i++) {
+            Map<String, String> eachStationInfo = list.get(i);
             TripStationDto st = new TripStationDto();
             st.setTripId(tripId);
             st.setStationId(eachStationInfo.get("stationId"));
@@ -58,4 +59,36 @@ public class TripServiceImpl implements TripService{
 
 
     }
+
+    @Override
+    public void deleteTripStation(Integer tripId) throws SQLException {
+        tripMapper.deleteTripStation(tripId);
+    }
+
+    @Override
+    public void insertAttraction(Map<String, Object> map) throws SQLException {
+        //받은 맵을 tripAttractionDto에ㅓ 넣느다(서비스에서)
+        Integer tripId = (Integer) map.get("tripId");
+        List<Object> jsonList = (List<Object>) map.get("list");
+        List<TripAttractionDto> list = new ArrayList<>();
+        int order = 0;
+        for (Object o : jsonList) {
+            Map<String,Object> objMap = (Map<String, Object>) o;
+            TripAttractionDto tripAtt = new TripAttractionDto();
+            tripAtt.setTripId(tripId);
+            tripAtt.setStationId((String)objMap.get("stationId"));
+            tripAtt.setContentId((Integer)objMap.get("contentId"));
+            tripAtt.setOrderNum(++order);
+            list.add(tripAtt);
+        }
+        System.out.println(list.toString());
+        tripMapper.insertAttraction(list);
+    }
+
+    @Override
+    public void deleteAttraction(Integer tripId) throws SQLException {
+        tripMapper.deleteTripAttraction(tripId);
+    }
+
+
 }

@@ -15,43 +15,75 @@
 
     </resultMap>
 
-
+    <!-- 새로운 여행 생성하기 -->
     <update id = "insertTrip" parameterType="tripDto">
         insert into trip (trip_name, start_date, end_date, member_id,start_station_id, end_station_id)
         values(#{tripName},#{startDate},#{endDate},#{memberId},#{startStationId},#{endStationId});
     </update>
 
+
+    <!-- 마지막 auto incre 된 키 찾기 -->
     <select id = "getLastInsertedId" resultType="Integer" >
         select last_insert_id();
     </select>
 
-    <select id ="findTripById" parameterType="int" resultMap="trip">
 
+    <!-- 여행 아이디로 여행 찾기 -->
+    <select id ="findTripById" parameterType="int" resultMap="trip">
     select trip_id, trip_name, start_date, end_date, member_id,start_station_id, end_station_id
     from trip
     where trip_id = #{tripId}
     </select>
 
+    <!-- 멤버 아이디로 여행 찾기 (기본 정보만) -->
     <select id = "findTripByMemberId" parameterType = "string" resultMap="trip">
     select trip_id, trip_name, start_date, end_date, member_id,start_station_id, end_station_id
     from trip
     where member_id = #{memberId}
     </select>
 
+    <!-- 기차역 추가하기 -->
     <insert id = "insertTripStation" parameterType = "list">
         insert into trip_station (trip_id, station_id, start_date,end_date)
         values
         <foreach collection="list" item="item" separator=",">
             (
-            #{item.tripId},
-            #{item.stationId},
-            #{item.startDate},
-            #{item.endDate}
+                #{item.tripId},
+                #{item.stationId},
+                #{item.startDate},
+                #{item.endDate}
             )
         </foreach>
 
     </insert>
+    <!-- 기차역 추가하기 전에 기존 데이터 빼기-->
+    <delete id="deleteTripStation" parameterType = "int">
+        delete
+        from trip_station
+        where trip_id = #{tripId}
+    </delete>
+
+    <!-- 여행에 관광지 추가하기 -->
+    <insert id = "insertAttraction" parameterType = "list">
+        insert into trip_attraction (trip_id, station_id, content_id,order_num)
+        values
+        <foreach collection="list" item="item" separator=",">
+        (
+            #{item.tripId},
+            #{item.stationId},
+            #{item.contentId},
+            #{item.orderNum}
+        )
+        </foreach>
 
 
 
+    </insert>
+
+    <delete id = "deleteTripAttraction"  parameterType="int">
+        delete
+        from trip_attraction
+        where trip_id = #{tripId}
+
+    </delete>
 </mapper>

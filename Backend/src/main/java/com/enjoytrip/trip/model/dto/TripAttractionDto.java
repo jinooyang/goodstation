@@ -7,5 +7,5 @@ public class TripAttractionDto {
     private Integer tripId;
     private String stationId;
     private Integer contentId;
-    private Integer order;
+    private Integer orderNum;
 }
