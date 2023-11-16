@@ -19,4 +19,6 @@ public interface BoardService {
     List<BoardListDto> getBoardList(int pageNo, int pageSize);
 
     List<BoardListDto> searchBoard(String searchType, String keyword);
+
+    boolean existsBoard(int boardId);
 }

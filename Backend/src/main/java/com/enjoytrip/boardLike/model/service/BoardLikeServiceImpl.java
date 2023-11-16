@@ -10,14 +10,20 @@ public class BoardLikeServiceImpl implements BoardLikeService{
 
     private final BoardLikeMapper boardLikeMapper;
 
-    @Override
-    public void likeBoard(int boardId, int memberId) {
 
+    @Override
+    public boolean hasUserLikedBoard(String memberId, int boardId) {
+        return boardLikeMapper.hasUserLikedBoard(memberId, boardId) > 0;
     }
 
     @Override
-    public void unlikeBoard(int boardId, int memberId) {
+    public void likeBoard(int boardId, String memberId) {
+        boardLikeMapper.likeBoard(boardId, memberId);
+    }
 
+    @Override
+    public void unlikeBoard(int boardId, String memberId) {
+        boardLikeMapper.unlikeBoard(boardId, memberId);
     }
 
     @Override

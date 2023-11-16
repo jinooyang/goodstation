@@ -75,4 +75,9 @@ public class BoardServiceImpl implements BoardService {
     public List<BoardListDto> searchBoard(String searchType, String keyword) {
         return boardMapper.searchBoard(searchType, keyword);
     }
+
+    @Override
+    public boolean existsBoard(int boardId) {
+        return boardMapper.readBoard(boardId) != null;
+    }
 }

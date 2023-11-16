@@ -4,9 +4,11 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface BoardLikeMapper {
-    void likeBoard(int boardId, int memberId);
+    int hasUserLikedBoard(String memberId, int boardId);
 
-    void unlikeBoard(int boardId, int memberId);
+    void likeBoard(int boardId, String memberId);
+
+    void unlikeBoard(int boardId, String memberId);
 
     int getLikesCount(int boardId);
 
