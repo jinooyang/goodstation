@@ -18,7 +18,7 @@ public interface BoardMapper {
 
     void deleteBoard(int boardId);
 
-    List<BoardListDto> getBoardList();
+    List<BoardListDto> getBoardList(int pageSize, int offset);
 
     List<BoardListDto> searchBoard(String searchType, String keyword);
 

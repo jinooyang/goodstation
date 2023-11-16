@@ -38,8 +38,9 @@ public class BoardController {
     }
 
     @GetMapping()
-    public List<BoardListDto> getBoardList() {
-        return boardService.getBoardList();
+    public List<BoardListDto> getBoardList(@RequestParam(name = "pageNo", defaultValue = "1") int pageNo,
+                                           @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
+        return boardService.getBoardList(pageNo, pageSize);
     }
 
     @GetMapping("/search")

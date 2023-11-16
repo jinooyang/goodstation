@@ -54,11 +54,11 @@
         where board_id = #{boardId}
     </delete>
     
-    <select id="getBoardList" resultMap="boardList">
+    <select id="getBoardList" parameterType="int" resultMap="boardList">
         select board_id, title, member_id, create_time
         from board
-        order by create_time desc
-        limit 20;
+        order by board_id desc
+        limit #{pageSize} offset #{offset};
     </select>
     
     <select id="searchBoard" resultMap="boardList">
