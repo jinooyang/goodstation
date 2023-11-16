@@ -8,7 +8,7 @@ export default {
 </script>
 <template>
   <v-footer class="red d-flex flex-column">
-    <div>
+    <div class = "footer-text">
       <v-btn v-for="icon in icons" :key="icon" class="mx-4" :icon="icon" variant="text"></v-btn>
     </div>
 
