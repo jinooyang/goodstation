@@ -4,6 +4,7 @@ import com.enjoytrip.board.model.dto.BoardListDto;
 import com.enjoytrip.board.model.dto.BoardReadDto;
 import com.enjoytrip.board.model.dto.BoardWritingDto;
 import com.enjoytrip.board.model.service.BoardService;
+import com.enjoytrip.boardLike.model.service.BoardLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,8 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final BoardLikeService boardLikeService;
+
 
     @PostMapping
     public int writeBoard(@Valid @RequestBody BoardWritingDto boardWritingDto) {
@@ -48,5 +51,10 @@ public class BoardController {
                                           @RequestParam String keyword) {
 
         return boardService.searchBoard(searchType, keyword);
+    }
+
+    @GetMapping("{boardId}/likes")
+    public int getLikesCount(@PathVariable int boardId) {
+        return boardLikeService.getLikesCount(boardId);
     }
 }
