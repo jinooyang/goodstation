@@ -2,14 +2,20 @@
 import AddStationSideBar from "../components/AddStationSideBar.vue";
 import {ref, onMounted, watch} from "vue";
 import AddStationSearchStation from "../components/AddStationSearchStation.vue";
+
+import { useRoute, useRouter } from "vue-router";
+const route = useRoute();
+const router = useRouter();
+const goToTripAttraction = () => {
+  router.push("/trip/attraction");
+};
 </script>
 
 <template>
   <div class="red Jalnan ps-5">
     <v-container
     ><h1>기차역 선택</h1>여행하고 싶은 기차역을 선택하세요
-    </v-container
-    >
+    </v-container>
   </div>
   <v-container>
     <v-row>
@@ -33,7 +39,7 @@ import AddStationSearchStation from "../components/AddStationSearchStation.vue";
           v-btn--variant-elevated
           size="large"
           color="#f7323f"
-          @click="goToTripStation"
+          @click="goToTripAttraction"
       >
         관광지 추가하기 =>
       </v-btn>

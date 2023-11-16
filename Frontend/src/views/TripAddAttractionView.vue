@@ -1,14 +1,24 @@
-<script setup></script>
+<script setup>
+import TripAddAttractionSideBar from "@/components/TripAddAttractionSideBar.vue";
+</script>
 
 <template>
-  <v-row>
-    <v-col>
-      <v-card>
-        <v-card-title>관광지 선택</v-card-title>
-        <v-card-text> 이곳에 관광지 선택 페이지가 들어갑니다 </v-card-text>
-      </v-card>
-    </v-col>
-  </v-row>
+  <div class="red Jalnan ps-5">
+    <v-container>
+      <h1>관광지 선택</h1>
+      방문하고 싶은 관광지를 선택하세요
+    </v-container>
+  </div>
+  <v-container>
+    <v-row>
+    <v-col :cols="4"><TripAddAttractionSideBar/></v-col>
+    </v-row>
+
+
+
+
+
+  </v-container>
 </template>
 
 <style scoped></style>

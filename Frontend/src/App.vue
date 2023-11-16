@@ -30,4 +30,14 @@ import FooterView from "./views/FooterView.vue";
     url("https://cdn.jsdelivr.net/gh/webfontworld/goodchoice/Jalnan.ttf") format("truetype");
   font-display: swap;
 }
+.red {
+  background-color: #f7323f;
+  color: white;
+}
+
+.red-font {
+  color: #f7323f;
+
+}
+
 </style>

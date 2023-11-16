@@ -30,8 +30,8 @@ const trainStations = ref([
     color: "bg-deep-purple-lighten-1",
   },
   {
-    startStation: "서울역5",
-    endStation: "부산역5",
+    startStation: "여수EXPO역",
+    endStation: "여수EXPO역",
     startDate: "2023-08-25 14:00",
     endDate: "2023-08-25 17:00",
     color: "bg-deep-purple-lighten-1",
@@ -55,7 +55,6 @@ const trainStations = ref([
 
 <template>
   <v-container>
-
     <v-row justify="space-around">
       <v-card width="400">
         <v-toolbar color="rgba(0, 0, 0, 0)">

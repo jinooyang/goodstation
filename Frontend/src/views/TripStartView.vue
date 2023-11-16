@@ -3,7 +3,7 @@ import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const router = useRouter();
 const goToTripStation = () => {
-  router.push("/trip/pickstation");
+  router.push("/trip/create");
 };
 </script>
 
@@ -93,7 +93,7 @@ const goToTripStation = () => {
             color="#f7323f"
             @click="goToTripStation"
           >
-            여행 생성 바로가기 =>
+            시작하기 =>
           </v-btn>
         </div>
       </v-col>
