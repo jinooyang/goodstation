@@ -23,7 +23,7 @@ const goToTripStation = () => {
     <v-row class="mt-5 mb-5">
       <v-col :cols="3" offset="2">
         <v-img
-          :width="274"
+          :width="300"
           :height="154.13"
           cover
           src="src/assets/tripstartview1.jpg"

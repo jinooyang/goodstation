@@ -15,7 +15,7 @@ const goToLogin = () => {
     </v-container>
   </div>
   <v-container>
-    <v-col class="Jalnan red-font text-center ma-5" >
+    <v-col class="Jalnan red-font text-center ma-5">
       <h1>역이어때.</h1>
     </v-col>
     <v-col :cols="4" offset="4">
@@ -25,6 +25,7 @@ const goToLogin = () => {
           variant="outlined"
           v-model="userId"
           prepend-inner-icon="mdi-account"
+          hide-details
       ></v-text-field>
     </v-col>
     <v-col :cols="4" offset="4">
@@ -34,6 +35,7 @@ const goToLogin = () => {
           variant="outlined"
           v-model="userId"
           prepend-inner-icon="mdi-email"
+          hide-details
       ></v-text-field>
     </v-col>
 
@@ -44,6 +46,7 @@ const goToLogin = () => {
           variant="outlined"
           v-model="userId"
           prepend-inner-icon="mdi-account"
+          hide-details
       ></v-text-field>
     </v-col>
 
@@ -54,14 +57,14 @@ const goToLogin = () => {
           variant="outlined"
           v-model="userId"
           prepend-inner-icon="mdi-account"
+          hide-details
       ></v-text-field>
     </v-col>
 
 
-
-<!--    <v-col :cols="4" offset="4" class = "text-center">-->
-<!--      <p> 사용 불가능한 아이디 입니다.</p>-->
-<!--    </v-col>-->
+    <!--    <v-col :cols="4" offset="4" class = "text-center">-->
+    <!--      <p> 사용 불가능한 아이디 입니다.</p>-->
+    <!--    </v-col>-->
     <v-col :cols="4" offset="4">
       <v-text-field
           color="red-accent-3"
@@ -69,6 +72,7 @@ const goToLogin = () => {
           variant="outlined"
           v-model="userId"
           prepend-inner-icon="mdi-key"
+          hide-details
       ></v-text-field>
     </v-col>
     <v-col :cols="4" offset="4">
@@ -78,10 +82,11 @@ const goToLogin = () => {
           variant="outlined"
           v-model="userId"
           prepend-inner-icon="mdi-key"
+          hide-details
       ></v-text-field>
     </v-col>
 
-    <v-row class ="mb-5 mt-5">
+    <v-row class="mb-5 mt-5">
       <v-col :cols="4" offset="4">
         <div class="text-center Jalnan">
           <v-btn
@@ -111,8 +116,15 @@ const goToLogin = () => {
         </div>
       </v-col>
     </v-row>
-    <v-row class = "mb-5"/>
+    <v-row class="mb-5"/>
   </v-container>
 </template>
 
-<style scoped>svg{fill:#000000}</style>
+<style scoped>
+svg {
+  fill: #000000
+}
+.v-input__details{
+  display :none !important;
+}
+</style>
