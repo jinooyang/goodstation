@@ -12,4 +12,5 @@ public interface CommentService {
 
     CommentDto getCommentDto(int commentId);
 
+    List<CommentDto> getListByBoardId(int boardId);
 }

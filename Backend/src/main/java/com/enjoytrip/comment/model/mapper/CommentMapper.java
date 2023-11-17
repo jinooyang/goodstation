@@ -10,7 +10,7 @@ public interface CommentMapper {
 
     void writeComment(CommentDto writeCommentDto);
 
-    List<CommentDto> getCommentList(int board_id);
+    List<CommentDto> getCommentList(int boardId);
 
     void updateComment(int commentId, CommentDto updateCommentDto);
 

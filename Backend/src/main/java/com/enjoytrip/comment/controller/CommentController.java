@@ -1,5 +1,6 @@
 package com.enjoytrip.comment.controller;
 
+import com.enjoytrip.board.model.service.BoardService;
 import com.enjoytrip.comment.model.dto.CommentDto;
 import com.enjoytrip.comment.model.service.CommentService;
 import com.enjoytrip.response.ResponseMessage;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import com.enjoytrip.response.StatusEnum;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/board/{boardId}/comments")
@@ -17,6 +20,7 @@ import javax.validation.Valid;
 public class CommentController {
 
     private final CommentService commentService;
+    private final BoardService boardService;
 
     @PostMapping()
     public ResponseEntity<ResponseMessage> writeComment(@Valid @RequestBody CommentDto writeCommentDto) {
@@ -31,6 +35,20 @@ public class CommentController {
             message.setMessage("댓글이 작성되었습니다.");
         }
         return new ResponseEntity<>(message, HttpStatus.CREATED);
+    }
+
+    @GetMapping()
+    public ResponseEntity<ResponseMessage> getCommentList(@PathVariable int boardId) {
+        ResponseMessage message = new ResponseMessage();
+        if (boardService.readBoard(boardId) == null) {
+            message.setStatus(StatusEnum.FAIL);
+            message.setMessage("댓글이 존재하지 않습니다.");
+        } else {
+            message.setData("commentList", commentService.getListByBoardId(boardId));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage("댓글을 불러왔습니다.");
+        }
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @DeleteMapping("{commentId}")

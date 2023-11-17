@@ -29,7 +29,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void updateComment(int commentId, CommentDto updateCommentDto) {
-
     }
 
     @Override
@@ -41,5 +40,10 @@ public class CommentServiceImpl implements CommentService {
     public CommentDto getCommentDto(int commentId) {
         CommentDto commentDto = commentMapper.getCommentById(commentId);
         return commentDto;
+    }
+
+    @Override
+    public List<CommentDto> getListByBoardId(int boardId) {
+        return commentMapper.getCommentList(boardId);
     }
 }

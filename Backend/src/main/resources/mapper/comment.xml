@@ -19,6 +19,13 @@
         select comment_id, board_id, content, create_time, member_id
         from comment
         where comment_id = #{commentId}
+        order by comment_id desc
+    </select>
+
+    <select id="getCommentList" parameterType="int" resultType="commentDto">
+        select *
+        from comment
+        where board_id = #{boardId}
     </select>
 
     <delete id="deleteComment" parameterType="int">
