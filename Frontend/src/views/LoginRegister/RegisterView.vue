@@ -15,7 +15,7 @@ const goToLogin = () => {
     </v-container>
   </div>
   <v-container>
-    <v-col class="Jalnan red-font text-center ma-5">
+    <v-col class="Jalnan red-font text-center mb-5 mt-5">
       <h1>역이어때.</h1>
     </v-col>
     <v-col :cols="4" offset="4">
@@ -25,6 +25,43 @@ const goToLogin = () => {
           variant="outlined"
           v-model="userId"
           prepend-inner-icon="mdi-account"
+          hide-details
+      ></v-text-field>
+    </v-col>
+
+
+    <v-col :cols="4" offset="4">
+      <v-text-field
+          color="red-accent-3"
+          label="아이디"
+          variant="outlined"
+          v-model="userId"
+          prepend-inner-icon="mdi-account-key"
+          hide-details
+      ></v-text-field>
+    </v-col>
+
+
+    <!--    <v-col :cols="4" offset="4" class = "text-center">-->
+    <!--      <p> 사용 불가능한 아이디 입니다.</p>-->
+    <!--    </v-col>-->
+    <v-col :cols="4" offset="4">
+      <v-text-field
+          color="red-accent-3"
+          label="비밀번호"
+          variant="outlined"
+          v-model="userId"
+          prepend-inner-icon="mdi-lock"
+          hide-details
+      ></v-text-field>
+    </v-col>
+    <v-col :cols="4" offset="4">
+      <v-text-field
+          color="red-accent-3"
+          label="비밀번호확인"
+          variant="outlined"
+          v-model="userId"
+          prepend-inner-icon="mdi-lock-check"
           hide-details
       ></v-text-field>
     </v-col>
@@ -45,47 +82,10 @@ const goToLogin = () => {
           label="닉네임"
           variant="outlined"
           v-model="userId"
-          prepend-inner-icon="mdi-account"
+          prepend-inner-icon="mdi-star-circle-outline"
           hide-details
       ></v-text-field>
     </v-col>
-
-    <v-col :cols="4" offset="4">
-      <v-text-field
-          color="red-accent-3"
-          label="아이디"
-          variant="outlined"
-          v-model="userId"
-          prepend-inner-icon="mdi-account"
-          hide-details
-      ></v-text-field>
-    </v-col>
-
-
-    <!--    <v-col :cols="4" offset="4" class = "text-center">-->
-    <!--      <p> 사용 불가능한 아이디 입니다.</p>-->
-    <!--    </v-col>-->
-    <v-col :cols="4" offset="4">
-      <v-text-field
-          color="red-accent-3"
-          label="비밀번호"
-          variant="outlined"
-          v-model="userId"
-          prepend-inner-icon="mdi-key"
-          hide-details
-      ></v-text-field>
-    </v-col>
-    <v-col :cols="4" offset="4">
-      <v-text-field
-          color="red-accent-3"
-          label="비밀번호확인"
-          variant="outlined"
-          v-model="userId"
-          prepend-inner-icon="mdi-key"
-          hide-details
-      ></v-text-field>
-    </v-col>
-
     <v-row class="mb-5 mt-5">
       <v-col :cols="4" offset="4">
         <div class="text-center Jalnan">

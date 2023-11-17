@@ -1,7 +1,7 @@
 <script setup>
-import AddStationSideBar from "../components/AddStationSideBar.vue";
+import AddStationSideBar from "../../components/TripAddStation/TripAddStationSideBar.vue";
 import {ref, onMounted, watch} from "vue";
-import AddStationSearchStation from "../components/AddStationSearchStation.vue";
+import AddStationSearchStation from "../../components/TripAddStation/TripAddStationSearchStation.vue";
 
 import { useRoute, useRouter } from "vue-router";
 const route = useRoute();

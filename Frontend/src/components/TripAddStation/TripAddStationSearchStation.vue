@@ -1,6 +1,6 @@
 <script setup>
 
-import AddStationSearchTable from "@/components/AddStationSearchTable.vue";
+import AddStationSearchTable from "@/components/TripAddStation/TripAddStationSearchTable.vue";
 </script>
 
 <template>

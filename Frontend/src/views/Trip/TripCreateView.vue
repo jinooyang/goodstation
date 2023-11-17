@@ -1,5 +1,5 @@
 <script setup>
-import TripCreateForm from "@/components/TripCreateForm.vue";
+import TripCreateForm from "@/components/TripCreate/TripCreateForm.vue";
 import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const router = useRouter();
@@ -37,6 +37,9 @@ const goToTripStation = () => {
       </div>
     </v-col>
   </v-row>
+<!--  <v-row class="ms-3">-->
+<!--  <a href="https://www.roblox.com/games/7594841232/seoulbike" target="_blank"><img src="../../assets/bike.png"></a>-->
+<!--  </v-row>-->
 </template>
 
 <style scoped>

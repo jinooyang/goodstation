@@ -19,7 +19,10 @@ const goToTripStation = () => {
         <div class="title"><h2>나만의 기차여행을 생성하세요!!</h2></div></v-col
       >
     </v-row>
-    <hr />
+
+
+    <div class="divider div-transparent div-dot"></div>
+
     <v-row class="mt-5 mb-5">
       <v-col :cols="3" offset="2">
         <v-img
@@ -123,4 +126,38 @@ const goToTripStation = () => {
     url("https://cdn.jsdelivr.net/gh/webfontworld/goodchoice/Jalnan.ttf") format("truetype");
   font-display: swap;
 } */
+
+
+.divider
+{
+  position: relative;
+  //margin-top: 90px;
+  height: 1px;
+}
+.div-transparent:before
+{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 5%;
+  right: 5%;
+  width: 90%;
+  height: 1px;
+  background-image: linear-gradient(to right, transparent, rgb(48,49,51), transparent);
+}
+.div-dot:after
+{
+  //content: "";
+  //position: absolute;
+  //z-index: 1;
+  //top: -9px;
+  //left: calc(50% - 9px);
+  //width: 18px;
+  //height: 18px;
+  //background-color: rgb(247 ,50 ,63 );
+  //border: 1px solid rgb(143, 143, 147);
+  //border-radius: 50%;
+  //box-shadow: inset 0 0 0 2px white,
+  //0 0 0 4px white;
+}
 </style>

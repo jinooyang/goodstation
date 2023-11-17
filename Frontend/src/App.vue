@@ -1,6 +1,6 @@
 <script setup>
-import HeaderView from "./views/HeaderView.vue";
-import FooterView from "./views/FooterView.vue";
+import HeaderView from "./views/HeaderFooter/HeaderView.vue";
+import FooterView from "./views/HeaderFooter/FooterView.vue";
 </script>
 
 <template>
@@ -39,5 +39,7 @@ import FooterView from "./views/FooterView.vue";
   color: #f7323f;
 
 }
-
+.blue-grad-bg{
+  background: linear-gradient(to right, #009abd 0%,#12b1a2 100%)
+}
 </style>

@@ -45,7 +45,8 @@ const goToTripStation = () => {
     </v-row>
     <div class="d-flex flex-column align-center justify-center ma-9 pa-9">
       <div v-for="n in 3">
-        <img src="@/assets/goodchoice.jpg" width="500"/>
+        <img src="../../assets/goodchoice.jpg" width="500"/>
+<!--        <v-img src="src/assets/goodchoice.jpg"/>-->
       </div>
     </div>
     <v-row class="mt-6 mb-6"></v-row>

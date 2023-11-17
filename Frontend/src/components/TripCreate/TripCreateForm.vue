@@ -1,6 +1,6 @@
 <script setup>
 
-import TripCreateTimeLine from "@/components/TripCreateTimeLine.vue";
+import TripCreateTimeLine from "@/components/TripCreate/TripCreateTimeLine.vue";
 </script>
 
 <template>

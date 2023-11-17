@@ -18,7 +18,7 @@ const login = () => {
 </div>
   <v-container>
 
-    <v-col class="Jalnan red-font text-center ma-5" >
+    <v-col class="Jalnan red-font text-center mt-5 mb-5" >
      <h1>역이어때.</h1>
     </v-col>
     <v-col :cols="4" offset="4">
@@ -27,19 +27,17 @@ const login = () => {
           label="아이디"
           variant="outlined"
           v-model="userId"
-          prepend-inner-icon="mdi-account"
+          prepend-inner-icon="mdi-account-key"
       ></v-text-field>
     </v-col>
-    <!--    <v-col :cols="4" offset="4" class = "text-center">-->
-    <!--      <p> 사용 불가능한 아이디 입니다.</p>-->
-    <!--    </v-col>-->
+
     <v-col :cols="4" offset="4">
       <v-text-field
           color="red-accent-3"
           label="비밀번호"
           variant="outlined"
           v-model="userId"
-          prepend-inner-icon="mdi-key"
+          prepend-inner-icon="mdi-lock"
       ></v-text-field>
     </v-col>
     <v-row class = "mb-5 mt-5">

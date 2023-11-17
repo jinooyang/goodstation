@@ -1,8 +1,8 @@
 <script setup>
 import {ref} from "vue";
-import BoardItem from "@/components/BoardItem.vue";
+import BoardItem from "@/components/Board/BoardItem.vue";
 import { useRoute, useRouter } from "vue-router";
-
+import Pagenation from "@/components/Pagenation.vue";
 const route = useRoute();
 const router = useRouter();
 const goToDetail = () => {
@@ -70,15 +70,7 @@ const items = ref([{
 
 }]);
 </script>
-<script>
-export default {
-  data () {
-    return {
-      page: 1,
-    }
-  },
-}
-</script>
+
 <template>
   <div class="red Jalnan ps-5">
     <v-container>
@@ -101,17 +93,7 @@ export default {
         </div>
       </v-sheet>
     </v-sheet>
-    <v-row justify="center">
-      <v-col cols="6">
-        <v-container class="max-width">
-          <v-pagination
-              v-model="page"
-              class="my-4"
-              :length="15"
-          ></v-pagination>
-        </v-container>
-      </v-col>
-    </v-row>
+<Pagenation/>
   </v-container>
 
 </template>

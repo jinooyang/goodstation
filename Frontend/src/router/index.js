@@ -12,37 +12,41 @@ const router = createRouter({
         {
             path: '/trip',
             name: 'trip',
-            component: () => import('../views/TripStartView.vue')
+            component: () => import('../views/Trip/TripStartView.vue')
 
         },
         {
             path: '/login',
             name: 'login',
-            component: () => import('../views/LoginView.vue')
+            component: () => import('../views/LoginRegister/LoginView.vue')
         }, {
             path: '/trip/pickstation',
             name: 'tripstation',
-            component: () => import('../views/TripAddStationView.vue')
+            component: () => import('../views/Trip/TripAddStationView.vue')
         }, {
             path: '/trip/create',
             name: 'create',
-            component: () => import('../views/TripCreateView.vue')
+            component: () => import('../views/Trip/TripCreateView.vue')
         }, {
             path: '/trip/attraction',
             name: 'attraction',
-            component: () => import('../views/TripAddAttractionView.vue')
+            component: () => import('../views/Trip/TripAddAttractionView.vue')
         }, {
             path: '/register',
             name: 'register',
-            component: () => import('../views/RegisterView.vue')
+            component: () => import('../views/LoginRegister/RegisterView.vue')
         }, {
             path: '/board',
             name: 'board',
-            component: () => import('../views/BoardView.vue')
+            component: () => import('../views/Board/BoardView.vue')
         }, {
             path: '/board/detail',
             name: 'detail',
-            component: () => import('../views/BoardDetailView.vue')
+            component: () => import('../views/Board/BoardDetailView.vue')
+        }, {
+            path: '/news',
+            name: 'news',
+            component: () => import('../views/Board/NewsView.vue')
         }
     ]
 })
