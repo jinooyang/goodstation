@@ -14,4 +14,16 @@
         insert into comment (board_id, content, member_id)
         values (#{boardId}, #{content}, #{memberId})
     </insert>
+
+    <select id="getCommentById" parameterType="int" resultType="commentDto">
+        select comment_id, board_id, content, create_time, member_id
+        from comment
+        where comment_id = #{commentId}
+    </select>
+
+    <delete id="deleteComment" parameterType="int">
+        delete
+        from comment
+        where comment_id = #{commentId}
+    </delete>
 </mapper>

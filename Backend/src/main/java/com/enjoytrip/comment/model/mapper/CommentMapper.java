@@ -15,4 +15,6 @@ public interface CommentMapper {
     void updateComment(int commentId, CommentDto updateCommentDto);
 
     void deleteComment(int commentId);
+
+    CommentDto getCommentById(int commentId);
 }

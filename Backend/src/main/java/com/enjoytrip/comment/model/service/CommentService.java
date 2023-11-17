@@ -9,4 +9,7 @@ public interface CommentService {
     List<CommentDto> getCommentList(int board_id);
     void updateComment(int commentId, CommentDto updateCommentDto);
     void deleteComment(int commentId);
+
+    CommentDto getCommentDto(int commentId);
+
 }
