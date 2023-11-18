@@ -6,7 +6,12 @@
 
     <resultMap id="commentWriting" type="commentDto" >
         <result column="board_id" property="boardId"></result>
-        <result column="content" property="cotent"></result>
+        <result column="content" property="content"></result>
+        <result column="member_id" property="memberId"></result>
+    </resultMap>
+    <resultMap id="commentUpdating" type="commentUpdateDto" >
+        <result column="comment_id" property="commentId"></result>
+        <result column="content" property="content"></result>
         <result column="member_id" property="memberId"></result>
     </resultMap>
 
@@ -27,6 +32,12 @@
         from comment
         where board_id = #{boardId}
     </select>
+
+    <update id="updateComment" parameterType="commentUpdateDto">
+        update comment
+        set content = #{content}
+        where comment_id = #{commentId};
+    </update>
 
     <delete id="deleteComment" parameterType="int">
         delete

@@ -2,6 +2,7 @@ package com.enjoytrip.comment.controller;
 
 import com.enjoytrip.board.model.service.BoardService;
 import com.enjoytrip.comment.model.dto.CommentDto;
+import com.enjoytrip.comment.model.dto.CommentUpdateDto;
 import com.enjoytrip.comment.model.service.CommentService;
 import com.enjoytrip.response.ResponseMessage;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,22 @@ public class CommentController {
             message.setStatus(StatusEnum.OK);
             message.setMessage("댓글을 불러왔습니다.");
         }
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @PutMapping()
+    public ResponseEntity<ResponseMessage> updateComment(@RequestBody CommentUpdateDto updateCommentDto) {
+        ResponseMessage message = new ResponseMessage();
+        CommentDto commentDto = commentService.getCommentDto(updateCommentDto.getCommentId());
+        if (commentDto == null) {
+            message.setStatus(StatusEnum.FAIL);
+            message.setMessage("댓글이 존재하지 않습니다.");
+        } else {
+            message.setStatus(StatusEnum.OK);
+            message.setMessage("댓글이 수정되었습니다.");
+            commentService.updateComment(updateCommentDto);
+        }
+
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

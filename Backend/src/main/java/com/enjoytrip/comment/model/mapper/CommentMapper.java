@@ -1,6 +1,7 @@
 package com.enjoytrip.comment.model.mapper;
 
 import com.enjoytrip.comment.model.dto.CommentDto;
+import com.enjoytrip.comment.model.dto.CommentUpdateDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface CommentMapper {
 
     List<CommentDto> getCommentList(int boardId);
 
-    void updateComment(int commentId, CommentDto updateCommentDto);
+    void updateComment(CommentUpdateDto updateCommentDto);
 
     void deleteComment(int commentId);
 

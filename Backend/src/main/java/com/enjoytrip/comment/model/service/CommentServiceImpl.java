@@ -1,6 +1,7 @@
 package com.enjoytrip.comment.model.service;
 
 import com.enjoytrip.comment.model.dto.CommentDto;
+import com.enjoytrip.comment.model.dto.CommentUpdateDto;
 import com.enjoytrip.comment.model.mapper.CommentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDto> getCommentList(int board_id) {
-        return null;
-    }
-
-    @Override
-    public void updateComment(int commentId, CommentDto updateCommentDto) {
+    public void updateComment(CommentUpdateDto updateCommentDto) {
+        commentMapper.updateComment(updateCommentDto);
     }
 
     @Override
