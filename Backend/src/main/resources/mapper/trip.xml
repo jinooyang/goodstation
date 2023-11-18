@@ -16,10 +16,10 @@
     </resultMap>
 
     <!-- 새로운 여행 생성하기 -->
-    <update id = "insertTrip" parameterType="tripDto">
+    <insert id = "insertTrip" parameterType="tripDto">
         insert into trip (trip_name, start_date, end_date, member_id,start_station_id, end_station_id)
         values(#{tripName},#{startDate},#{endDate},#{memberId},#{startStationId},#{endStationId});
-    </update>
+    </insert>
 
 
     <!-- 마지막 auto incre 된 키 찾기 -->

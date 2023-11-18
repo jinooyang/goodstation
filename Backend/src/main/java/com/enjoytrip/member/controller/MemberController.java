@@ -43,7 +43,7 @@ public class MemberController {
             rm.setMessage("로그인 성공");
             rm.setStatus(StatusEnum.OK);
             rm.setData("token", jwtTokenProvider.createToken(member.getMemberId(), member.getRole()));
-            return new ResponseEntity<>(rm, HttpStatus.OK);
+            return new ResponseEntity<>(rm, HttpStatus.CREATED);
         }
 
     }

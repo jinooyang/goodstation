@@ -4,7 +4,9 @@ import {useRoute, useRouter} from "vue-router";
 const route = useRoute();
 const router = useRouter();
 const goToLogin = () => {
-  router.push("/login");
+  router.push("/login").then(()=>{
+    window.scrollTo(0,0);
+  });
 };
 </script>
 
@@ -53,6 +55,7 @@ const goToLogin = () => {
           v-model="userId"
           prepend-inner-icon="mdi-lock"
           hide-details
+          type = "password"
       ></v-text-field>
     </v-col>
     <v-col :cols="4" offset="4">
@@ -63,6 +66,7 @@ const goToLogin = () => {
           v-model="userId"
           prepend-inner-icon="mdi-lock-check"
           hide-details
+          type = "password"
       ></v-text-field>
     </v-col>
     <v-col :cols="4" offset="4">

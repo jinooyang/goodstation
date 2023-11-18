@@ -1,10 +1,25 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
+import {useMemberStore} from "@/stores/member";
+
+
+const memberStore = useMemberStore();
 const route = useRoute();
 const router = useRouter();
 const goToTripStation = () => {
-  router.push("/trip/create");
+  // alert("여행 페이지로 이동합니다.")
+  router.push("/trip/create").then(()=>{
+    window.scrollTo(0,0);
+  });
 };
+
+const goToLogin=()=>{
+  alert("로그인이 필요한 페이지입니다");
+  router.push("/login").then(()=>{
+    window.scrollTo(0,0);
+  });
+    //{top:0, behavior:"smooth"}
+}
 </script>
 
 <template>
@@ -94,7 +109,7 @@ const goToTripStation = () => {
             v-btn--variant-elevated
             size="large"
             color="#f7323f"
-            @click="goToTripStation"
+            @click="memberStore.isLogin ? goToTripStation() : goToLogin()"
           >
             시작하기 =>
           </v-btn>
