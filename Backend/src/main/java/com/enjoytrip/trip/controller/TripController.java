@@ -25,6 +25,7 @@ public class TripController {
     @PostMapping("/new")
     @Transactional
     public ResponseEntity<ResponseMessage> makeNewTrip(@RequestBody TripDto tripDto, @AuthenticationPrincipal SecurityUser securityUser) {
+
         ResponseMessage rm = new ResponseMessage();
         System.out.println(securityUser);
         try {
@@ -33,6 +34,7 @@ public class TripController {
             rm.setMessage("[" + tripDto.getTripName() + "] 여행 생성 완료");
             rm.setStatus(StatusEnum.OK);
             rm.setData("tripId", tripService.getLastInsertedId());
+
             return new ResponseEntity<>(rm, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
