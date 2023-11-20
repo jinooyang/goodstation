@@ -21,4 +21,17 @@ async function logout(userid, success, fail) {
     await local.get(`/user/logout/${userid}`).then(success).catch(fail);
 }
 
-export { userConfirm, findById,  logout };
+async function checkDupId(memberId, success,fail){
+    await local.get(`member/memberId/${memberId}`).then(success).catch(fail);
+}
+
+async function checkDupEmail(email, success,fail){
+    await local.get(`member/email/${email}`).then(success).catch(fail);
+}
+
+async function checkDupNick(nick, success,fail){
+    await local.get(`member/nickname/${nick}`).then(success).catch(fail);
+}
+
+
+export { userConfirm, findById,  logout ,checkDupId, checkDupEmail, checkDupNick};

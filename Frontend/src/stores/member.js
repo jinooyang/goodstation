@@ -3,7 +3,7 @@ import {useRouter} from "vue-router";
 import {defineStore} from "pinia";
 import {jwtDecode} from "jwt-decode";
 
-import {userConfirm, findById, logout} from "@/api/memberApi";
+import {userConfirm, findById, logout, checkDupId, checkDupEmail, checkDupNick} from "@/api/memberApi";
 import {httpStatusCode} from "@/util/http-status";
 
 export const useMemberStore = defineStore("memberStore", () => {
@@ -13,16 +13,18 @@ export const useMemberStore = defineStore("memberStore", () => {
     const isLoginError = ref(false);
     const userInfo = ref(null);
     const isValidToken = ref(false);
+
+
     onMounted(() => {
         const storedAccessToken = sessionStorage.getItem("accessToken");
 
         if (storedAccessToken) {
             isValidToken.value = true;
             getUserInfo(storedAccessToken);
-            if(isValidToken){
+            if (isValidToken) {
                 isLogin.value = true;
                 isLoginError.value = false;
-            }else{
+            } else {
                 isLogin.value = false;
                 isLoginError.value = true;
             }
@@ -89,81 +91,56 @@ export const useMemberStore = defineStore("memberStore", () => {
         );
     };
 
-    // const tokenRegenerate = async () => {
-    //   await tokenRegeneration(
-    //       JSON.stringify(userInfo.value),
-    //       (response) => {
-    //         if (response.status === httpStatusCode.CREATE) {
-    //           let accessToken = response.data["access-token"];
-    //           sessionStorage.setItem("accessToken", accessToken);
-    //           isValidToken.value = true;
-    //         }
-    //       },
-    //       async (error) => {
-    //         // HttpStatus.UNAUTHORIZE(401) : RefreshToken 기간 만료 >> 다시 로그인!!!!
-    //         if (error.response.status === httpStatusCode.UNAUTHORIZED) {
-    //           // 다시 로그인 전 DB에 저장된 RefreshToken 제거.
-    //           await logout(
-    //               userInfo.value.userid,
-    //               (response) => {
-    //                 if (response.status === httpStatusCode.OK) {
-    //                   console.log("리프레시 토큰 제거 성공");
-    //                 } else {
-    //                   console.log("리프레시 토큰 제거 실패");
-    //                 }
-    //                 alert("RefreshToken 기간 만료!!! 다시 로그인해 주세요.");
-    //                 isLogin.value = false;
-    //                 userInfo.value = null;
-    //                 isValidToken.value = false;
-    //                 router.push({ name: "user-login" });
-    //               },
-    //               (error) => {
-    //                 console.error(error);
-    //                 isLogin.value = false;
-    //                 userInfo.value = null;
-    //               }
-    //           );
-    //         }
-    //       }
-    //   );
-    // };
+    const checkId = async (memberId) => {
+        return new Promise((resolve, reject) => {
+            checkDupId(
+                memberId,
+                (response) => {
+                    const res = response.data.data.pos;
+                    resolve(res);
+                },
+                (error) => {
+                    reject(error);
+                }
+            );
+        });
+    };
 
-    // const userLogout = async (userid) => {
-    // await logout(
-    //     userid,
-    //     (response) => {
-    //         if (response.status === httpStatusCode.OK) {
-    //             isLogin.value = false;
-    //             userInfo.value = null;
-    //             isValidToken.value = false;
-    //         } else {
-    //             console.error("유저 정보 없음!!!!");
-    //         }
-    //     },
-    //     (error) => {
-    //         console.log(error);
-    //     }
-    // );
 
-    // };
+    const checkEmail = async (email) => {
+        return new Promise((resolve, reject) => {
+            checkDupEmail(
+                email,
+                (response) => {
+                    const res = response.data.data.pos;
+                    resolve(res);
+                },
+                (error) => {
+                    reject(error);
+                }
+            );
+        });
+    };
 
+
+    const checkNick = async (nick) => {
+        return new Promise((resolve, reject) => {
+            checkDupNick(
+                nick,
+                (response) => {
+                    const res = response.data.data.pos;
+                    resolve(res);
+                },
+                (error) => {
+                    reject(error);
+                }
+            );
+        });
+    }
 
     const userLogout = async () => {
-        // await logout(
-        //     userid,
-        //     (response) => {
-        //         if (response.status === httpStatusCode.OK) {
-        //             isLogin.value = false;
-        //             userInfo.value = null;
-        //             isValidToken.value = false;
-        //         } else {
-        //             console.error("유저 정보 없음!!!!");
-        //         }
-        //     },
-        //     (error) => {
-        //         console.log(error);
-        //     }
-        // );
+
+        sessionStorage.removeItem("accessToken");
         isLogin.value = false;
         userInfo.value = null;
         isValidToken.value = false;
@@ -180,5 +157,8 @@ export const useMemberStore = defineStore("memberStore", () => {
         getUserInfo,
         // tokenRegenerate,
         userLogout,
+        checkId,
+        checkEmail,
+        checkNick
     };
 });
