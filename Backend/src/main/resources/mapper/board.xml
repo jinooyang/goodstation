@@ -10,13 +10,20 @@
         <result column="member_id" property="memberId"></result>
         <result column="trip_id" property="tripId"></result>
     </resultMap>
-    
+
     <resultMap id="boardReading" type="boardReadDto">
         <result column="title" property="title"></result>
         <result column="content" property="content"></result>
         <result column="create_time" property="createTime"></result>
         <result column="member_id" property="memberId"></result>
         <result column="trip_id" property="tripId"></result>
+    </resultMap>
+    
+    <resultMap id="boardList" type="boardListDto">
+        <result column="board_id" property="boardId"></result>
+        <result column="title" property="title"></result>
+        <result column="member_id" property="memberId"></result>
+        <result column="create_time" property="createTime"></result>
     </resultMap>
 
     <insert id="writeBoard" parameterType="boardWritingDto">
@@ -26,10 +33,47 @@
         insert into board (title, content, member_id, trip_id)
         values (#{title}, #{content}, #{memberId}, #{tripId})
     </insert>
-    
+
     <select id="readBoard" parameterType="int" resultMap="boardReading">
         select title, content, create_time, member_id, trip_id
         from board
         where board_id = #{boardId}
+    </select>
+
+    <update id="updateBoard" parameterType="boardWritingDto">
+        update board
+        set title   = #{title},
+            content = #{content},
+            trip_id = #{tripId}
+        where board_id = #{boardId}
+    </update>
+
+    <delete id="deleteBoard" parameterType="int">
+        delete
+        from board
+        where board_id = #{boardId}
+    </delete>
+    
+    <select id="getBoardList" parameterType="int" resultMap="boardList">
+        select board_id, title, member_id, create_time
+        from board
+        order by board_id desc
+        limit #{pageSize} offset #{offset};
+    </select>
+    
+    <select id="searchBoard" resultMap="boardList">
+        select board_id, title, member_id, create_time
+        from board
+        <where>
+            <if test="searchType == 'title'">
+                and title like concat('%', #{keyword}, '%')
+            </if>
+            <if test="searchType == 'memberId'">
+                and member_id like concat('%', #{keyword}, '%')
+            </if>
+            <if test="searchType == 'content'">
+                and content like concat('%', #{keyword}, '%')
+            </if>
+        </where>
     </select>
 </mapper>

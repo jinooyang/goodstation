@@ -52,21 +52,21 @@ class BoardControllerTest {
         ).doesNotThrowAnyException();
     }
 
-    private class MockBoardService implements BoardService {
-
-        @Override
-        public int writeBoard(BoardWritingDto boardWritingDto) {
-            return 100;
-        }
-
-        @Override
-        public BoardReadDto readBoard(int boardId) {
-            return null;
-        }
-
-        @Override
-        public void updateBoard(int boardId, BoardWritingDto updatedBoardDto) {
-
-        }
-    }
+//    private class MockBoardService implements BoardService {
+//
+//        @Override
+//        public int writeBoard(BoardWritingDto boardWritingDto) {
+//            return 100;
+//        }
+//
+//        @Override
+//        public BoardReadDto readBoard(int boardId) {
+//            return null;
+//        }
+//
+//        @Override
+//        public void updateBoard(int boardId, BoardWritingDto updatedBoardDto) {
+//
+//        }
+//    }
 }

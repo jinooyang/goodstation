@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.enjoytrip.commentLike.model.mapper.CommentLikeMapper">
+
+    <select id="getLikesCount" parameterType="int">
+        select count(*)
+        from comment_like
+        where comment_id = #{commentId}
+    </select>
+
+    <select id="hasUserLikeComment" parameterType="commentLikeDto">
+        select count(*)
+        from comment_like
+        where comment_id = #{commentId}
+        and member_id = #{memberId}
+    </select>
+    <insert id="likeComment" parameterType="commentLikeDto">
+        insert into comment_like (comment_id, member_id)
+        values (#{commentId}, #{memberId})
+    </insert>
+
+    <delete id="unlikeComment" parameterType="commentLikeDto">
+        delete from comment_like
+        where comment_id = #{commentId}
+        and member_id = #{memberId}
+    </delete>
+</mapper>
