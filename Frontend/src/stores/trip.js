@@ -15,36 +15,50 @@ export const useTripStore = defineStore("useTripStore", () => {
             tripDto,
             (response) => {
                 if (response.status === httpStatusCode.OK) {
+                    console.log(response.data.message);
                     newTripId.value = response.data.data.tripId;
+
                 } else {
-                    console.log("FAIL1!!!!!!!");
+                    console.log("addTrip FAIL");
+
                 }
             },
             (error) => {
-                console.log("FAIL2!!!!!!!");
+                console.log("addTrip FAIL");
                 console.error(error);
+
             }
         );
     };
 
-
-    const getTrains = async (train)=>{
-        await getTrainListFromApi(
-            train,
-            (response)=>{
-                console.log("성공");
-            },
-            (error)=>{
-                console.log("실패");
-            }
-
-        );
+    const getTrains = async (train) => {
+        return new Promise((resolve, reject) => {
+            getTrainListFromApi(
+                train,
+                (response) => {
+                    if (response.status === httpStatusCode.OK) {
+                        console.log(response.data.data.trainList);
+                        console.log("성공");
+                        resolve(response.data.data.trainList);
+                    } else {
+                        console.log("getTrainListFromApi FAIL1");
+                        reject("Failed to get train list");
+                    }
+                },
+                (error) => {
+                    console.log("getTrainListFromApi FAIL2");
+                    console.error(error);
+                    reject(error);
+                }
+            );
+        });
     }
 
 
     return {
         newTripId,
-        addTrip
+        addTrip,
+        getTrains
 
     };
 });

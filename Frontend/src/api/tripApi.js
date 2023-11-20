@@ -9,7 +9,7 @@ async function insertTrip(param, success, fail) {
 
 async function getTrainListFromApi(param, success, fail) {
     local.defaults.headers["X-AUTH-TOKEN"] = sessionStorage.getItem("accessToken");
-    await local.get(`/trip/trainapi`, param).then(success).catch(fail);
+    await local.get(`/trip/trainapi`, {params : param} ).then(success).catch(fail);
 }
 
 export {insertTrip, getTrainListFromApi};

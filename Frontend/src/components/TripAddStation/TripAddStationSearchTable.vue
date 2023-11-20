@@ -1,20 +1,30 @@
 <script setup>
 
-import {ref} from "vue";
+import TripAddStationNoData from "@/components/TripAddStation/TripAddStationNoData.vue";
 
-const trainList = ref([{
-  startStation: "서울역1",
-  endStation: "부산역1",
-  startTime: "14:00",
-  endTime: "17:00", type: "KTX"
-}]);
+const props = defineProps({trainList: Object});
+const emit = defineEmits(["add-train-to-my-list"]);
+const parseTimeString = (inputString) => {
+  // Ensure the inputString has the correct length
+  if (inputString.length !== 14) {
+    throw new Error('Invalid input string length');
+  }
 
+  // Extract hours and minutes using slice
+  const hours = inputString.slice(8, 10);
+  const minutes = inputString.slice(10, 12);
 
+  // Create a formatted time string
+  return `${hours}:${minutes}`;
+};
+const addThisTrain = (val) => {
+  emit("add-train-to-my-list",val);
+}
 </script>
 
 <template>
 
-  <div class = "tableborder">
+  <div class="tableborder">
     <v-table fixed-header height="600px">
       <thead>
       <tr>
@@ -29,17 +39,20 @@ const trainList = ref([{
       </thead>
       <tbody>
       <tr v-for="train in trainList" :key="train.startStation">
-        <td>{{ train.startStation }}</td>
-        <td>{{ train.endStation }}</td>
-        <td>{{ train.type }}</td>
-        <td>{{ train.startTime }}</td>
-        <td>{{ train.endTime }}</td>
+        <td>{{ train.depplacename }}</td>
+        <td>{{ train.arrplacename }}</td>
+        <td>{{ train.traingradename }}</td>
+        <td>{{ parseTimeString(train.depplandtime) }}</td>
+        <td>{{ parseTimeString(train.arrplandtime) }}</td>
         <td>
-          <v-btn variant="outlined" color="red-accent-3">추가</v-btn>
+          <v-btn variant="outlined" color="red-accent-3" @click = "addThisTrain(train)">추가</v-btn>
         </td>
 
       </tr>
+
+
       </tbody>
+
     </v-table>
 
   </div>

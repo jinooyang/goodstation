@@ -26,13 +26,13 @@ const goToTripStation = async () => {
   console.log("이름 : " + trip.value.tripName);
   console.log("출발 : " + trip.value.startDate);
   console.log("종료 : " + trip.value.endDate);
-  await addTrip(trip.value);
-  if (newTripId !== 0) {
-    await router.push("/trip/pickstation");
-  }
-  else{
-    alert("여행 등록 실패. 잠시 후 다시 시도 해주세요");
-  }
+  addTrip(trip.value)
+      .then(() => {
+        router.push("/trip/pickstation");
+      })
+      .catch(() => {
+        alert("여행 등록 실패. 잠시 후 다시 시도 해주세요!");
+      });
 
 };
 

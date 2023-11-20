@@ -1,14 +1,9 @@
 <script setup>
 import { ref } from "vue";
-const trainStations = ref([
-  {
-    startStation: "서울역1",
-    endStation: "부산역1",
-    startDate: "2023-08-25 14:00",
-    endDate: "2023-08-25 17:00",
-    color: "bg-deep-purple-lighten-1",
-  }
-]);
+
+const props = defineProps({trainStations: Object});
+
+
 </script>
 
 <template>
@@ -36,11 +31,11 @@ const trainStations = ref([
                 <div style="flex: 1">
                   <div class="font-weight-normal">
                     <strong class="Jalnan"
-                      >{{ train.startStation }} -> {{ train.endStation }}</strong
+                      >{{ train.depplacename }} -> {{ train.arrplacename }}</strong
                     >
                   </div>
 
-                  <div>출발 : {{ train.startDate }}<br />도착 : {{ train.endDate }}</div>
+                  <div>출발 : {{ train.depplandtime }}<br />도착 : {{ train.arrplandtime }}</div>
                 </div>
                 <div class = "d-flex align-center">
                   <v-btn variant="outlined" color = "red-accent-3">삭제</v-btn>

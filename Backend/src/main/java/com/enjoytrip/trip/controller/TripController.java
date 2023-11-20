@@ -157,9 +157,12 @@ public class TripController {
         }
     }
 
+    
+
 
     @GetMapping("/trainapi")
-    public ResponseEntity<ResponseMessage> getTrainListFromApi(@RequestBody Map<String,String> map) {
+    public ResponseEntity<ResponseMessage> getTrainListFromApi(@RequestParam Map<String,String> map) {
+
         ResponseMessage rm = new ResponseMessage();
         BufferedReader rd = null;
         HttpURLConnection conn = null;
@@ -204,11 +207,6 @@ public class TripController {
 //            System.out.println("전송한 URL : " + url);
 //            System.out.println("가져온 데이터 : " + sb);
 
-
-
-
-
-
             String jsonData = sb.toString();
 
             Gson gson = new Gson();
@@ -251,6 +249,8 @@ public class TripController {
             rm.setStatus(StatusEnum.OK);
             return new ResponseEntity<>(rm,HttpStatus.OK);
         }catch(Exception e){
+            e.printStackTrace();
+//            System.out.println("FAIL");
             rm.setMessage("데이터 가져오기 실패");
             rm.setStatus(StatusEnum.FAIL);
             return new ResponseEntity<>(rm,HttpStatus.BAD_REQUEST);
