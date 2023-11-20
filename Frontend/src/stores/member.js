@@ -1,4 +1,4 @@
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 import {defineStore} from "pinia";
 import {jwtDecode} from "jwt-decode";
@@ -13,7 +13,21 @@ export const useMemberStore = defineStore("memberStore", () => {
     const isLoginError = ref(false);
     const userInfo = ref(null);
     const isValidToken = ref(false);
+    onMounted(() => {
+        const storedAccessToken = sessionStorage.getItem("accessToken");
 
+        if (storedAccessToken) {
+            isValidToken.value = true;
+            getUserInfo(storedAccessToken);
+            if(isValidToken){
+                isLogin.value = true;
+                isLoginError.value = false;
+            }else{
+                isLogin.value = false;
+                isLoginError.value = true;
+            }
+        }
+    });
     const userLogin = async (loginUser) => {
         // console.log("userLogin");
         await userConfirm(
@@ -60,6 +74,7 @@ export const useMemberStore = defineStore("memberStore", () => {
                     console.log("로그인 유저 정보 : " + userInfo.value.nickname);
                 } else {
                     console.log("유저 정보 없음!!!!");
+                    isValidToken.value = false;
                 }
             },
             async (error) => {
@@ -69,7 +84,7 @@ export const useMemberStore = defineStore("memberStore", () => {
                 );
                 isValidToken.value = false;
 
-                await tokenRegenerate();
+                // await tokenRegenerate();
             }
         );
     };

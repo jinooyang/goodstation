@@ -1,6 +1,13 @@
 <script setup>
 
-import AddStationSearchTable from "@/components/TripAddStation/TripAddStationSearchTable.vue";
+import TripAddStationSearchTable from "@/components/TripAddStation/TripAddStationSearchTable.vue";
+import {ref} from "vue";
+
+
+const trainList = ref([]);
+
+
+
 </script>
 
 <template>
@@ -22,7 +29,7 @@ import AddStationSearchTable from "@/components/TripAddStation/TripAddStationSea
         <v-btn variant="outlined" color = "red-accent-3">검색</v-btn>
       </v-col>
     </v-row>
-    <AddStationSearchTable/>
+    <TripAddStationSearchTable/>
   </div>
 </template>
 

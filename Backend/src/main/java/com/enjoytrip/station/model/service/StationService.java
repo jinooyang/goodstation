@@ -12,4 +12,6 @@ public interface StationService {
     List<StationAndSidoDto> selectStationsBySidoCode(Integer sidoCode)throws SQLException;
 
     List<StationTourSpotDto> selectAttractionNearStation(String stationId)throws SQLException;
+
+    String selectStationByName(String name) throws SQLException;
 }

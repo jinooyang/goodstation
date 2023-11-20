@@ -7,61 +7,6 @@ const trainList = ref([{
   endStation: "부산역1",
   startTime: "14:00",
   endTime: "17:00", type: "KTX"
-}, {
-  startStation: "서울역2",
-  endStation: "부산역2",
-  startTime: "14:00",
-  endTime: "17:00", type: "KTX"
-}, {
-  startStation: "서울역3",
-  endStation: "부산역3",
-  startTime: "14:00",
-  endTime: "17:00", type: "KTX"
-}, {
-  startStation: "서울역4",
-  endStation: "부산역4",
-  startTime: "14:00",
-  endTime: "17:00", type: "KTX"
-}, {
-  startStation: "서울역5",
-  endStation: "부산역5",
-  startTime: "14:00",
-  endTime: "17:00", type: "KTX"
-}, {
-  startStation: "서울역6",
-  endStation: "부산역6",
-  startTime: "14:00",
-  endTime: "17:00", type: "KTX"
-}, {
-  startStation: "서울역11",
-  endStation: "부산역1",
-  startTime: "14:00",
-  endTime: "17:00", type: "KTX"
-}, {
-  startStation: "서울역21",
-  endStation: "부산역2",
-  startTime: "14:00",
-  endTime: "17:00", type: "KTX"
-}, {
-  startStation: "서울역31",
-  endStation: "부산역3",
-  startTime: "14:00",
-  endTime: "17:00", type: "KTX"
-}, {
-  startStation: "서울역41",
-  endStation: "부산역4",
-  startTime: "14:00",
-  endTime: "17:00", type: "KTX"
-}, {
-  startStation: "서울역51",
-  endStation: "부산역5",
-  startTime: "14:00",
-  endTime: "17:00", type: "KTX"
-}, {
-  startStation: "서울역61",
-  endStation: "부산역6",
-  startTime: "14:00",
-  endTime: "17:00", type: "KTX"
 }]);
 
 

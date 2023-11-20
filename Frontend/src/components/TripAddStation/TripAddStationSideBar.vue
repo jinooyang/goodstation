@@ -7,49 +7,7 @@ const trainStations = ref([
     startDate: "2023-08-25 14:00",
     endDate: "2023-08-25 17:00",
     color: "bg-deep-purple-lighten-1",
-  },
-  {
-    startStation: "서울역2",
-    endStation: "부산역2",
-    startDate: "2023-08-25 14:00",
-    endDate: "2023-08-25 17:00",
-    color: "bg-deep-purple-lighten-1",
-  },
-  {
-    startStation: "서울역3",
-    endStation: "부산역3",
-    startDate: "2023-08-25 14:00",
-    endDate: "2023-08-25 17:00",
-    color: "bg-deep-purple-lighten-1",
-  },
-  {
-    startStation: "서울역4",
-    endStation: "부산역4",
-    startDate: "2023-08-25 14:00",
-    endDate: "2023-08-25 17:00",
-    color: "bg-deep-purple-lighten-1",
-  },
-  {
-    startStation: "여수EXPO역",
-    endStation: "여수EXPO역",
-    startDate: "2023-08-25 14:00",
-    endDate: "2023-08-25 17:00",
-    color: "bg-deep-purple-lighten-1",
-  },
-  {
-    startStation: "서울역6",
-    endStation: "부산역6",
-    startDate: "2023-08-25 14:00",
-    endDate: "2023-08-25 17:00",
-    color: "bg-deep-purple-lighten-1",
-  },
-  {
-    startStation: "천안아산역",
-    endStation: "천안아산역",
-    startDate: "2023-08-25 14:00",
-    endDate: "2023-08-25 17:00",
-    color: "bg-deep-purple-lighten-1",
-  },
+  }
 ]);
 </script>
 

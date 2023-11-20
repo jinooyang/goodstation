@@ -46,5 +46,10 @@
         where a.content_id = b.content_id  and a.station_id = #{stationId} and b.content_type_id = 12;
     </select>
 
+    <select id = "selectStationByName" parameterType="string" resultType="string">
+        select station_id
+        from station_info
+        where name = #{name}
+    </select>
 
 </mapper>

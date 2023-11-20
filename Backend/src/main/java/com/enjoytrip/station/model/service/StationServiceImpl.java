@@ -29,4 +29,9 @@ public class StationServiceImpl implements StationService{
     public List<StationTourSpotDto> selectAttractionNearStation(String stationId) throws SQLException {
         return stationMapper.selectAttractionNearStation(stationId);
     }
+
+    @Override
+    public String selectStationByName(String name) throws SQLException {
+        return stationMapper.selectStationByName(name);
+    }
 }
