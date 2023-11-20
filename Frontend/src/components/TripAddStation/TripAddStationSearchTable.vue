@@ -18,6 +18,8 @@ const parseTimeString = (inputString) => {
   return `${hours}:${minutes}`;
 };
 const addThisTrain = (val) => {
+  console.log(val);
+
   emit("add-train-to-my-list",val);
 }
 </script>
@@ -38,7 +40,7 @@ const addThisTrain = (val) => {
       </tr>
       </thead>
       <tbody>
-      <tr v-for="train in trainList" :key="train.startStation">
+      <tr v-for="(train,index) in trainList" :key="index">
         <td>{{ train.depplacename }}</td>
         <td>{{ train.arrplacename }}</td>
         <td>{{ train.traingradename }}</td>

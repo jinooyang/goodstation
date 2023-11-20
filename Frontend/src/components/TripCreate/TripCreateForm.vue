@@ -28,7 +28,11 @@ const goToTripStation = async () => {
   console.log("종료 : " + trip.value.endDate);
   addTrip(trip.value)
       .then(() => {
-        router.push("/trip/pickstation");
+        router.push("/trip/pickstation").then(()=>{
+          window.scrollTo(0,0);
+        });
+
+
       })
       .catch(() => {
         alert("여행 등록 실패. 잠시 후 다시 시도 해주세요!");

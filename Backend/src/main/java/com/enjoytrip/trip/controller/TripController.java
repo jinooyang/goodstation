@@ -29,12 +29,14 @@ import java.util.Map;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.net.HttpURLConnection;
+
 @RestController
 @RequestMapping("/trip")
 @RequiredArgsConstructor
 public class TripController {
     private final TripService tripService;
     private final StationService stationService;
+
     //여행 생성하기
     @PostMapping("/new")
     @Transactional
@@ -99,6 +101,7 @@ public class TripController {
     @PostMapping("/station")
     @Transactional
     public ResponseEntity<ResponseMessage> addStationsToTrip(@RequestBody Map<String, Object> map) {
+        System.out.println("들어왔습니다!!");
         ResponseMessage rm = new ResponseMessage();
         try {
             tripService.deleteTripStation((Integer) map.get("tripId"));
@@ -109,6 +112,7 @@ public class TripController {
             rm.setStatus(StatusEnum.OK);
             return new ResponseEntity<>(rm, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             rm.setMessage("기차역 추가 실패");
             rm.setStatus(StatusEnum.FAIL);
             return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);
@@ -144,7 +148,7 @@ public class TripController {
     public ResponseEntity<ResponseMessage> addAttractionToTripStation(@RequestBody Map<String, Object> map) {
         ResponseMessage rm = new ResponseMessage();
         try {
-            tripService.deleteAttraction((Integer)map.get("tripId"));
+            tripService.deleteAttraction((Integer) map.get("tripId"));
             tripService.insertAttraction(map);
             rm.setMessage("관광지 추가 성공");
             rm.setStatus(StatusEnum.OK);
@@ -157,11 +161,9 @@ public class TripController {
         }
     }
 
-    
-
 
     @GetMapping("/trainapi")
-    public ResponseEntity<ResponseMessage> getTrainListFromApi(@RequestParam Map<String,String> map) {
+    public ResponseEntity<ResponseMessage> getTrainListFromApi(@RequestParam Map<String, String> map) {
 
         ResponseMessage rm = new ResponseMessage();
         BufferedReader rd = null;
@@ -175,7 +177,6 @@ public class TripController {
 
             String date = map.get("date");
             date = DateConverter.convertToStringDate(date);
-
 
 
             String key = "19Gk40rL7q%2FZEZCBH36HX1Q9H20AzqV01x%2Bh6E%2F2BrCV%2FjARhSZ4b5oSxK%2B5hETeOreZ72eGj9ydEkRhb0l0xQ%3D%3D";
@@ -204,8 +205,8 @@ public class TripController {
             while ((line = rd.readLine()) != null) {
                 sb.append(line);
             }
-//            System.out.println("전송한 URL : " + url);
-//            System.out.println("가져온 데이터 : " + sb);
+            System.out.println("전송한 URL : " + url);
+            System.out.println("가져온 데이터 : " + sb);
 
             String jsonData = sb.toString();
 
@@ -247,15 +248,14 @@ public class TripController {
             rm.setMessage("데이터 가져오기 성공");
             rm.setData("trainList", list);
             rm.setStatus(StatusEnum.OK);
-            return new ResponseEntity<>(rm,HttpStatus.OK);
-        }catch(Exception e){
+            return new ResponseEntity<>(rm, HttpStatus.OK);
+        } catch (Exception e) {
             e.printStackTrace();
 //            System.out.println("FAIL");
             rm.setMessage("데이터 가져오기 실패");
             rm.setStatus(StatusEnum.FAIL);
-            return new ResponseEntity<>(rm,HttpStatus.BAD_REQUEST);
-        }
-        finally{
+            return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);
+        } finally {
             try {
                 if (rd != null) {
                     rd.close();
@@ -263,11 +263,10 @@ public class TripController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if(conn!=null) {
+            if (conn != null) {
                 conn.disconnect();
             }
         }
-
 
 
     }

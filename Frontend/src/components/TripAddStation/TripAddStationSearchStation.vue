@@ -4,6 +4,7 @@ import TripAddStationSearchTable from "@/components/TripAddStation/TripAddStatio
 import {ref} from "vue";
 import {useTripStore} from "@/stores/trip";
 import TripAddStationNoData from "@/components/TripAddStation/TripAddStationNoData.vue";
+import TripAddStationLoadingData from "@/components/TripAddStation/TripAddStationLoadingData.vue";
 const emit = defineEmits(["add-train"]);
 const tripStore = useTripStore();
 const addTrainToMyList = (val)=>{
@@ -60,8 +61,9 @@ const loading = ref(false);
         <v-btn variant="outlined" color="red-accent-3" @click="getTrainList" :loading="loading">검색</v-btn>
       </v-col>
     </v-row>
+    <TripAddStationLoadingData v-if="loading" />
     <TripAddStationSearchTable
-        v-if="trainList && trainList.length > 0"
+        v-else-if="!loading && trainList && trainList.length > 0"
         :train-list = "trainList"
         @add-train-to-my-list="addTrainToMyList"
     />

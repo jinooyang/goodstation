@@ -2,6 +2,7 @@ package com.enjoytrip.util;
 
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -31,4 +32,19 @@ public class DateConverter {
 
         return formattedDate;
     }
+
+
+
+    public static Date parseDateString(String dateString) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+
+        try {
+            java.util.Date parsedDate = dateFormat.parse(dateString);
+            return new Date(parsedDate.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null; // 예외 발생 시 null 반환 또는 다른 적절한 처리
+        }
+    }
+
 }

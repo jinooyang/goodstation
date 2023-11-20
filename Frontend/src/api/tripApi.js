@@ -12,4 +12,11 @@ async function getTrainListFromApi(param, success, fail) {
     await local.get(`/trip/trainapi`, {params : param} ).then(success).catch(fail);
 }
 
-export {insertTrip, getTrainListFromApi};
+async function insertStationToDB(param,success,fail){
+    console.log("param >> ", param);
+    local.defaults.headers["X-AUTH-TOKEN"] = sessionStorage.getItem("accessToken");
+    await local.post(`/trip/station`, param).then(success).catch(fail);
+}
+
+
+export {insertTrip, getTrainListFromApi, insertStationToDB};

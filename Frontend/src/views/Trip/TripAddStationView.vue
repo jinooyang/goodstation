@@ -2,22 +2,58 @@
 import TripAddStationSideBar from "../../components/TripAddStation/TripAddStationSideBar.vue";
 import {ref, onMounted, watch} from "vue";
 import TripAddStationSearchStation from "../../components/TripAddStation/TripAddStationSearchStation.vue";
+import {useTripStore} from "@/stores/trip";
 
-import { useRoute, useRouter } from "vue-router";
+import {useRoute, useRouter} from "vue-router";
+import {storeToRefs} from "pinia";
+
 const route = useRoute();
 const router = useRouter();
+
+const tripStore = useTripStore();
+
+
 const goToTripAttraction = () => {
-  router.push("/trip/attraction");
+  router.push("/trip/attraction").then(() => {
+    window.scrollTo(0, 0);
+  });
 };
-const trainStations = ref([
 
-]);
-const addTrain = (val)=>{
-  val.arrplandtime = convertToFormattedDateTime(val.arrplandtime);
-  val.depplandtime = convertToFormattedDateTime(val.depplandtime);
-
-  trainStations.value.push(val);
+const insertStationsToTrip = async () => {
+  console.log(trainStations.value);
+  console.log("tripId : " + tripStore.newTripId);
+  await tripStore.insertStation({
+    tripId : tripStore.newTripId,
+    stationList : trainStations.value
+  })
+      .then((response) => {
+        console.log("success!!!!!");
+        goToTripAttraction();
+      })
+      .catch((error) => {
+        console.log("failed!!");
+      });
 }
+
+
+const trainStations = ref([           ]);
+
+const removeTrainStations = (index) => {
+  trainStations.value.splice(index, 1);
+
+}
+
+
+const addTrain = (val) => {
+
+  const modifiedVal = {...val};
+  trainStations.value.tripId = tripStore.newTripId;
+  modifiedVal.arrplandtime = convertToFormattedDateTime(modifiedVal.arrplandtime);
+  modifiedVal.depplandtime = convertToFormattedDateTime(modifiedVal.depplandtime);
+
+  trainStations.value.push(modifiedVal);
+}
+
 function convertToFormattedDateTime(inputString) {
   // Ensure the inputString has the correct length
   if (inputString.length !== 14) {
@@ -31,20 +67,8 @@ function convertToFormattedDateTime(inputString) {
   const hours = inputString.slice(8, 10);
   const minutes = inputString.slice(10, 12);
 
-  // Create a Date object using extracted components
-  const dateObject = new Date(`${year}-${month}-${day}T${hours}:${minutes}:00`);
 
-  // Format the output string
-  const formattedDateTime = dateObject.toLocaleString('en-US', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false, // 24시간 형식으로 설정
-  });
-
-  return formattedDateTime;
+  return `${year}/${month}/${day} ${hours}:${minutes}`;
 }
 </script>
 
@@ -57,7 +81,7 @@ function convertToFormattedDateTime(inputString) {
   <v-container>
     <v-row>
       <v-col :cols="4">
-        <TripAddStationSideBar :train-stations="trainStations"/>
+        <TripAddStationSideBar :train-stations="trainStations" @remove-train-stations="removeTrainStations"/>
       </v-col>
       <v-col>
         <TripAddStationSearchStation @add-train="addTrain"/>
@@ -65,22 +89,22 @@ function convertToFormattedDateTime(inputString) {
     </v-row>
     <v-row>
       <v-col :cols="4" offset="4">
-      <div class="text-center Jalnan">
-      <v-btn
-          v-btn
-          v-btn--elevated
-          v-theme--light
-          bg-primary
-          v-btn--density-default
-          v-btn--size-default
-          v-btn--variant-elevated
-          size="large"
-          color="#f7323f"
-          @click="goToTripAttraction"
-      >
-        관광지 추가하기 =>
-      </v-btn>
-      </div>
+        <div class="text-center Jalnan">
+          <v-btn
+              v-btn
+              v-btn--elevated
+              v-theme--light
+              bg-primary
+              v-btn--density-default
+              v-btn--size-default
+              v-btn--variant-elevated
+              size="large"
+              color="#f7323f"
+              @click="insertStationsToTrip"
+          >
+            관광지 추가하기 =>
+          </v-btn>
+        </div>
       </v-col>
     </v-row>
   </v-container>

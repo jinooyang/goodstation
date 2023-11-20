@@ -69,34 +69,74 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/email")
-    public ResponseEntity<ResponseMessage> emailDupCheck(@RequestBody Map<String, String> map) throws Exception {
+    @GetMapping("/email/{email}")
+    public ResponseEntity<ResponseMessage> memberEmailDupCheck(@PathVariable String email) {
         ResponseMessage rm = new ResponseMessage();
-        int dup = memberService.findMemberByEmail(map.get("email"));
-        if (dup == 0) {
-            rm.setMessage("이메일 사용 가능");
+        try {
+            int mem = memberService.findMemberByEmail(email);
+            if (mem > 0) {
+                rm.setMessage("사용 불가능한 이메일 입니다.");
+                rm.setData("pos", 0);
+                rm.setStatus(StatusEnum.OK);
+                return new ResponseEntity<>(rm, HttpStatus.OK);
+            }
+            rm.setMessage("사용가능한 이메일 입니다.");
+            rm.setData("pos", 1);
             rm.setStatus(StatusEnum.OK);
-        } else {
-            rm.setMessage("이미 사용중인 이메일입니다");
+            return new ResponseEntity<>(rm, HttpStatus.OK);
+        } catch (Exception e) {
+            rm.setMessage("사용 불가능한 이메일 입니다.");
+            rm.setData("pos", 0);
             rm.setStatus(StatusEnum.FAIL);
+            return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(rm, HttpStatus.OK);
-
     }
 
-    @GetMapping("/nickname")
-    public ResponseEntity<ResponseMessage> nicknameDupCheck(@RequestBody Map<String, String> map) throws Exception {
-
+    @GetMapping("/memberId/{memberId}")
+    public ResponseEntity<ResponseMessage> memberIdDupCheck(@PathVariable String memberId) {
         ResponseMessage rm = new ResponseMessage();
-        int dup = memberService.findMemberByNickname(map.get("nickname"));
-        if (dup == 0) {
-            rm.setMessage("닉네임 사용 가능");
+        try {
+            MemberDto mem = memberService.findMemberById(memberId);
+            if (mem != null) {
+                rm.setMessage("사용 불가능한 아이디 입니다.");
+                rm.setData("pos", 0);
+                rm.setStatus(StatusEnum.OK);
+                return new ResponseEntity<>(rm, HttpStatus.OK);
+            }
+            rm.setMessage("사용가능한 아이디 입니다.");
+            rm.setData("pos", 1);
             rm.setStatus(StatusEnum.OK);
-        } else {
-            rm.setMessage("이미 사용중인 닉네임입니다");
+            return new ResponseEntity<>(rm, HttpStatus.OK);
+        } catch (Exception e) {
+            rm.setMessage("사용 불가능한 아이디 입니다.");
+            rm.setData("pos", 0);
             rm.setStatus(StatusEnum.FAIL);
+            return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(rm, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/nickname/{nickname}")
+    public ResponseEntity<ResponseMessage> memberNickNameDupCheck(@PathVariable String nickname) {
+        ResponseMessage rm = new ResponseMessage();
+        try {
+            int mem = memberService.findMemberByNickname(nickname);
+            if (mem > 0) {
+                rm.setMessage("사용 불가능한 닉네임 입니다.");
+                rm.setData("pos", 0);
+                rm.setStatus(StatusEnum.OK);
+                return new ResponseEntity<>(rm, HttpStatus.OK);
+            }
+            rm.setMessage("사용가능한 닉네임 입니다.");
+            rm.setData("pos", 1);
+            rm.setStatus(StatusEnum.OK);
+            return new ResponseEntity<>(rm, HttpStatus.OK);
+        } catch (Exception e) {
+            rm.setMessage("사용 불가능한 닉네임 입니다.");
+            rm.setData("pos", 0);
+            rm.setStatus(StatusEnum.FAIL);
+            return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/info")
