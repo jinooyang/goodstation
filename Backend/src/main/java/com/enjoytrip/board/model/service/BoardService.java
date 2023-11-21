@@ -2,6 +2,7 @@ package com.enjoytrip.board.model.service;
 
 import com.enjoytrip.board.model.dto.BoardListDto;
 import com.enjoytrip.board.model.dto.BoardReadDto;
+import com.enjoytrip.board.model.dto.BoardUpdateDto;
 import com.enjoytrip.board.model.dto.BoardWritingDto;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface BoardService {
 
     BoardReadDto readBoard(int boardId);
 
-    void updateBoard(int boardId, BoardWritingDto updatedBoardDto);
+    void updateBoard(int boardId, BoardUpdateDto updatedBoardDto);
 
     void deleteBoard(int boardId);
 
