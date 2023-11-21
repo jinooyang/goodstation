@@ -4,15 +4,12 @@ import {useRoute, useRouter} from "vue-router";
 
 const route = useRoute();
 const router = useRouter();
-const handleTableRowClick = (item) => {
-  alert(`Row clicked: ${item.text}`);
-}
 
-const listitems = ref([
-  {text: '남한산성도립공원 [유네스코 세계문화유산]', icon: 'mdi-minus-circle-outline'},
-  {text: '남한산성도립공원 [유네스코 세계문화유산]', icon: 'mdi-minus-circle-outline'},
-  {text: '남한산성도립공원 [유네스코 세계문화유산]', icon: 'mdi-minus-circle-outline'},
-]);
+const props = defineProps({stationList : Object , listitems:Object});
+const emit = defineEmits(["removeLeftSideBarItem"]);
+const deleteAttraction = (index) => {
+  emit("removeLeftSideBarItem",index);
+}
 </script>
 <template>
   <v-col :cols="3">
@@ -28,8 +25,8 @@ const listitems = ref([
         <v-table height="400px">
           <v-timeline density="compact" align="start">
             <v-timeline-item
-                v-for="n in 5"
-                :key="n"
+                v-for="station in stationList"
+                :key="station.stationName"
                 dot-color="red-accent-3"
                 size="x-small"
                 class="timelineparent"
@@ -38,7 +35,7 @@ const listitems = ref([
                 <div style="flex: 1">
                   <div class="font-weight-normal">
                     <strong class="Jalnan"
-                    >서울역</strong
+                    >{{station.stationName}}</strong
                     >
                   </div>
 
@@ -46,18 +43,19 @@ const listitems = ref([
 
                     <v-list>
                       <v-list-item
-                          v-for="(item, i) in listitems"
-                          :key="i"
+                          class="custom"
+                          v-for="(att, index) in listitems"
+                          :key="index"
                       >
-                        <div class="d-flex">
-                          <v-list-item-title v-text="item.text"></v-list-item-title>
+                        <div class="d-flex justify-space-between" v-if="station.stationId===att.stationId">
+                          <v-list-item-title  v-text="att.title"></v-list-item-title>
                           <v-btn
                               variant="plain"
                               color="red-accent-3"
                               size="auto"
                               class="rounded-circle"
 
-                              @click="handleTableRowClick(item)"
+                              @click="deleteAttraction(index)"
                           >
 
                           <v-icon>mdi-minus-circle-outline</v-icon>
@@ -85,12 +83,21 @@ const listitems = ref([
   background-color: #f7323f !important;
   color: white;
 }
+
 </style>
 <style>
 
 .v-toolbar__content {
   background-color: #f7323f;
   color: white;
+}
+
+.custom.v-list-item--density-default {
+  min-height: 0px !important;
+}
+.custom.v-list-item--density-default.v-list-item--one-line{
+  padding-top:0 !important;
+  padding-bottom: 0 !important;
 }
 
 </style>

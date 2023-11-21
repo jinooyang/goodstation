@@ -1,6 +1,7 @@
 package com.enjoytrip.trip.model.service;
 
 import com.enjoytrip.trip.model.dto.TripDto;
+import com.enjoytrip.trip.model.dto.TripStationDtoWithName;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -22,4 +23,7 @@ public interface TripService {
     void insertAttraction(Map<String,Object> map) throws SQLException;
 
     void deleteAttraction(Integer tripId) throws SQLException;
+
+    List<TripStationDtoWithName> searchTripStation(Integer tripId) throws SQLException;
+
 }

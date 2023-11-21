@@ -1,14 +1,19 @@
 <script setup>
-import TripAddAttractionSideBar from "@/components/TripAddAttraction/TripAddAttractionLeftSideBar.vue";
-import {ref} from "vue";
+import TripAddAttractionLeftSideBar from "@/components/TripAddAttraction/TripAddAttractionLeftSideBar.vue";
+import {onMounted, ref} from "vue";
 
 import KakaoMap from "@/components/TripAddAttraction/KakaoMap.vue";
-import TripAddAttractionMap from "@/components/TripAddAttraction/TripAddAttractionCenter.vue";
+import TripAddAttractionCenter from "@/components/TripAddAttraction/TripAddAttractionCenter.vue";
 import TripAddAttractionRightSideBar from "@/components/TripAddAttraction/TripAddAttractionRightSideBar.vue";
+import axios from "axios";
 
+import {useTripStore} from "@/stores/trip";
 
-
-
+const tripStore = useTripStore();
+const attLoading = ref(false);
+const changeLoading = (val) => {
+  attLoading.value = val;
+};
 const att = ref([{
 
   contentId: 125266,
@@ -18,12 +23,70 @@ const att = ref([{
 
 }])
 
-
 const listitems = ref([
   {text: '남한산성도립공원 [유네스코 세계문화유산]', icon: 'mdi-minus-circle-outline'},
   {text: '남한산성도립공원 [유네스코 세계문화유산]', icon: 'mdi-minus-circle-outline'},
   {text: '남한산성도립공원 [유네스코 세계문화유산]', icon: 'mdi-minus-circle-outline'},
 ]);
+const attractionList = ref([]);
+
+const changeAttractionList = (val) => {
+  attractionList.value = val;
+};
+
+const stationList = ref([]);
+
+const leftSideBarList = ref([]);
+const removeLeftSideBarItem = (index) => {
+  leftSideBarList.value.splice(index, 1);
+}
+
+const addLeftSideBar = (val) => {
+
+  const temp = {...val};
+  temp.text = val.title;
+  leftSideBarList.value.push(temp);
+  console.log(leftSideBarList);
+
+};
+
+const getTrainSelect = async () => {
+  await tripStore.getTrainStationList(tripStore.newTripId).then(
+      (response) => {
+        const result = response.data.data.list;
+        for (let i = 0; i < result.length; i++) {
+          result[i].name = result[i].stationName;
+          result[i].value = result[i].stationId;
+          result[i].list = ref([]);
+          stationList.value.push(result[i]);
+        }
+      }
+  ).catch(
+      (error) => {
+        console.log(error);
+      }
+  );
+}
+
+const addAttractions = async () => {
+  await tripStore.addAttraction({
+    tripId: tripStore.newTripId,
+    list: leftSideBarList.value,
+  }).then((response) => {
+    console.log(response.data.message);
+  }).catch((error) => {
+    console.log("failed to add attractions to database");
+  })
+      .finally();
+}
+
+
+onMounted(() => {
+  console.log("tripId : " + tripStore.newTripId);
+  getTrainSelect();
+
+});
+
 </script>
 
 <template>
@@ -35,11 +98,14 @@ const listitems = ref([
   </div>
   <v-container>
     <v-row>
-      <TripAddAttractionSideBar/>
-      <TripAddAttractionMap/>
-      <TripAddAttractionRightSideBar/>
+      <TripAddAttractionLeftSideBar :station-list="stationList" :listitems="leftSideBarList"
+                                    @removeLeftSideBarItem="removeLeftSideBarItem"/>
+      <TripAddAttractionCenter :station-list="stationList" :att-loading="attLoading"
+                               @changeAttractionList="changeAttractionList" @changeLoading="changeLoading"/>
+      <TripAddAttractionRightSideBar :attraction-list="attractionList" :att-loading="attLoading"
+                                     @addLeftSideBar="addLeftSideBar"/>
     </v-row>
-    <v-row class = "mb-5 mt-7">
+    <v-row class="mb-5 mt-7">
       <v-col :cols="4" offset="4">
         <div class="text-center Jalnan">
           <v-btn
@@ -52,7 +118,7 @@ const listitems = ref([
               v-btn--variant-elevated
               size="large"
               color="#f7323f"
-              @click="goToTripStation"
+              @click="addAttractions" 
               align="center"
           >
             여행 떠나기 =>

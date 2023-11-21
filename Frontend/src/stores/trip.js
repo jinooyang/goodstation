@@ -1,12 +1,20 @@
 import {defineStore} from "pinia";
 
 
-import {insertTrip, getTrainListFromApi, insertStationToDB} from "@/api/tripApi";
+import {
+    insertTrip,
+    getTrainListFromApi,
+    insertStationToDB,
+    getTripStationInfo,
+    getAttractionNearStation, insertAttraction
+} from "@/api/tripApi";
 import {httpStatusCode} from "@/util/http-status";
 import {ref} from "vue";
 
 export const useTripStore = defineStore("useTripStore", {
-    persist: true,
+    persist: () => ({
+        enabled: true
+    }),
 
     state: () => ({
         newTripId: 0,
@@ -24,7 +32,7 @@ export const useTripStore = defineStore("useTripStore", {
             this.maxDate = date;
         },
 
-        change(val){
+        change(val) {
             this.newTripId.value = val;
         },
 
@@ -36,9 +44,9 @@ export const useTripStore = defineStore("useTripStore", {
                 (response) => {
                     if (response.status === httpStatusCode.OK) {
                         console.log(response.data.message);
-                        console.log("새로 추가된 아이디 : " , response.data.data.tripId);
+                        console.log("새로 추가된 아이디 : ", response.data.data.tripId);
                         this.newTripId = response.data.data.tripId;
-                        this.$patch({ newTripId: this.newTripId });
+                        // this.$patch({newTripId: this.newTripId});
                         console.log("변경된 newTripId : " + this.newTripId);
 
                     } else {
@@ -69,6 +77,42 @@ export const useTripStore = defineStore("useTripStore", {
                 );
             });
         },
+
+        async getAttNearSt(stationId) {
+            return new Promise((resolve, reject) => {
+                getAttractionNearStation(stationId,
+                    (response) => {
+                        resolve(response);
+                    }, (error) => {
+                        reject(error);
+                    });
+            });
+        },
+        async addAttraction(param) {
+            return new Promise((resolve, reject) => {
+                insertAttraction(param, (response) => {
+                    resolve(response)
+                }, (error) => {
+                    reject(error)
+                });
+            });
+
+        },
+
+        async getTrainStationList(param) {
+            return new Promise((resolve, reject) => {
+                getTripStationInfo(
+                    param,
+                    (response) => {
+                        resolve(response);
+                    },
+                    (error) => {
+                        reject(error);
+                    }
+                )
+            });
+        },
+
         async getTrains(train) {
             return new Promise((resolve, reject) => {
                 getTrainListFromApi(

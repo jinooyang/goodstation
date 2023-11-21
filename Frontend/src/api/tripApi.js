@@ -18,5 +18,26 @@ async function insertStationToDB(param,success,fail){
     await local.post(`/trip/station`, param).then(success).catch(fail);
 }
 
+async function getTripStationInfo(param,success, fail){
+    local.defaults.headers["X-AUTH-TOKEN"] = sessionStorage.getItem("accessToken");
+    await local.get(`/trip/tripStationList/${param}`).then(success).catch(fail);
+}
 
-export {insertTrip, getTrainListFromApi, insertStationToDB};
+async function getAttractionNearStation(param,success,fail){
+    local.defaults.headers["X-AUTH-TOKEN"] = sessionStorage.getItem("accessToken");
+    await local.get(`/station/attraction/${param}`).then(success).catch(fail);
+}
+
+async function insertAttraction(param,success,fail){
+    local.defaults.headers["X-AUTH-TOKEN"] = sessionStorage.getItem("accessToken");
+    await local.post(`/trip/attraction`,param).then(success).catch(fail);
+}
+
+
+export {insertTrip,
+    getTrainListFromApi,
+    insertStationToDB,
+    getTripStationInfo,
+    getAttractionNearStation,
+    insertAttraction
+};

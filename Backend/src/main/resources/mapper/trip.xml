@@ -4,7 +4,7 @@
 
 <mapper namespace="com.enjoytrip.trip.model.mapper.TripMapper">
 
-    <resultMap id = "trip" type = "tripDto">
+    <resultMap id="trip" type="tripDto">
         <result column="trip_id" property="tripId"></result>
         <result column="trip_name" property="tripName"></result>
         <result column="start_date" property="startDate"></result>
@@ -14,76 +14,94 @@
         <result column="end_station_id" property="endStationId"></result>
 
     </resultMap>
+    <resultMap id="tripStation" type="tripStationDtoWithName">
+        <result column="name" property="stationName"></result>
+        <result column="station_id" property="stationId"></result>
+        <result column="trip_id" property="tripId"></result>
+        <result column="start_date" property="startDate"></result>
+        <result column="end_date" property="endDate"></result>
+    </resultMap>
 
     <!-- 새로운 여행 생성하기 -->
-    <insert id = "insertTrip" parameterType="tripDto">
-        insert into trip (trip_name, start_date, end_date, member_id,start_station_id, end_station_id)
-        values(#{tripName},#{startDate},#{endDate},#{memberId},#{startStationId},#{endStationId});
+    <insert id="insertTrip" parameterType="tripDto">
+        insert into trip (trip_name, start_date, end_date, member_id, start_station_id, end_station_id)
+        values (#{tripName}, #{startDate}, #{endDate}, #{memberId}, #{startStationId}, #{endStationId});
     </insert>
 
 
     <!-- 마지막 auto incre 된 키 찾기 -->
-    <select id = "getLastInsertedId" resultType="Integer" >
+    <select id="getLastInsertedId" resultType="Integer">
         select last_insert_id();
     </select>
 
 
     <!-- 여행 아이디로 여행 찾기 -->
-    <select id ="findTripById" parameterType="int" resultMap="trip">
-    select trip_id, trip_name, start_date, end_date, member_id,start_station_id, end_station_id
-    from trip
-    where trip_id = #{tripId}
+    <select id="findTripById" parameterType="int" resultMap="trip">
+        select trip_id, trip_name, start_date, end_date, member_id, start_station_id, end_station_id
+        from trip
+        where trip_id = #{tripId}
     </select>
 
     <!-- 멤버 아이디로 여행 찾기 (기본 정보만) -->
-    <select id = "findTripByMemberId" parameterType = "string" resultMap="trip">
-    select trip_id, trip_name, start_date, end_date, member_id,start_station_id, end_station_id
-    from trip
-    where member_id = #{memberId}
+    <select id="findTripByMemberId" parameterType="string" resultMap="trip">
+        select trip_id, trip_name, start_date, end_date, member_id, start_station_id, end_station_id
+        from trip
+        where member_id = #{memberId}
     </select>
 
     <!-- 기차역 추가하기 -->
-    <insert id = "insertTripStation" parameterType = "list">
+    <insert id="insertTripStation" parameterType="list">
         insert into trip_station (trip_id, station_id, start_date,end_date)
         values
         <foreach collection="list" item="item" separator=",">
             (
-                #{item.tripId},
-                #{item.stationId},
-                #{item.startDate},
-                #{item.endDate}
+            #{item.tripId},
+            #{item.stationId},
+            #{item.startDate},
+            #{item.endDate}
             )
         </foreach>
 
     </insert>
     <!-- 기차역 추가하기 전에 기존 데이터 빼기-->
-    <delete id="deleteTripStation" parameterType = "int">
+    <delete id="deleteTripStation" parameterType="int">
         delete
         from trip_station
         where trip_id = #{tripId}
     </delete>
 
+    <select id="searchTripStation" parameterType="int" resultMap="tripStation">
+        select b.name, a.station_id, a.trip_id, a.start_date, a.end_date
+        from trip_station a,
+             station_info b
+        where a.station_id = b.station_id
+          and trip_id = #{tripId}
+
+    </select>
+
+
     <!-- 여행에 관광지 추가하기 -->
-    <insert id = "insertAttraction" parameterType = "list">
+    <insert id="insertAttraction" parameterType="list">
         insert into trip_attraction (trip_id, station_id, content_id,order_num)
         values
         <foreach collection="list" item="item" separator=",">
-        (
+            (
             #{item.tripId},
             #{item.stationId},
             #{item.contentId},
             #{item.orderNum}
-        )
+            )
         </foreach>
-
 
 
     </insert>
 
-    <delete id = "deleteTripAttraction"  parameterType="int">
+    <delete id="deleteTripAttraction" parameterType="int">
         delete
         from trip_attraction
         where trip_id = #{tripId}
 
     </delete>
+
+
 </mapper>

@@ -5,6 +5,7 @@ import com.enjoytrip.station.model.mapper.StationMapper;
 import com.enjoytrip.trip.model.dto.TripAttractionDto;
 import com.enjoytrip.trip.model.dto.TripDto;
 import com.enjoytrip.trip.model.dto.TripStationDto;
+import com.enjoytrip.trip.model.dto.TripStationDtoWithName;
 import com.enjoytrip.trip.model.mapper.TripMapper;
 import com.enjoytrip.util.DateConverter;
 import lombok.RequiredArgsConstructor;
@@ -44,38 +45,35 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public void addStationToTrip(Map<String, Object> map) throws Exception {
+        System.out.println(map.toString());
         DateConverter dateConverter = new DateConverter();
         Integer tripId = (Integer) map.get("tripId");
         List<Map<String, String>> list = (List<Map<String, String>>) map.get("stationList");
         List<StationAndSidoDto> stlist = stationMapper.selectStations();
         Map<String, String> stIdlist = new HashMap<>();
-       for(StationAndSidoDto dto : stlist){
-           stIdlist.put(dto.getStationName(),dto.getStationId());
-       }
-       List<TripStationDto> tripStationDtoList = new ArrayList<>();
+        for (StationAndSidoDto dto : stlist) {
+            stIdlist.put(dto.getStationName(), dto.getStationId());
+        }
+        List<TripStationDto> tripStationDtoList = new ArrayList<>();
 
+        Map<String, String> first = list.get(0);
+        System.out.println("first : " + first);
+        TripStationDto firstdto = new TripStationDto();
+        firstdto.setTripId(tripId);
+        firstdto.setStationId(stIdlist.get(first.get("depplacename") + "역"));
+        tripStationDtoList.add(firstdto);
 
-       for(int i=1;i<list.size();i++){
-           Map<String,String> beforetrain = list.get(i-1);
-           Map<String,String> train = list.get(i);
-           TripStationDto tsdto = new TripStationDto();
-           tsdto.setTripId(tripId);
-           tsdto.setStationId(stIdlist.get(beforetrain.get("arrplacename")+"역"));
-           tsdto.setStartDate(DateConverter.parseDateString(beforetrain.get("arrplandtime")));
-           tsdto.setEndDate(DateConverter.parseDateString(train.get("depplandtime")));
-           tripStationDtoList.add(tsdto);
-       }
+        for (int i = 1; i < list.size(); i++) {
+            Map<String, String> beforetrain = list.get(i - 1);
+            Map<String, String> train = list.get(i);
+            TripStationDto tsdto = new TripStationDto();
+            tsdto.setTripId(tripId);
+            tsdto.setStationId(stIdlist.get(beforetrain.get("arrplacename") + "역"));
+            tsdto.setStartDate(DateConverter.parseDateString(beforetrain.get("arrplandtime")));
+            tsdto.setEndDate(DateConverter.parseDateString(train.get("depplandtime")));
+            tripStationDtoList.add(tsdto);
+        }
 
-//        List<TripStationDto> stationList = new ArrayList<>();
-//        for (int i = 0; i < list.size(); i++) {
-//            Map<String, String> eachStationInfo = list.get(i);
-//            TripStationDto st = new TripStationDto();
-//            st.setTripId(tripId);
-//            st.setStationId(eachStationInfo.get("stationId"));
-//            st.setStartDate(dateConverter.convertStringToSqlDate(eachStationInfo.get("startDate")));
-//            st.setEndDate(dateConverter.convertStringToSqlDate(eachStationInfo.get("endDate")));
-//            stationList.add(st);
-//        }
         System.out.println(tripStationDtoList);
         tripMapper.insertTripStation(tripStationDtoList);
 
@@ -99,7 +97,7 @@ public class TripServiceImpl implements TripService {
             TripAttractionDto tripAtt = new TripAttractionDto();
             tripAtt.setTripId(tripId);
             tripAtt.setStationId((String) objMap.get("stationId"));
-            tripAtt.setContentId((Integer) objMap.get("contentId"));
+            tripAtt.setContentId(Integer.parseInt( objMap.get("contentId").toString()));
             tripAtt.setOrderNum(++order);
             list.add(tripAtt);
         }
@@ -110,6 +108,12 @@ public class TripServiceImpl implements TripService {
     @Override
     public void deleteAttraction(Integer tripId) throws SQLException {
         tripMapper.deleteTripAttraction(tripId);
+    }
+
+    @Override
+    public List<TripStationDtoWithName> searchTripStation(Integer tripId) throws SQLException {
+
+        return tripMapper.searchTripStation(tripId);
     }
 
 

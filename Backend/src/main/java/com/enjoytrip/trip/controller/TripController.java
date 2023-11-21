@@ -7,6 +7,7 @@ import com.enjoytrip.security.SecurityUser;
 import com.enjoytrip.station.model.service.StationService;
 import com.enjoytrip.trip.model.dto.TrainApiDto;
 import com.enjoytrip.trip.model.dto.TripDto;
+import com.enjoytrip.trip.model.dto.TripStationDtoWithName;
 import com.enjoytrip.trip.model.service.TripService;
 import com.enjoytrip.util.DateConverter;
 import com.google.gson.*;
@@ -101,7 +102,7 @@ public class TripController {
     @PostMapping("/station")
     @Transactional
     public ResponseEntity<ResponseMessage> addStationsToTrip(@RequestBody Map<String, Object> map) {
-        System.out.println("들어왔습니다!!");
+//        System.out.println("들어왔습니다!!");
         ResponseMessage rm = new ResponseMessage();
         try {
             tripService.deleteTripStation((Integer) map.get("tripId"));
@@ -157,6 +158,21 @@ public class TripController {
             e.printStackTrace();
             rm.setMessage("관광지 추가 실패");
             rm.setStatus(StatusEnum.FAIL);
+            return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/tripStationList/{tripId}")
+    public ResponseEntity<ResponseMessage> getTrainListFromApi(@PathVariable Integer tripId) {
+        System.out.println("tripId : " +tripId);
+        ResponseMessage rm = new ResponseMessage();
+        try {
+            List<TripStationDtoWithName> list = tripService.searchTripStation(tripId);
+            rm.setMessage("조회 성공");
+            rm.setData("list", list);
+            rm.setData("tripId", tripId);
+            return new ResponseEntity<>(rm, HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);
         }
     }

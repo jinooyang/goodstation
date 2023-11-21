@@ -2,76 +2,33 @@
 
 
 import {ref} from "vue";
+import TripAddAttractionNoData from "@/components/TripAddAttraction/TripAddAttractionNoData.vue";
+import TripAddAttractionLoadingData from "@/components/TripAddAttraction/TripAddAttractionLoadingData.vue";
 
-const desserts = ref([
-  {
-    name: 'Frozen Yogurt',
-
-  },
-  {
-    name: 'Ice cream sandwich',
-
-  },
-  {
-    name: 'Eclair',
-
-  },
-  {
-    name: 'Cupcake',
-
-  },
-  {
-    name: 'Gingerbread',
-
-  },
-  {
-    name: 'Jelly bean',
-
-  },
-  {
-    name: 'Lollipop',
-
-  },
-  {
-    name: 'Honeycomb',
-
-  },
-  {
-    name: 'Donut',
-
-  },
-  {
-    name: 'KitKat',
-
-  },
-
-]);
-
+const props = defineProps({attractionList: Object, attLoading: Boolean});
+const emit = defineEmits(["addLeftSideBar"]);
 const handleTableRowClick = (item) => {
-  alert(`Row clicked: ${item.name}`);
+  emit("addLeftSideBar", item);
 }
 
 </script>
 <template>
 
   <v-col :cols="3">
-    <v-table height="500">
+    <TripAddAttractionLoadingData v-if="attLoading"></TripAddAttractionLoadingData>
+    <v-table height="500" v-else-if="!attLoading && attractionList.length>0">
       <thead>
       <tr>
-        <th class="text-left">
+        <th class="text-left Jalnan">
           관광지
         </th>
-        <th>추가</th>
+        <th class = "Jalnan">+</th>
       </tr>
       </thead>
       <tbody>
-      <tr
-          v-for="item in desserts"
-          :key="item.name"
+      <tr v-for="item in attractionList" :key="item.name">
 
-      >
-
-        <td>{{ item.name }}</td>
+        <td>{{ item.title }}</td>
 
         <td>
           <v-btn
@@ -85,7 +42,7 @@ const handleTableRowClick = (item) => {
             <v-tooltip
                 activator="parent"
                 location="end"
-         
+
             >추가
             </v-tooltip>
           </v-btn>
@@ -93,6 +50,7 @@ const handleTableRowClick = (item) => {
       </tr>
       </tbody>
     </v-table>
+    <TripAddAttractionNoData v-else></TripAddAttractionNoData>
   </v-col>
 
 </template>
