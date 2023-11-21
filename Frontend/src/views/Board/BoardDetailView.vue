@@ -3,7 +3,7 @@ import {useMemberStore} from "@/stores/member";
 import {useRoute, useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
 import axios from "axios";
-import { computed } from 'vue';
+import {computed} from 'vue';
 
 const memberStore = useMemberStore();
 const route = useRoute();
@@ -88,6 +88,15 @@ const addComment = async () => {
   }
 };
 
+const deleteComment = async (comment) => {
+  try {
+    await axios.delete(`http://localhost:8080/board/${route.params.boardId}/comments/${comment.commentId}`);
+    console.log('댓글이 성공적으로 삭제되었습니다.');
+    await fetchComments(); // 댓글 목록을 다시 불러옵니다.
+  } catch (error) {
+    console.error('댓글 삭제 중 오류가 발생했습니다:', error);
+  }
+};
 
 onMounted(() => {
   fetchDataFromServer();
@@ -133,7 +142,8 @@ const goToTripStation = () => {
     <v-row class="mt-6 mb-6">
       <v-col cols="12" class="text-center">
         <v-btn class="custom-btn mr-3 Jalnan" @click="goToListPage">글목록</v-btn>
-        <v-btn class="custom-btn mr-3 Jalnan" @click="() => goToEditPage(board)" v-if="isLogin && memberId === board.memberId">글수정
+        <v-btn class="custom-btn mr-3 Jalnan" @click="() => goToEditPage(board)"
+               v-if="isLogin && memberId === board.memberId">글수정
         </v-btn>
         <v-btn class="custom-btn Jalnan" @click="deleteBoard" v-if="isLogin && memberId === board.memberId">글삭제</v-btn>
       </v-col>
@@ -156,6 +166,16 @@ const goToTripStation = () => {
               <v-card-text>
                 작성 시간 : {{ formatDate(comment.create_time) }}
               </v-card-text>
+              <v-card-actions>
+                <v-col class="text-end">
+                  <v-btn small class="mr-2 custom-btn Jalnan" @click="editComment(comment)"
+                         v-if="isLogin && memberId === comment.memberId">댓글 수정
+                  </v-btn>
+                  <v-btn small class="custom-btn Jalnan" @click="deleteComment(comment)"
+                         v-if="isLogin && memberId === comment.memberId">댓글 삭제
+                  </v-btn>
+                </v-col>
+              </v-card-actions>
             </v-col>
           </v-row>
         </v-card>
@@ -164,7 +184,8 @@ const goToTripStation = () => {
     </v-row>
     <v-row>
       <v-col cols="8" offset="2">
-        <v-textarea hide-details color="red-accent-3" label="댓글을 입력하세요" variant="outlined" v-model="newComment" rows="3"></v-textarea>
+        <v-textarea hide-details color="red-accent-3" label="댓글을 입력하세요" variant="outlined" v-model="newComment"
+                    rows="3"></v-textarea>
       </v-col>
     </v-row>
     <v-row>
