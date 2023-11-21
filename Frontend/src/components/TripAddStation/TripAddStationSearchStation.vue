@@ -5,10 +5,11 @@ import {ref} from "vue";
 import {useTripStore} from "@/stores/trip";
 import TripAddStationNoData from "@/components/TripAddStation/TripAddStationNoData.vue";
 import TripAddStationLoadingData from "@/components/TripAddStation/TripAddStationLoadingData.vue";
+
 const emit = defineEmits(["add-train"]);
 const tripStore = useTripStore();
-const addTrainToMyList = (val)=>{
-  emit("add-train",val);
+const addTrainToMyList = (val) => {
+  emit("add-train", val);
 }
 const train = ref(
     {
@@ -40,6 +41,7 @@ const getTrainList = async () => {
 }
 const loading = ref(false);
 
+
 </script>
 
 <template>
@@ -55,19 +57,20 @@ const loading = ref(false);
       <v-col>
         <v-text-field color="red-accent-3" v-model="train.date" label="날짜" variant="outlined" type="date">
         </v-text-field>
+
       </v-col>
       <!--      </v-col>-->
       <v-col :cols="2" class="d-flex align-center pb-8">
         <v-btn variant="outlined" color="red-accent-3" @click="getTrainList" :loading="loading">검색</v-btn>
       </v-col>
     </v-row>
-    <TripAddStationLoadingData v-if="loading" />
+    <TripAddStationLoadingData v-if="loading"/>
     <TripAddStationSearchTable
         v-else-if="!loading && trainList && trainList.length > 0"
-        :train-list = "trainList"
+        :train-list="trainList"
         @add-train-to-my-list="addTrainToMyList"
     />
-    <TripAddStationNoData v-else />
+    <TripAddStationNoData v-else/>
   </div>
 </template>
 
