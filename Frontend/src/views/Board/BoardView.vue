@@ -11,6 +11,10 @@ const goToDetail = (boardId) => {
   router.push(`/board/${boardId}`);
   console.log(boardId);
 };
+
+const goToWrite = () => {
+  router.push('/board/write');
+}
 const items = ref([{}]);
 
 const fetchDataFromServer = async () => {
@@ -37,12 +41,17 @@ onMounted(() => {
   <v-container>
 
 
-    <v-row>
+    <v-row class="mt-4">
       <v-col :cols="4" class="text-center" offset="4">
         <v-row class="align-center">
         <v-text-field color="red-accent-3" label="게시판 검색" variant="outlined" class="search-box"></v-text-field>
-        <v-btn class="search-btn">검색</v-btn>
+        <v-btn class="search-btn Jalnan">검색</v-btn>
         </v-row>
+      </v-col>
+    </v-row>
+    <v-row class="mb-2">
+      <v-col :offset="11">
+        <v-btn class="write-btn Jalnan" @click="goToWrite">글쓰기</v-btn>
       </v-col>
     </v-row>
     <v-sheet
@@ -75,5 +84,13 @@ th {
   height: 56px;
   width: 60px;
   margin-top: -13px;
+  background-color: rgb(247, 50, 63);
+  color: rgb(255, 255, 255);
+  caret-color: rgb(255, 255, 255);
+}
+.write-btn {
+  background-color: rgb(247, 50, 63);
+  color: rgb(255, 255, 255);
+  caret-color: rgb(255, 255, 255);
 }
 </style>

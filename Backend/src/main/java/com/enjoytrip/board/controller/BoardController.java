@@ -21,7 +21,6 @@ public class BoardController {
     private final BoardService boardService;
     private final BoardLikeService boardLikeService;
 
-
     @PostMapping
     public int writeBoard(@Valid @RequestBody BoardWritingDto boardWritingDto) {
         return boardService.writeBoard(boardWritingDto);
@@ -44,7 +43,7 @@ public class BoardController {
 
     @GetMapping()
     public List<BoardListDto> getBoardList(@RequestParam(name = "pageNo", defaultValue = "1") int pageNo,
-                                           @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
+                                           @RequestParam(name = "pageSize", defaultValue = "12") int pageSize) {
         return boardService.getBoardList(pageNo, pageSize);
     }
 

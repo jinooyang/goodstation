@@ -1,7 +1,7 @@
 <script setup>
 import {useRoute, useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
-import axios   from "axios";
+import axios from "axios";
 
 const route = useRoute();
 const router = useRouter();
@@ -14,6 +14,34 @@ const fetchDataFromServer = async () => {
     console.log(board);
   } catch (error) {
     console.error('데이터를 불러오는데 실패했습니다.', error);
+  }
+};
+
+
+const goToListPage = () => {
+  router.push('/board');
+};
+
+const formatDate = (dateTimeString) => {
+  const dateTime = new Date(dateTimeString);
+  const formattedTime = dateTime.toLocaleString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  return formattedTime;
+};
+
+const deleteBoard = async () => {
+  try {
+    await axios.delete(`http://localhost:8080/board/${route.params.boardId}`);
+    console.log('게시물이 성공적으로 삭제되었습니다.');
+
+    router.push('/board');
+  } catch (error) {
+    console.error('게시물 삭제 중 오류가 발생했습니다:', error);
   }
 };
 
@@ -38,6 +66,11 @@ const goToTripStation = () => {
       </v-col
       >
     </v-row>
+    <v-row class="mb-2">
+      <v-col :cols="12" class="text-right">
+        <div class="create-time"><p>작성 시간 : {{ formatDate(board.createTime) }}</p></div>
+      </v-col>
+    </v-row>
     <hr/>
 
 
@@ -52,7 +85,13 @@ const goToTripStation = () => {
         <!--        <v-img src="src/assets/goodchoice.jpg"/>-->
       </div>
     </div>
-    <v-row class="mt-6 mb-6"></v-row>
+    <v-row class="mt-6 mb-6">
+      <v-col cols="12" class="text-center">
+        <v-btn class="custom-btn mr-3 Jalnan" @click="goToListPage">글목록</v-btn>
+        <v-btn class="custom-btn mr-3 Jalnan" @click="goToEditPage">글수정</v-btn>
+        <v-btn class="custom-btn Jalnan" @click="deleteBoard">글삭제</v-btn>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -60,7 +99,11 @@ const goToTripStation = () => {
 .title {
   text-align: center;
   font-family: Jalnan;
-
 }
 
+.custom-btn {
+  background-color: rgb(247, 50, 63);
+  color: rgb(255, 255, 255);
+  caret-color: rgb(255, 255, 255);
+}
 </style>
