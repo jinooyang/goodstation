@@ -54,7 +54,7 @@
         where board_id = #{boardId}
     </delete>
     
-    <select id="getBoardList" parameterType="int" resultMap="boardList">
+    <select id="getBoardList" resultMap="boardList">
         select board_id, title, member_id, create_time
         from board
         order by board_id desc

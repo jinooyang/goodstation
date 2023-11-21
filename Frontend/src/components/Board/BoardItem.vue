@@ -1,4 +1,6 @@
-<script setup></script>
+<script setup>
+const props = defineProps(['title', 'memberId'])
+</script>
 
 <template>
   <v-card
@@ -22,10 +24,10 @@
     ></v-img>
 
     <v-card-item>
-      <v-card-title>여기에 제목이 들어간다. 여기에 제목이 들어간다.</v-card-title>
+      <v-card-title>{{title}}</v-card-title>
 
       <v-card-subtitle>
-        <span class="me-1">작성자</span>
+        <span class="me-1">{{memberId}}</span>
 
 
       </v-card-subtitle>
@@ -46,7 +48,7 @@
         ></v-rating>
 
         <div class="text-grey ms-4">
-          4.5 (413)
+          3.3 (413)
         </div>
       </v-row>
 
@@ -55,8 +57,6 @@
       </div>
 
     </v-card-text>
-
-
 
   </v-card>
 </template>

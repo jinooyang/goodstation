@@ -63,10 +63,6 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<BoardListDto> getBoardList(int pageNo, int pageSize) {
-        List<BoardListDto> boardList = boardMapper.getBoardList(pageNo, pageSize);
-        if (boardList.isEmpty()) {
-            throw new RuntimeException();
-        }
         int offset = (pageNo - 1) * pageSize;
         return boardMapper.getBoardList(pageSize, offset);
     }

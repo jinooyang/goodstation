@@ -1,55 +1,97 @@
 <script setup>
 import {useRoute, useRouter} from "vue-router";
+import {onMounted, ref} from "vue";
+import axios from "axios";
 
 const route = useRoute();
 const router = useRouter();
+const board = ref();
+
+const fetchDataFromServer = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8080/board/${route.params.boardId}`);
+    board.value = response.data;
+    console.log(board);
+  } catch (error) {
+    console.error('데이터를 불러오는데 실패했습니다.', error);
+  }
+};
+
+
+const goToListPage = () => {
+  router.push('/board');
+};
+
+const formatDate = (dateTimeString) => {
+  const dateTime = new Date(dateTimeString);
+  const formattedTime = dateTime.toLocaleString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  return formattedTime;
+};
+
+const deleteBoard = async () => {
+  try {
+    await axios.delete(`http://localhost:8080/board/${route.params.boardId}`);
+    console.log('게시물이 성공적으로 삭제되었습니다.');
+
+    router.push('/board');
+  } catch (error) {
+    console.error('게시물 삭제 중 오류가 발생했습니다:', error);
+  }
+};
+
+onMounted(() => {
+  fetchDataFromServer();
+});
 const goToTripStation = () => {
   router.push("/trip/create");
 };
 </script>
 
 <template>
-  <v-container>
+  <v-container v-if="board">
     <v-row class="mt-5">
       <v-col :cols="8" offset="2" class="text-center">
-        <div class="title"><h1>제목 : 서울 여행 후기입니다.서울 여행 후기입니다.서울 여행 후기입니다.서울 여행 후기입니다.서울 여행 후기입니다.서울 여행 후기입니다.</h1></div>
+        <div class="title"><h1>제목 : {{ board.title }}</h1></div>
       </v-col>
     </v-row>
     <v-row class="mb-5">
       <v-col :cols="12">
-        <div class="title"><h2>작성자 : 김싸피</h2></div>
+        <div class="title"><h2>작성자 : {{ board.memberId }}</h2></div>
       </v-col
       >
+    </v-row>
+    <v-row class="mb-2">
+      <v-col :cols="12" class="text-right">
+        <div class="create-time"><p>작성 시간 : {{ formatDate(board.createTime) }}</p></div>
+      </v-col>
     </v-row>
     <hr/>
 
 
     <v-row class="mt-5 mb-5">
       <v-col :cols="8" offset="2">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.
-
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse potenti. Nulla facilisi. Ut ac odio sit
-          amet velit vestibulum tristique. Fusce bibendum, lacus ac volutpat consequat, justo turpis tincidunt turpis,
-          in commodo nulla ligula quis orci. Sed aliquam, velit id tincidunt faucibus, elit leo tristique dolor, vel
-          rhoncus erat felis ut libero. Proin nec efficitur enim.
-
-          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum
-          aliquet erat vel efficitur scelerisque. Curabitur in leo eu urna iaculis commodo. Integer sed nunc nec leo
-          vestibulum aliquet vel nec massa. Duis ac orci vitae velit vestibulum tincidunt. Fusce a felis nec sem
-          fringilla lacinia. Nulla facilisi. In hac habitasse platea dictumst.</p>
+        <p>{{ board.content }}</p>
       </v-col>
     </v-row>
     <div class="d-flex flex-column align-center justify-center ma-9 pa-9">
       <div v-for="n in 3">
         <img src="../../assets/goodchoice.jpg" width="500"/>
-<!--        <v-img src="src/assets/goodchoice.jpg"/>-->
+        <!--        <v-img src="src/assets/goodchoice.jpg"/>-->
       </div>
     </div>
-    <v-row class="mt-6 mb-6"></v-row>
+    <v-row class="mt-6 mb-6">
+      <v-col cols="12" class="text-center">
+        <v-btn class="custom-btn mr-3 Jalnan" @click="goToListPage">글목록</v-btn>
+        <v-btn class="custom-btn mr-3 Jalnan" @click="goToEditPage">글수정</v-btn>
+        <v-btn class="custom-btn Jalnan" @click="deleteBoard">글삭제</v-btn>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -57,7 +99,11 @@ const goToTripStation = () => {
 .title {
   text-align: center;
   font-family: Jalnan;
-
 }
 
+.custom-btn {
+  background-color: rgb(247, 50, 63);
+  color: rgb(255, 255, 255);
+  caret-color: rgb(255, 255, 255);
+}
 </style>

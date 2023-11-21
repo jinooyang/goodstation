@@ -40,13 +40,17 @@ const router = createRouter({
             name: 'board',
             component: () => import('../views/Board/BoardView.vue')
         }, {
-            path: '/board/detail',
+            path: '/board/:boardId',
             name: 'detail',
             component: () => import('../views/Board/BoardDetailView.vue')
         }, {
             path: '/news',
             name: 'news',
             component: () => import('../views/Board/NewsView.vue')
+        }, {
+            path: '/board/write',
+            name: 'write',
+            component: () => import('../views/Board/BoardWrite.vue')
         }
     ]
 })
