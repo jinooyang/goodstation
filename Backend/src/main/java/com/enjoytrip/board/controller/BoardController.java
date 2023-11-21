@@ -31,7 +31,7 @@ public class BoardController {
         return boardService.readBoard(boardId);
     }
 
-    @PutMapping("/{boardId}")
+    @PutMapping("/edit/{boardId}")
     public void updateBoard(@PathVariable int boardId, @Valid @RequestBody BoardWritingDto updatedBoardDto) {
         boardService.updateBoard(boardId, updatedBoardDto);
     }
