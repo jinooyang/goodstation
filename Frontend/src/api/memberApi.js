@@ -33,5 +33,11 @@ async function checkDupNick(nick, success,fail){
     await local.get(`member/nickname/${nick}`).then(success).catch(fail);
 }
 
+async function register(param,success,fail){
+    await local.post(`member/signup`,param).then(success).catch(fail);
+}
 
-export { userConfirm, findById,  logout ,checkDupId, checkDupEmail, checkDupNick};
+
+export { userConfirm, findById,  logout ,
+    checkDupId, checkDupEmail, checkDupNick,
+    register};

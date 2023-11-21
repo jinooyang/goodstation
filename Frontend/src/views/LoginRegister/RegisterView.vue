@@ -45,7 +45,6 @@ const checkMemberNN = () => {
 }
 
 
-
 const emailPos = ref(true);
 const checkEmailDup = () => {
 
@@ -59,7 +58,43 @@ const checkEmailDup = () => {
 }
 
 
-const register = () => {
+const register = async () => {
+  if (regForm.value.memberId === '' || regForm.value.name === ''
+      || regForm.value.password === '' || regForm.value.passwordCheck === ''
+      || regForm.value.email === '' || regForm.value.nickname === '') {
+    alert("모든 항목을 입력해주세요");
+    return;
+  }
+  if (regForm.value.password !== regForm.value.passwordCheck) {
+    alert("비밀번호가 일치하지 않습니다");
+    return;
+  }
+  if (!idPos) {
+    alert("아이디 중복을 확인해주세요");
+    return;
+  }
+  if (!nickPos) {
+    alert("닉네임 중복을 확인해주세요");
+    return;
+  }
+  if (!emailPos) {
+    alert("이메일 중복을 확인해주세요");
+    return;
+  }
+  console.log("입력 성공 회원가입 시도");
+  await memberStore.registerNewMember({
+    memberId: regForm.value.memberId,
+    name: regForm.value.name,
+    password: regForm.value.password,
+    email: regForm.value.email,
+    nickname: regForm.value.nickname
+
+  }).then(() => {
+    goToLogin()
+  }).catch(() => {
+    console.log("회원가입 에러 발생");
+  });
+
 
 }
 </script>
@@ -130,7 +165,8 @@ const register = () => {
             type="password"
         ></v-text-field>
       </v-col>
-      <v-col class="d-flex align-center redText"><p>비밀번호가 일치하지 않습니다.</p></v-col>
+      <v-col v-if="regForm.passwordCheck !== '' && regForm.password !== regForm.passwordCheck"
+             class="d-flex align-center redText"><p>비밀번호가 일치하지 않습니다.</p></v-col>
     </v-row>
     <v-row>
       <v-col :cols="4" offset="4">

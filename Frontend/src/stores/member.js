@@ -3,7 +3,7 @@ import {useRouter} from "vue-router";
 import {defineStore} from "pinia";
 import {jwtDecode} from "jwt-decode";
 
-import {userConfirm, findById, logout, checkDupId, checkDupEmail, checkDupNick} from "@/api/memberApi";
+import {userConfirm, findById, logout, checkDupId, checkDupEmail, checkDupNick, register} from "@/api/memberApi";
 import {httpStatusCode} from "@/util/http-status";
 
 export const useMemberStore = defineStore("memberStore", () => {
@@ -138,6 +138,18 @@ export const useMemberStore = defineStore("memberStore", () => {
         });
     }
 
+    const registerNewMember = async (param) => {
+        return new Promise((resolve, reject) => {
+             register(param,
+                (response) => {
+                    alert(response.data.data.name +  "님 회원가입 성공하셨습니다.\n로그인 화면으로 이동합니다.");
+                    resolve(response);
+                }, (error) => {
+                    console.log(error);
+                    reject(error);
+                });
+        });
+    }
     const userLogout = async () => {
 
         sessionStorage.removeItem("accessToken");
@@ -159,6 +171,7 @@ export const useMemberStore = defineStore("memberStore", () => {
         userLogout,
         checkId,
         checkEmail,
-        checkNick
+        checkNick,
+        registerNewMember
     };
 });
