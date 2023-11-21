@@ -1,11 +1,16 @@
 <script setup>
+import {useMemberStore} from "@/stores/member";
 import {useRoute, useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
 import axios from "axios";
 
+const memberStore = useMemberStore();
 const route = useRoute();
 const router = useRouter();
 const board = ref();
+const isLogin = memberStore.isLogin;
+const memberId = memberStore.userInfo.memberId;
+
 
 const fetchDataFromServer = async () => {
   try {
@@ -19,7 +24,9 @@ const fetchDataFromServer = async () => {
 
 
 const goToListPage = () => {
-  router.push('/board');
+  router.push('/board').then(() => {
+    window.scrollTo(0, 0);
+  });
 };
 
 const formatDate = (dateTimeString) => {
@@ -32,6 +39,12 @@ const formatDate = (dateTimeString) => {
     minute: "2-digit",
   });
   return formattedTime;
+};
+
+const goToEditPage = async (board) => {
+  router.push(`/board/edit/${route.params.boardId}`).then(() => {
+    window.scrollTo(0, 0);
+  });
 };
 
 const deleteBoard = async () => {
@@ -88,8 +101,9 @@ const goToTripStation = () => {
     <v-row class="mt-6 mb-6">
       <v-col cols="12" class="text-center">
         <v-btn class="custom-btn mr-3 Jalnan" @click="goToListPage">글목록</v-btn>
-        <v-btn class="custom-btn mr-3 Jalnan" @click="goToEditPage">글수정</v-btn>
-        <v-btn class="custom-btn Jalnan" @click="deleteBoard">글삭제</v-btn>
+        <v-btn class="custom-btn mr-3 Jalnan" @click="() => goToEditPage(board)" v-if="isLogin && memberId === board.memberId">글수정
+        </v-btn>
+        <v-btn class="custom-btn Jalnan" @click="deleteBoard" v-if="isLogin && memberId === board.memberId">글삭제</v-btn>
       </v-col>
     </v-row>
   </v-container>

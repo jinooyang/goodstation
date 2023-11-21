@@ -51,6 +51,10 @@ const router = createRouter({
             path: '/board/write',
             name: 'write',
             component: () => import('../views/Board/BoardWrite.vue')
+        }, {
+            path: '/board/edit/:boardId',
+            name: 'update',
+            component: () => import('../views/Board/BoardUpdate.vue')
         }
     ]
 })
