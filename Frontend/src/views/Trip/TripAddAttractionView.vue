@@ -118,7 +118,7 @@ onMounted(() => {
               v-btn--variant-elevated
               size="large"
               color="#f7323f"
-              @click="addAttractions" 
+              @click="addAttractions"
               align="center"
           >
             여행 떠나기 =>
