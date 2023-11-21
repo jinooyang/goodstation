@@ -46,7 +46,7 @@
 //        //관광지별 좌표를 가져온다, 같은 시 안에 있는 관광지중에서 거리가 x인 관광지를 가져온다
 //        //거리 계산해서 Map<StationId, List<ContentID>>에 넣는다
 //        //DB에 저장한다
-////        makeStationAttractionTable(ac);
+//        makeStationAttractionTable(ac);
 //
 //        System.out.println("fin");
 //
@@ -109,9 +109,9 @@
 //                Double longAtt = att.getLongitude().doubleValue();
 //                Double latAtt = att.getLatitude().doubleValue();
 //                //long x, lat y
-//                Double dist = distanceInKilometerByHaversine(longSt, latSt,longAtt,latAtt);
+//                Double dist = distanceInKilometerByHaversine(latSt, longSt,latAtt,longAtt);
 ////                System.out.println(dist);
-//                if(dist<15.0){
+//                if(dist<10.0){
 //                    attractionNearStation.get(stationId).add(att.getContent_id());
 //                }
 //

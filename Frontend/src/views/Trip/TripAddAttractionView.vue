@@ -100,8 +100,9 @@ onMounted(() => {
     <v-row>
       <TripAddAttractionLeftSideBar :station-list="stationList" :listitems="leftSideBarList"
                                     @removeLeftSideBarItem="removeLeftSideBarItem"/>
-      <TripAddAttractionCenter :station-list="stationList" :att-loading="attLoading"
-                               @changeAttractionList="changeAttractionList" @changeLoading="changeLoading"/>
+      <TripAddAttractionCenter :station-list="stationList" :att-loading="attLoading" :attraction-list="attractionList"
+                               @changeAttractionList="changeAttractionList" @changeLoading="changeLoading"
+                               @addLeftSideBar="addLeftSideBar"/>
       <TripAddAttractionRightSideBar :attraction-list="attractionList" :att-loading="attLoading"
                                      @addLeftSideBar="addLeftSideBar"/>
     </v-row>

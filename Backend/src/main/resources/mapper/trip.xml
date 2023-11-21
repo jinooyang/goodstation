@@ -76,6 +76,7 @@
              station_info b
         where a.station_id = b.station_id
           and trip_id = #{tripId}
+        order by start_date is null desc, start_date
 
     </select>
 

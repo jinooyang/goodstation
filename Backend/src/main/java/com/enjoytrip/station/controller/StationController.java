@@ -63,6 +63,7 @@ public class StationController {
             rm.setStatus(StatusEnum.OK);
             return new ResponseEntity<>(rm, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             rm.setStatus(StatusEnum.FAIL);
             rm.setMessage("역 근처 관광지 데이터 조회 실패.. 역 아이디를 확인해주세요");
             return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);

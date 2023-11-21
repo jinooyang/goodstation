@@ -10,4 +10,10 @@ public class StationTourSpotDto {
     private Double longitude;
     private Double latitude;
     private String address;
+    private String img;
+    private String img2;
+    private String content;
+    private Double stationLng;
+    private Double stationLat;
+    private String stationName;
 }
