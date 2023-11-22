@@ -1,9 +1,18 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import {useTripStore} from "@/stores/trip";
+import {useRoute, useRouter} from "vue-router";
 
 const tripStore = useTripStore();
 
+const route = useRoute();
+const router = useRouter();
+
+const goToHome = () => {
+  router.push("/").then(()=>{
+    window.scrollTo(0,0);
+  });
+};
 
 const items = [
   {
@@ -187,7 +196,7 @@ const parseAndFormatDateWithTime = (dateString) => {
     </v-col>
     <div class="divider div-transparent div-dot"></div>
     <div class="text-center mt-9 pt-6 mb-9">
-      <v-btn color="#f7323f" class="Jalnan me-5">홈으로</v-btn>
+      <v-btn color="#f7323f" class="Jalnan me-5" @click="goToHome">홈으로</v-btn>
       <v-btn color="#f7323f" class="Jalnan ms-5">홈으로</v-btn>
     </div>
   </v-container>
