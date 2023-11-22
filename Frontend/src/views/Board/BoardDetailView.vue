@@ -98,6 +98,16 @@ const deleteComment = async (comment) => {
   }
 };
 
+const like = async (memberId) => {
+  console.log(memberId);
+  try {
+    const response = await axios.put(`http://localhost:8080/board/${route.params.boardId}/like?memberId=${memberId}`);
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 onMounted(() => {
   fetchDataFromServer();
   fetchComments();
@@ -139,7 +149,13 @@ const goToTripStation = () => {
         <!--        <v-img src="src/assets/goodchoice.jpg"/>-->
       </div>
     </div>
+
     <v-row class="mt-6 mb-6">
+      <v-col cols="12" class="text-center mb-5  " >
+        <v-btn  icon color="white" @click="like(memberId)">
+          <v-icon color="red">mdi-heart</v-icon>
+        </v-btn>
+      </v-col>
       <v-col cols="12" class="text-center">
         <v-btn class="custom-btn mr-3 Jalnan" @click="goToListPage">글목록</v-btn>
         <v-btn class="custom-btn mr-3 Jalnan" @click="() => goToEditPage(board)"
@@ -168,9 +184,9 @@ const goToTripStation = () => {
               </v-card-text>
               <v-card-actions>
                 <v-col class="text-end">
-                  <v-btn small class="mr-2 custom-btn Jalnan" @click="editComment(comment)"
-                         v-if="isLogin && memberId === comment.memberId">댓글 수정
-                  </v-btn>
+<!--                  <v-btn small class="mr-2 custom-btn Jalnan" @click="editComment(comment)"-->
+<!--                         v-if="isLogin && memberId === comment.memberId">댓글 수정-->
+<!--                  </v-btn>-->
                   <v-btn small class="custom-btn Jalnan" @click="deleteComment(comment)"
                          v-if="isLogin && memberId === comment.memberId">댓글 삭제
                   </v-btn>
@@ -183,7 +199,7 @@ const goToTripStation = () => {
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="8" offset="2">
+      <v-col cols="11" offset="1">
         <v-textarea hide-details color="red-accent-3" label="댓글을 입력하세요" variant="outlined" v-model="newComment"
                     rows="3"></v-textarea>
       </v-col>
