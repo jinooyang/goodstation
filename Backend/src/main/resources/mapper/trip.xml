@@ -20,6 +20,26 @@
         <result column="trip_id" property="tripId"></result>
         <result column="start_date" property="startDate"></result>
         <result column="end_date" property="endDate"></result>
+        <result column = "train_type" property="trainType"></result>
+    </resultMap>
+
+    <resultMap id="stationsInTrip" type="stationsInTripDto">
+        <result column="name" property="name"></result>
+        <result column="station_id" property="stationId"></result>
+    </resultMap>
+
+    <resultMap id="tripResult" type="tripResultDto">
+        <result column="trip_id" property="tripId"></result>
+        <result column="name" property="stationName"></result>
+        <result column="station_id" property="stationId"></result>
+        <result column="start_date" property="startDate"></result>
+        <result column="end_date" property="endDate"></result>
+        <result column="train_type" property="trainType"></result>
+        <result column="content_id" property="contentId"></result>
+        <result column="title" property="title"></result>
+        <result column="addr1" property="address"></result>
+        <result column="first_image" property="img"></result>
+
     </resultMap>
 
     <!-- 새로운 여행 생성하기 -->
@@ -51,14 +71,15 @@
 
     <!-- 기차역 추가하기 -->
     <insert id="insertTripStation" parameterType="list">
-        insert into trip_station (trip_id, station_id, start_date,end_date)
+        insert into trip_station (trip_id, station_id, start_date,end_date, train_type)
         values
         <foreach collection="list" item="item" separator=",">
             (
             #{item.tripId},
             #{item.stationId},
             #{item.startDate},
-            #{item.endDate}
+            #{item.endDate},
+            #{item.trainType}
             )
         </foreach>
 
@@ -71,12 +92,13 @@
     </delete>
 
     <select id="searchTripStation" parameterType="int" resultMap="tripStation">
-        select b.name, a.station_id, a.trip_id, a.start_date, a.end_date
+        select b.name, a.station_id, a.trip_id, a.start_date, a.end_date, a.train_type
         from trip_station a,
              station_info b
         where a.station_id = b.station_id
           and trip_id = #{tripId}
-        order by start_date is null desc, start_date
+        order by a.start_date
+
 
     </select>
 
@@ -103,6 +125,29 @@
         where trip_id = #{tripId}
 
     </delete>
+    <select id="getResultByTripId" parameterType="tripIdAndStationIdDto" resultMap="tripResult">
+        select a.trip_id, c.name, c.station_id, a.start_date, a.end_date, a.train_type, b.content_id, d.title, d.addr1, d.first_image
+        from trip_station a,
+             trip_attraction b,
+             station_info c,
+             attraction_info d
+        where a.trip_id = b.trip_id
+          and a.station_id = b.station_id
+          and c.station_id = a.station_id
+          and b.content_id = d.content_id
+
+          and a.trip_id = #{tripId}
+          and a.station_id = #{stationId}
+        order by start_date asc, order_num asc;
+    </select>
+    <select id="searchStationsInTrip" parameterType="int" resultMap="stationsInTrip">
+        select distinct(b.name), a.station_id
+        from trip_station a,
+             station_info b
+        where a.station_id = b.station_id
+          and trip_id = #{tripId};
+    </select>
+
 
 
 </mapper>

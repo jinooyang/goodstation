@@ -8,6 +8,15 @@ import TripAddAttractionRightSideBar from "@/components/TripAddAttraction/TripAd
 import axios from "axios";
 
 import {useTripStore} from "@/stores/trip";
+import {useRoute, useRouter} from "vue-router";
+const route = useRoute();
+const router = useRouter();
+
+const goToResult = () => {
+  router.push("/result").then(() => {
+    window.scrollTo(0, 0);
+  });
+};
 
 const tripStore = useTripStore();
 const attLoading = ref(false);
@@ -74,6 +83,7 @@ const addAttractions = async () => {
     list: leftSideBarList.value,
   }).then((response) => {
     console.log(response.data.message);
+    goToResult();
   }).catch((error) => {
     console.log("failed to add attractions to database");
   })
@@ -87,6 +97,17 @@ onMounted(() => {
 
 });
 
+const centerPos = ref({
+  lat: 37.555917612,
+  long: 126.970381295,
+})
+
+const changeCenter=(val) => {
+centerPos.value = {...val};
+  // centerPos.value.lat = val.latitude;
+  // centerPos.value.long = val.longitude;
+  console.log(centerPos.value);
+}
 </script>
 
 <template>
@@ -101,10 +122,12 @@ onMounted(() => {
       <TripAddAttractionLeftSideBar :station-list="stationList" :listitems="leftSideBarList"
                                     @removeLeftSideBarItem="removeLeftSideBarItem"/>
       <TripAddAttractionCenter :station-list="stationList" :att-loading="attLoading" :attraction-list="attractionList"
+                               :center-pos="centerPos"
                                @changeAttractionList="changeAttractionList" @changeLoading="changeLoading"
                                @addLeftSideBar="addLeftSideBar"/>
       <TripAddAttractionRightSideBar :attraction-list="attractionList" :att-loading="attLoading"
-                                     @addLeftSideBar="addLeftSideBar"/>
+                                     @addLeftSideBar="addLeftSideBar"
+                                    @changeCenter="changeCenter"/>
     </v-row>
     <v-row class="mb-5 mt-7">
       <v-col :cols="4" offset="4">

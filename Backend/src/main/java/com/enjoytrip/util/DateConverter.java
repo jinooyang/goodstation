@@ -3,6 +3,7 @@ package com.enjoytrip.util;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -35,12 +36,16 @@ public class DateConverter {
 
 
 
-    public static Date parseDateString(String dateString) {
+    public static Timestamp parseDateString(String dateString) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-
+        System.out.println("입력 받음 : " + dateString);
+        System.out.println("dateFormat : " + dateFormat);
         try {
-            java.util.Date parsedDate = dateFormat.parse(dateString);
-            return new Date(parsedDate.getTime());
+            java.util.Date utilDate = dateFormat.parse(dateString);
+            System.out.println("반환되는 날 : " + utilDate);
+            Timestamp timestamp = new Timestamp(utilDate.getTime());
+            System.out.println("!!!+" + timestamp);
+            return timestamp;
         } catch (ParseException e) {
             e.printStackTrace();
             return null; // 예외 발생 시 null 반환 또는 다른 적절한 처리

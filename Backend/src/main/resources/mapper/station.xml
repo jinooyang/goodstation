@@ -46,18 +46,21 @@
     </select>
 
     <!-- 역근처 관광지 조회하기 -->
-    <select id = "selectAttractionNearStation" parameterType = "string" resultMap = "stationTourSpot">
+    <select id = "selectAttractionNearStation" parameterType = "map" resultMap = "stationTourSpot">
         select a.content_id content_id, b.title title,
-               a.station_id station_id, b.longitude,
-               b.latitude, b.addr1, b.first_image,
-               b.first_image2, c.overview,
-               d.longitude stationLng, d.latitude stationLat, d.name stationName
+        a.station_id station_id, b.longitude,
+        b.latitude, b.addr1, b.first_image,
+        b.first_image2, c.overview,
+        d.longitude stationLng, d.latitude stationLat, d.name stationName
         from station_tour_spot a, attraction_info b, attraction_description c, station_info d
         where a.content_id = b.content_id
-          and b.content_id = c.content_id
-          and a.station_id = d.station_id
-          and a.station_id = #{stationId}
-          and b.content_type_id = 12
+        and b.content_id = c.content_id
+        and a.station_id = d.station_id
+        and a.station_id = #{station}
+        and b.content_type_id = #{content}
+        <if test="search != null">
+            and b.title like CONCAT('%', #{search}, '%')
+        </if>
         order by b.title asc;
     </select>
 

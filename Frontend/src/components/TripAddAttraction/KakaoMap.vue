@@ -6,7 +6,7 @@ const positions = ref([]);
 const markers = ref([]);
 const overlay = ref(null); // overlay 변수 추가
 
-const props = defineProps({attractionList: Array, selectStation: Object});
+const props = defineProps({attractionList: Array, selectStation: Object, centerPos: Object});
 const emit = defineEmits(["addToLeftSideBar"]);
 
 const dialog = ref(false);
@@ -16,6 +16,50 @@ const dialogText = ref("");
 const dialogAddress = ref("");
 const dialogImg = ref("");
 const dialogImg2 = ref("");
+
+
+watch(
+    () => props.centerPos,
+    () => {
+      overlay.value.setMap(null);
+      var moveLatLong = new kakao.maps.LatLng(props.centerPos.latitude, props.centerPos.longitude);
+      map.panTo(moveLatLong);
+      overlay.value = new kakao.maps.CustomOverlay({ // overlay 초기화
+        content: '',
+        map: map,
+      });
+      const content = `
+        <div class="wrap">
+          <div class="info">
+            <div class="title">
+              ${props.centerPos.title}
+              <div class="close" onclick="closeOverlay()" title="닫기"></div>
+            </div>
+            <div class="body">
+              <div class="img">
+                <img src="${props.centerPos.img || '/src/assets/character2.jpeg'}" width="73" height="70">
+              </div>
+              <div class="desc">
+                <div class="ellipsis">${props.centerPos.address}</div>
+                <div style="text-align: center; padding-top: 5px;">
+                <button class = "mycustbtn" onclick="openDialog(${props.centerPos.index})"">상세보기</button>
+                <button class = "mycustbtn2" onclick="addToLeftSideBar(${props.centerPos.index})" >추가하기</button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      overlay.value.setContent(content);
+      overlay.value.setPosition(moveLatLong);
+      overlay.value.setMap(map);
+
+
+    },
+    {deep: true}
+);
+
 
 watch(
     () => props.selectStation.value,
@@ -118,10 +162,11 @@ const loadMarkers = () => {
 `;
 
     kakao.maps.event.addListener(marker, "click", function () {
+      overlay.value.setMap(null);
       overlay.value.setContent(content);
       overlay.value.setPosition(marker.getPosition());
       overlay.value.setMap(map);
-
+      map.panTo(marker.getPosition());
       // closeOverlay(); // closeOverlay 함수 호출 추가
     });
 
@@ -154,6 +199,9 @@ const loadMarkers = () => {
   markers.value.push(marker);
   // map.setBounds(bounds);
   // 위도와 경도 좌표 생성
+
+
+  //중앙 좌표 결정 짓는 부분!!!!
   var latlng = new kakao.maps.LatLng(positions.value[0].att.stationLat, positions.value[0].att.stationLng);
 
 // 지도의 중심을 이동
@@ -176,12 +224,6 @@ const openDialog = (index) => {
   dialogImg.value = props.attractionList[index].img;
   dialogImg2.value = props.attractionList[index].img2;
   dialog.value = true;
-
-  // const dialogTitle = ref("");
-  //
-  // const dialogText = ref("");
-  // const dialogAddress = ref("");
-
 }
 window.openDialog = openDialog;
 const addToLeftSideBar = (index) => {
@@ -329,9 +371,7 @@ window.closeOverlay = function () {
 }
 
 .info .title {
-//padding: 0 0 0 10px; background: #f7323f;
-  border-bottom: 1px solid #ddd;
-  font-size: 18px;
+//padding: 0 0 0 10px; background: #f7323f; border-bottom: 1px solid #ddd; font-size: 18px;
   font-weight: bold;
   color: white;
   overflow: hidden;

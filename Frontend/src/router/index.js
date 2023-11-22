@@ -55,6 +55,10 @@ const router = createRouter({
             path: '/board/edit/:boardId',
             name: 'update',
             component: () => import('../views/Board/BoardUpdate.vue')
+        }, {
+            path: '/result',
+            name: 'result',
+            component: () => import('../views/Trip/Result.vue')
         }
     ]
 })

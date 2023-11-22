@@ -9,13 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Null;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/station")
@@ -52,12 +50,17 @@ public class StationController {
 
     //역근처 관광지 조회하기
     //역 아이디가 주어졌을 때 해당역 근처 데이터를 보여준다
-    @GetMapping("/attraction/{stationId}")
-    public ResponseEntity<ResponseMessage> getAttractionNearStation(@PathVariable String stationId) {
+    @PostMapping("/attraction")
+    public ResponseEntity<ResponseMessage> getAttractionNearStation(@RequestBody Map<String,String> map) {
         ResponseMessage rm = new ResponseMessage();
         try {
-
-            List<StationTourSpotDto> list = stationService.selectAttractionNearStation(stationId);
+            String station = map.get("station");
+            String content = map.get("content");
+            String search = map.get("search");
+            System.out.println("station : " + station);
+            System.out.println("content : " + content);
+            System.out.println("search : " + search);
+            List<StationTourSpotDto> list = stationService.selectAttractionNearStation(map);
             rm.setData("list" , list);
             rm.setMessage("역 근처 관광지 데이터 조회 성공!");
             rm.setStatus(StatusEnum.OK);

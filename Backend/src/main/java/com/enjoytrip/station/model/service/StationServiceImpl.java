@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +27,8 @@ public class StationServiceImpl implements StationService{
     }
 
     @Override
-    public List<StationTourSpotDto> selectAttractionNearStation(String stationId) throws SQLException {
-        return stationMapper.selectAttractionNearStation(stationId);
+    public List<StationTourSpotDto> selectAttractionNearStation(Map<String,String> map) throws SQLException {
+        return stationMapper.selectAttractionNearStation(map);
     }
 
     @Override

@@ -6,7 +6,7 @@ import {
     getTrainListFromApi,
     insertStationToDB,
     getTripStationInfo,
-    getAttractionNearStation, insertAttraction
+    getAttractionNearStation, insertAttraction, getTripResult
 } from "@/api/tripApi";
 import {httpStatusCode} from "@/util/http-status";
 import {ref} from "vue";
@@ -78,9 +78,9 @@ export const useTripStore = defineStore("useTripStore", {
             });
         },
 
-        async getAttNearSt(stationId) {
+        async getAttNearSt(param) {
             return new Promise((resolve, reject) => {
-                getAttractionNearStation(stationId,
+                getAttractionNearStation(param,
                     (response) => {
                         resolve(response);
                     }, (error) => {
@@ -110,6 +110,21 @@ export const useTripStore = defineStore("useTripStore", {
                         reject(error);
                     }
                 )
+            });
+        },
+
+        async getResult(val) {
+            // console.log("getResult of tripId : " + this.newTripId.value);
+            return new Promise((resolve, reject) => {
+                getTripResult(
+                    val,
+                    (response) => {
+                        resolve(response)
+                    },
+                    (error) => {
+                        reject(error)
+                    }
+                );
             });
         },
 

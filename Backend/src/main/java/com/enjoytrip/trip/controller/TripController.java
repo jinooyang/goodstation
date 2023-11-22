@@ -102,7 +102,8 @@ public class TripController {
     @PostMapping("/station")
     @Transactional
     public ResponseEntity<ResponseMessage> addStationsToTrip(@RequestBody Map<String, Object> map) {
-//        System.out.println("들어왔습니다!!");
+        System.out.println("들어왔습니다!!");
+        System.out.println(map.toString());
         ResponseMessage rm = new ResponseMessage();
         try {
             tripService.deleteTripStation((Integer) map.get("tripId"));
@@ -164,7 +165,7 @@ public class TripController {
 
     @GetMapping("/tripStationList/{tripId}")
     public ResponseEntity<ResponseMessage> getTrainListFromApi(@PathVariable Integer tripId) {
-        System.out.println("tripId : " +tripId);
+        System.out.println("tripId : " + tripId);
         ResponseMessage rm = new ResponseMessage();
         try {
             List<TripStationDtoWithName> list = tripService.searchTripStation(tripId);
@@ -173,6 +174,23 @@ public class TripController {
             rm.setData("tripId", tripId);
             return new ResponseEntity<>(rm, HttpStatus.OK);
         } catch (Exception e) {
+            return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @GetMapping("/result/{tripId}")
+    public ResponseEntity<ResponseMessage> getResult(@PathVariable Integer tripId) {
+        ResponseMessage rm = new ResponseMessage();
+
+        try {
+            List<Map<String, Object>> list = tripService.getResult(tripId);
+            rm.setData("result", list);
+            rm.setStatus(StatusEnum.OK);
+            return new ResponseEntity<>(rm, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            rm.setStatus(StatusEnum.FAIL);
             return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);
         }
     }
@@ -206,6 +224,7 @@ public class TripController {
             urlBuilder.append("&" + URLEncoder.encode("depPlandTime", "UTF-8") + "=" + URLEncoder.encode(date, "UTF-8")); /*출발일(YYYYMMDD)*/
 //            urlBuilder.append("&" + URLEncoder.encode("trainGradeCode", "UTF-8") + "=" + URLEncoder.encode("00", "UTF-8")); /*차량종류코드*/
             URL url = new URL(urlBuilder.toString());
+            System.out.println(url);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-type", "application/json");

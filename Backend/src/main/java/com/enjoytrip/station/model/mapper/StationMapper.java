@@ -7,6 +7,7 @@ import org.apache.ibatis.jdbc.SQL;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface StationMapper {
@@ -14,7 +15,7 @@ public interface StationMapper {
 
     List<StationAndSidoDto> selectStationsBySidoCode(Integer sidoCode)throws SQLException;
 
-   List<StationTourSpotDto> selectAttractionNearStation(String stationId)throws SQLException;
+   List<StationTourSpotDto> selectAttractionNearStation(Map<String,String> map)throws SQLException;
 
    String selectStationByName(String name) throws SQLException;
 }

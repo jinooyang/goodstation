@@ -35,7 +35,7 @@ const removeThisTrain = (index)=>{
                   <div style="flex: 1">
                     <div class="font-weight-normal">
                       <strong class="Jalnan">
-                        {{ train.depplacename }} -> {{ train.arrplacename }}
+                        {{ train.depplacename }} -> {{ train.arrplacename }} ({{train.traingradename}})
                       </strong>
                     </div>
 

@@ -1,9 +1,6 @@
 package com.enjoytrip.trip.model.mapper;
 
-import com.enjoytrip.trip.model.dto.TripAttractionDto;
-import com.enjoytrip.trip.model.dto.TripDto;
-import com.enjoytrip.trip.model.dto.TripStationDto;
-import com.enjoytrip.trip.model.dto.TripStationDtoWithName;
+import com.enjoytrip.trip.model.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.jdbc.SQL;
 
@@ -30,4 +27,8 @@ public interface TripMapper {
     void deleteTripAttraction(Integer tripId);
 
     List<TripStationDtoWithName> searchTripStation(Integer tripId) throws SQLException;
+
+    List<StationsInTripDto> searchStationsInTrip(Integer tripId) throws SQLException;
+
+    List<TripResultDto> getResultByTripId(TripIdAndStationIdDto tripIdAndStationIdDto) throws  SQLException;
 }
