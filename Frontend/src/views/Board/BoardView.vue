@@ -46,7 +46,6 @@ onMounted(() => {
   </div>
   <v-container>
 
-
     <v-row class="mt-4">
 
       <v-col :cols="4" class="d-flex justify-center align-center" offset="4">
@@ -63,20 +62,13 @@ onMounted(() => {
     <v-row class="mb-2">
 
     </v-row>
-    <v-sheet
-        class="d-flex align-content-start flex-wrap justify-space-evenly"
-        min-height="200"
-    >
-      <v-sheet
-          v-for="item in items"
-          :key="item.id"
-          class="ma-2 pa-2"
-      >
-        <div @click="goToDetail(item.boardId)">
+    <v-row>
+      <v-col v-for="(item, index) in Array(8).fill().map((_, i) => items[i] || {})" :key="index" :cols="3">
+        <div v-if="item.boardId" @click="goToDetail(item.boardId)">
           <BoardItem :title="item.title" :memberId="item.memberId" />
         </div>
-      </v-sheet>
-    </v-sheet>
+      </v-col>
+    </v-row>
     <Pagenation v-model="page" />
   </v-container>
 </template>
