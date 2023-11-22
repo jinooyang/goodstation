@@ -23,4 +23,5 @@ public interface BoardMapper {
 
     List<BoardListDto> searchBoard(String searchType, String keyword);
 
+    void deleteAllCommentInBoard(int boardId);
 }
