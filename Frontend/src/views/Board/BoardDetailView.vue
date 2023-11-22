@@ -117,14 +117,19 @@ const getLikesCount = async () => {
 const fetchComments = async () => {
   try {
     const response = await axios.get(`http://localhost:8080/board/${route.params.boardId}/comments`);
-    comments.value = response.data.data.commentList.map(comment => ({
-      ...comment,
-      commentLikeCount: 0,
-    }));
+    const commentLikesPromises = response.data.data.commentList.map(async comment => {
+      const likesResponse = await axios.get(`http://localhost:8080/board/${route.params.boardId}/comments/${comment.commentId}/likes`);
+      return {
+        ...comment,
+        commentLikeCount: likesResponse.data,
+      };
+    });
+    comments.value = await Promise.all(commentLikesPromises);
   } catch (error) {
     console.error('댓글 데이터를 불러오는데 실패했습니다.', error);
   }
 };
+
 
 const likeComment = async (commentId) => {
   console.log(commentId);
