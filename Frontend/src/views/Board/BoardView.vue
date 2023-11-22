@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import { onMounted, ref, watch } from "vue";
 import axios from "axios";
 import BoardItem from "@/components/Board/BoardItem.vue";
 import {useRoute, useRouter} from "vue-router";
@@ -17,18 +17,24 @@ const goToWrite = () => {
 }
 const items = ref([{}]);
 
+const page = ref(1);
+
 const fetchDataFromServer = async () => {
   try {
-    const response = await axios.get('http://localhost:8080/board');
+    const response = await axios.get(`http://localhost:8080/board?pageNo=${page.value}`);
     items.value = response.data;
+    console.log("페이지 성공적으로 불러왔습니다.")
   } catch (error) {
     console.error('데이터를 불러오는데 실패했습니다.', error);
   }
 };
 
+watch(page, fetchDataFromServer);
+
 onMounted(() => {
   fetchDataFromServer();
 });
+
 </script>
 
 <template>
@@ -71,7 +77,7 @@ onMounted(() => {
         </div>
       </v-sheet>
     </v-sheet>
-    <Pagenation/>
+    <Pagenation v-model="page" />
   </v-container>
 </template>
 
@@ -94,9 +100,4 @@ th {
   color: rgb(255, 255, 255);
   caret-color: rgb(255, 255, 255);
 }
-
-
-
-
-
 </style>

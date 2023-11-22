@@ -77,4 +77,9 @@ public class BoardServiceImpl implements BoardService {
     public boolean existsBoard(int boardId) {
         return boardMapper.readBoard(boardId) != null;
     }
+
+    @Override
+    public int countBoard() {
+        return boardMapper.countBoard();
+    }
 }

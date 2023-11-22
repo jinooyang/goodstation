@@ -15,6 +15,7 @@ const comments = ref([]);
 const newComment = ref('');
 const isLiked = ref(false);
 
+
 const fetchDataFromServer = async () => {
   try {
     const response = await axios.get(`http://localhost:8080/board/${route.params.boardId}`);
@@ -208,8 +209,8 @@ const goToTripStation = () => {
     <v-row class="mt-6 mb-6">
       <v-col cols="12" class="text-center mb-5  " >
         <v-btn  icon color="white" @click="like(memberId)">
-          <v-icon color="red" v-if="isLiked">mdi-heart</v-icon>
-          <v-icon color="red" v-else>mdi-heart-outline</v-icon>
+          <v-icon color="red" v-if="isLiked">mdi-heart-outline</v-icon>
+          <v-icon color="red" v-else>mdi-heart</v-icon>
         </v-btn>
         <span class="ml-4 Jalnan">{{ likesCount }}</span>
       </v-col>
