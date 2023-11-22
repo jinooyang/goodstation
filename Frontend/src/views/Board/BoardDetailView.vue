@@ -13,6 +13,7 @@ const isLogin = memberStore.isLogin;
 const memberId = memberStore.userInfo.memberId;
 const comments = ref([]);
 const newComment = ref('');
+const isLiked = ref(false);
 
 const fetchDataFromServer = async () => {
   try {
@@ -103,14 +104,32 @@ const like = async (memberId) => {
   try {
     const response = await axios.put(`http://localhost:8080/board/${route.params.boardId}/like?memberId=${memberId}`);
     console.log(response.data);
+    await getLikesCount();
+    isLiked.value = !isLiked.value;
   } catch (error) {
-    console.error(error);
+    if (error.response && error.response.data) {
+      alert(error.response.data);
+    } else {
+      console.error(error);
+    }
   }
 };
 
-onMounted(() => {
+const likesCount = ref(0);
+
+const getLikesCount = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8080/board/${route.params.boardId}/likes`);
+    likesCount.value = response.data;
+  } catch (error) {
+    console.error('좋아요 수를 불러오는데 실패했습니다.', error);
+  }
+};
+
+onMounted(async () => {
   fetchDataFromServer();
   fetchComments();
+  await getLikesCount();
 });
 const goToTripStation = () => {
   router.push("/trip/create");
@@ -153,8 +172,10 @@ const goToTripStation = () => {
     <v-row class="mt-6 mb-6">
       <v-col cols="12" class="text-center mb-5  " >
         <v-btn  icon color="white" @click="like(memberId)">
-          <v-icon color="red">mdi-heart</v-icon>
+          <v-icon color="red" v-if="isLiked">mdi-heart</v-icon>
+          <v-icon color="red" v-else>mdi-heart-outline</v-icon>
         </v-btn>
+        <span class="ml-4 Jalnan">{{ likesCount }}</span>
       </v-col>
       <v-col cols="12" class="text-center">
         <v-btn class="custom-btn mr-3 Jalnan" @click="goToListPage">글목록</v-btn>
@@ -206,7 +227,7 @@ const goToTripStation = () => {
     </v-row>
     <v-row>
       <v-col cols="12" class="text-center">
-        <v-btn class="custom-btn Jalnan" @click="addComment">댓글 작성</v-btn>
+        <v-btn class="mb-5 custom-btn Jalnan" @click="addComment">댓글 작성</v-btn>
       </v-col>
     </v-row>
   </v-container>
