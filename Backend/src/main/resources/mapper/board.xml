@@ -3,6 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.enjoytrip.board.model.mapper.BoardMapper">
+
     <resultMap id="boardWriting" type="boardWritingDto">
         <result column="board_id" property="boardId"></result>
         <result column="title" property="title"></result>
@@ -26,6 +27,12 @@
         <result column="create_time" property="createTime"></result>
     </resultMap>
 
+    <resultMap id="boardUpdate" type="boardUpdateDto">
+        <result column="title" property="title"></result>
+        <result column="content" property="content"></result>
+        <result column="trip_id" property="tripId"></result>
+    </resultMap>
+
     <insert id="writeBoard" parameterType="boardWritingDto">
         <selectKey keyProperty="boardId" order="AFTER" resultType="int">
             SELECT LAST_INSERT_ID()
@@ -40,7 +47,7 @@
         where board_id = #{boardId}
     </select>
 
-    <update id="updateBoard" parameterType="boardWritingDto">
+    <update id="updateBoard" parameterType="boardUpdateDto">
         update board
         set title   = #{title},
             content = #{content},

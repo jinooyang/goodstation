@@ -2,6 +2,7 @@ package com.enjoytrip.board.controller;
 
 import com.enjoytrip.board.model.dto.BoardListDto;
 import com.enjoytrip.board.model.dto.BoardReadDto;
+import com.enjoytrip.board.model.dto.BoardUpdateDto;
 import com.enjoytrip.board.model.dto.BoardWritingDto;
 import com.enjoytrip.board.model.service.BoardService;
 import com.enjoytrip.boardLike.model.service.BoardLikeService;
@@ -31,9 +32,9 @@ public class BoardController {
         return boardService.readBoard(boardId);
     }
 
-    @PutMapping("/{boardId}")
-    public void updateBoard(@PathVariable int boardId, @Valid @RequestBody BoardWritingDto updatedBoardDto) {
-        boardService.updateBoard(boardId, updatedBoardDto);
+    @PutMapping("/edit/{boardId}")
+    public void updateBoard(@PathVariable int boardId, @Valid @RequestBody BoardUpdateDto boardUpdateDto) {
+        boardService.updateBoard(boardId, boardUpdateDto);
     }
 
     @DeleteMapping("/{boardId}")

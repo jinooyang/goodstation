@@ -1,11 +1,18 @@
 <script setup>
+import {useMemberStore} from "@/stores/member";
 import {useRoute, useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
 import axios from "axios";
+import {computed} from 'vue';
 
+const memberStore = useMemberStore();
 const route = useRoute();
 const router = useRouter();
 const board = ref();
+const isLogin = memberStore.isLogin;
+const memberId = memberStore.userInfo.memberId;
+const comments = ref([]);
+const newComment = ref('');
 
 const fetchDataFromServer = async () => {
   try {
@@ -17,9 +24,23 @@ const fetchDataFromServer = async () => {
   }
 };
 
+const fetchComments = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8080/board/${route.params.boardId}/comments`);
+    comments.value = response.data.data.commentList;
+  } catch (error) {
+    console.error('댓글 데이터를 불러오는데 실패했습니다.', error);
+  }
+};
+
+const reversedComments = computed(() => {
+  return [...comments.value].reverse();
+});
 
 const goToListPage = () => {
-  router.push('/board');
+  router.push('/board').then(() => {
+    window.scrollTo(0, 0);
+  });
 };
 
 const formatDate = (dateTimeString) => {
@@ -34,6 +55,12 @@ const formatDate = (dateTimeString) => {
   return formattedTime;
 };
 
+const goToEditPage = async (board) => {
+  router.push(`/board/edit/${route.params.boardId}`).then(() => {
+    window.scrollTo(0, 0);
+  });
+};
+
 const deleteBoard = async () => {
   try {
     await axios.delete(`http://localhost:8080/board/${route.params.boardId}`);
@@ -45,8 +72,45 @@ const deleteBoard = async () => {
   }
 };
 
+const addComment = async () => {
+  try {
+    const commentData = {
+      boardId: route.params.boardId,
+      content: newComment.value,
+      memberId: memberId
+    };
+    await axios.post(`http://localhost:8080/board/${route.params.boardId}/comments`, commentData);
+    console.log('댓글이 성공적으로 작성되었습니다.');
+    newComment.value = '';
+    await fetchComments();
+  } catch (error) {
+    console.error('댓글 작성 중 오류가 발생했습니다:', error);
+  }
+};
+
+const deleteComment = async (comment) => {
+  try {
+    await axios.delete(`http://localhost:8080/board/${route.params.boardId}/comments/${comment.commentId}`);
+    console.log('댓글이 성공적으로 삭제되었습니다.');
+    await fetchComments(); // 댓글 목록을 다시 불러옵니다.
+  } catch (error) {
+    console.error('댓글 삭제 중 오류가 발생했습니다:', error);
+  }
+};
+
+const like = async (memberId) => {
+  console.log(memberId);
+  try {
+    const response = await axios.put(`http://localhost:8080/board/${route.params.boardId}/like?memberId=${memberId}`);
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 onMounted(() => {
   fetchDataFromServer();
+  fetchComments();
 });
 const goToTripStation = () => {
   router.push("/trip/create");
@@ -80,16 +144,69 @@ const goToTripStation = () => {
       </v-col>
     </v-row>
     <div class="d-flex flex-column align-center justify-center ma-9 pa-9">
-      <div v-for="n in 3">
+      <div v-for="n in 1">
         <img src="../../assets/goodchoice.jpg" width="500"/>
         <!--        <v-img src="src/assets/goodchoice.jpg"/>-->
       </div>
     </div>
+
     <v-row class="mt-6 mb-6">
+      <v-col cols="12" class="text-center mb-5  " >
+        <v-btn  icon color="white" @click="like(memberId)">
+          <v-icon color="red">mdi-heart</v-icon>
+        </v-btn>
+      </v-col>
       <v-col cols="12" class="text-center">
         <v-btn class="custom-btn mr-3 Jalnan" @click="goToListPage">글목록</v-btn>
-        <v-btn class="custom-btn mr-3 Jalnan" @click="goToEditPage">글수정</v-btn>
-        <v-btn class="custom-btn Jalnan" @click="deleteBoard">글삭제</v-btn>
+        <v-btn class="custom-btn mr-3 Jalnan" @click="() => goToEditPage(board)"
+               v-if="isLogin && memberId === board.memberId">글수정
+        </v-btn>
+        <v-btn class="custom-btn Jalnan" @click="deleteBoard" v-if="isLogin && memberId === board.memberId">글삭제</v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
+  <v-container>
+    <v-row>
+      <v-col cols="11" offset="1">
+        <v-card v-for="comment in reversedComments" :key="comment.commentId" class="mb-5">
+          <v-row>
+            <v-col cols="9">
+              <v-card-title>
+                작성자 : {{ comment.memberId }}
+              </v-card-title>
+              <v-card-text>
+                댓글 내용 : {{ comment.content }}
+              </v-card-text>
+            </v-col>
+            <v-col cols="3" class="text-end">
+              <v-card-text>
+                작성 시간 : {{ formatDate(comment.create_time) }}
+              </v-card-text>
+              <v-card-actions>
+                <v-col class="text-end">
+<!--                  <v-btn small class="mr-2 custom-btn Jalnan" @click="editComment(comment)"-->
+<!--                         v-if="isLogin && memberId === comment.memberId">댓글 수정-->
+<!--                  </v-btn>-->
+                  <v-btn small class="custom-btn Jalnan" @click="deleteComment(comment)"
+                         v-if="isLogin && memberId === comment.memberId">댓글 삭제
+                  </v-btn>
+                </v-col>
+              </v-card-actions>
+            </v-col>
+          </v-row>
+        </v-card>
+
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="11" offset="1">
+        <v-textarea hide-details color="red-accent-3" label="댓글을 입력하세요" variant="outlined" v-model="newComment"
+                    rows="3"></v-textarea>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" class="text-center">
+        <v-btn class="custom-btn Jalnan" @click="addComment">댓글 작성</v-btn>
       </v-col>
     </v-row>
   </v-container>

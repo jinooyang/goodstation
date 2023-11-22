@@ -2,6 +2,7 @@ package com.enjoytrip.board.model.mapper;
 
 import com.enjoytrip.board.model.dto.BoardListDto;
 import com.enjoytrip.board.model.dto.BoardReadDto;
+import com.enjoytrip.board.model.dto.BoardUpdateDto;
 import com.enjoytrip.board.model.dto.BoardWritingDto;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,7 +15,7 @@ public interface BoardMapper {
 
     BoardReadDto readBoard(int boardId);
 
-    void updateBoard(BoardWritingDto boardUpdateDto);
+    void updateBoard(BoardUpdateDto boardUpdateDto);
 
     void deleteBoard(int boardId);
 

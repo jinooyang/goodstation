@@ -2,6 +2,7 @@ package com.enjoytrip.board.model.service;
 
 import com.enjoytrip.board.model.dto.BoardListDto;
 import com.enjoytrip.board.model.dto.BoardReadDto;
+import com.enjoytrip.board.model.dto.BoardUpdateDto;
 import com.enjoytrip.board.model.dto.BoardWritingDto;
 import com.enjoytrip.board.model.mapper.BoardMapper;
 import lombok.RequiredArgsConstructor;
@@ -37,15 +38,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void updateBoard(int boardId, BoardWritingDto updatedBoardDto) {
+    public void updateBoard(int boardId, BoardUpdateDto updatedBoardDto) {
         BoardReadDto boardReadDto = boardMapper.readBoard(boardId);
 
         if (boardReadDto == null) {
             throw new RuntimeException();
         }
-
-        BoardWritingDto boardUpdateDto = new BoardWritingDto(boardId, updatedBoardDto.getTitle(),
-                updatedBoardDto.getContent(), updatedBoardDto.getMemberId(), updatedBoardDto.getTripId());
+        BoardUpdateDto boardUpdateDto = new BoardUpdateDto(boardId, updatedBoardDto.getTitle(),
+                updatedBoardDto.getContent(), updatedBoardDto.getTripId());
 
         boardMapper.updateBoard(boardUpdateDto);
     }

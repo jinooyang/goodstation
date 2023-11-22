@@ -42,17 +42,20 @@ onMounted(() => {
 
 
     <v-row class="mt-4">
-      <v-col :cols="4" class="text-center" offset="4">
-        <v-row class="align-center">
-        <v-text-field color="red-accent-3" label="게시판 검색" variant="outlined" class="search-box"></v-text-field>
+
+      <v-col :cols="4" class="d-flex justify-center align-center" offset="4">
+        <v-text-field hide-details color="red-accent-3" label="게시판 검색" variant="outlined" class="search-box"></v-text-field>
         <v-btn class="search-btn Jalnan">검색</v-btn>
-        </v-row>
+
       </v-col>
-    </v-row>
-    <v-row class="mb-2">
-      <v-col :offset="11">
+
+      <v-col :cols="4" class = "d-flex align-center justify-center">
         <v-btn class="write-btn Jalnan" @click="goToWrite">글쓰기</v-btn>
       </v-col>
+
+    </v-row>
+    <v-row class="mb-2">
+
     </v-row>
     <v-sheet
         class="d-flex align-content-start flex-wrap justify-space-evenly"
@@ -77,13 +80,11 @@ onMounted(() => {
 th {
   font-family: Jalnan
 }
-.search-box {
-  margin-top: 10px;
-}
+
+
 .search-btn {
   height: 56px;
   width: 60px;
-  margin-top: -13px;
   background-color: rgb(247, 50, 63);
   color: rgb(255, 255, 255);
   caret-color: rgb(255, 255, 255);
@@ -93,4 +94,9 @@ th {
   color: rgb(255, 255, 255);
   caret-color: rgb(255, 255, 255);
 }
+
+
+
+
+
 </style>
