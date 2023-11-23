@@ -14,10 +14,11 @@ public class NewsDto {
     @NotBlank
     private String title;
 
-    private String memberRole;
-
     @NotBlank
     private String content;
 
     private String createTime;
+
+    private String memberRole;
+
 }

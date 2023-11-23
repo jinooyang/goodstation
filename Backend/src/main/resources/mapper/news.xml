@@ -17,7 +17,7 @@
     </insert>
 
     <select id="readNews" parameterType="int" resultType="newsDto">
-        select news_id, title, member_role, content, create_time
+        select news_id, title, content, create_time, member_role
         from news
         where news_id = #{newsId}
     </select>

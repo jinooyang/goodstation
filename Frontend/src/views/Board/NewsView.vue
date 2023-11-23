@@ -1,19 +1,29 @@
 <script setup>
 
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
+import axios from 'axios';
 import Pagenation from "@/components/Pagenation.vue";
 import {useMemberStore} from "@/stores/member";
 const memberStore = useMemberStore();
 const {userInfo} = memberStore;
 
-const contents = ref([{
-  boardId: 1,
-  title: '역이어때 공지사항',
-  createTime: '2023-08-10',
-  memberId: 'ADMIN',
-}]);
+const contents = ref([{}]);
 
 console.log("userInfo : " + userInfo);
+
+async function fetchDataFromServer() {
+  try {
+    const response = await axios.get("http://localhost:8080/news");
+    contents.value = response.data;
+    console.log("공지사항을 성공적으로 불러왔습니다.");
+  } catch (error) {
+    console.error("공지사항을 불러오는데 실패했습니다.", error);
+  }
+}
+
+onMounted(async () => {
+  fetchDataFromServer();
+});
 </script>
 
 <template>
@@ -42,9 +52,9 @@ console.log("userInfo : " + userInfo);
         </thead>
         <tbody>
         <tr v-for="content in contents" :key="content.boardId">
-          <td>{{ content.boardId }}</td>
+          <td>{{content.newsId}}</td>
           <td>{{ content.title }}</td>
-          <td>{{ content.memberId }}</td>
+          <td>{{ content.memberRole }}</td>
           <td>{{ content.createTime }}</td>
           <td><v-btn variant="outlined" color="red-accent-3">글보기</v-btn></td>
         </tr>
