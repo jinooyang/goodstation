@@ -1,6 +1,35 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import MainView from '../views/MainView.vue'
 
+import axios from "axios";
+const { VITE_VUE_API_URL, VITE_ELECTRIC_CHARGING_STATION_URL } = import.meta.env;
+const axiosInstance = axios.create({
+    baseURL: VITE_VUE_API_URL,
+});
+
+const checkAuth = (to, from, next) => {
+
+
+    axiosInstance.get('/auth/user', {
+        headers: {
+            "X-AUTH-TOKEN": sessionStorage.getItem("accessToken")
+        }
+    })
+        .then(response => {
+            if (response.data.data.auth) {
+                next();
+            } else {
+                alert("1로그인이 필요한 페이지입니다. 로그인 페이지로 이동합니다.");
+                next('/login');
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            alert("2로그인이 필요한 페이지입니다. 로그인 페이지로 이동합니다.");
+            next('/login');
+        });
+};
+
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -22,15 +51,19 @@ const router = createRouter({
         }, {
             path: '/trip/pickstation',
             name: 'tripstation',
-            component: () => import('../views/Trip/TripAddStationView.vue')
+            component: () => import('../views/Trip/TripAddStationView.vue'),
+            beforeEnter: checkAuth
         }, {
             path: '/trip/create',
             name: 'create',
-            component: () => import('../views/Trip/TripCreateView.vue')
+            component: () => import('../views/Trip/TripCreateView.vue'),
+            beforeEnter: checkAuth
+
         }, {
             path: '/trip/attraction',
             name: 'attraction',
-            component: () => import('../views/Trip/TripAddAttractionView.vue')
+            component: () => import('../views/Trip/TripAddAttractionView.vue'),
+            beforeEnter: checkAuth
         }, {
             path: '/register',
             name: 'register',
@@ -50,16 +83,27 @@ const router = createRouter({
         }, {
             path: '/board/write',
             name: 'write',
-            component: () => import('../views/Board/BoardWrite.vue')
+            component: () => import('../views/Board/BoardWrite.vue'),
+            beforeEnter: checkAuth
         }, {
             path: '/board/edit/:boardId',
             name: 'update',
-            component: () => import('../views/Board/BoardUpdate.vue')
+            component: () => import('../views/Board/BoardUpdate.vue'),
+            beforeEnter: checkAuth
+
         }, {
             path: '/result',
             name: 'result',
-            component: () => import('../views/Trip/Result.vue')
+            component: () => import('../views/Trip/Result.vue'),
+            beforeEnter: checkAuth
+        },
+        {
+            path : '/mypage',
+            name : 'mypage',
+            component : ()=>import('../views/MyPage/MyPage.vue'),
+            beforeEnter: checkAuth
         }
+
     ]
 })
 

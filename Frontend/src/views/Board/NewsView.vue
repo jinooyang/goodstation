@@ -2,6 +2,9 @@
 
 import {ref} from "vue";
 import Pagenation from "@/components/Pagenation.vue";
+import {useMemberStore} from "@/stores/member";
+const memberStore = useMemberStore();
+const {userInfo} = memberStore;
 
 const contents = ref([{
   boardId: 1,
@@ -11,7 +14,7 @@ const contents = ref([{
 
 }]);
 
-
+console.log("userInfo : " + userInfo);
 </script>
 
 <template>
@@ -19,6 +22,10 @@ const contents = ref([{
     <v-row>
       <v-col :cols="4" offset="4" class="text-center">
         <div class="title mt-9 mb-9 Jalnan"><h1>공지사항</h1></div>
+      </v-col>
+      <v-col :cols="2" offset="2" class = "d-flex align-center">
+
+        <v-btn v-if="userInfo!==null && userInfo.role==='ADMIN'" color="red-accent-3 Jalnan">글쓰기</v-btn>
       </v-col>
     </v-row>
 
@@ -31,7 +38,7 @@ const contents = ref([{
           <th class="text-center">제목</th>
           <th class="text-center">작성자</th>
           <th class="text-center">작성일</th>
-
+          <th class = "text-center">조회</th>
         </tr>
         </thead>
         <tbody>
@@ -40,6 +47,7 @@ const contents = ref([{
           <td>{{ content.title }}</td>
           <td>{{ content.memberId }}</td>
           <td>{{ content.createTime }}</td>
+          <td><v-btn variant="outlined" color="red-accent-3">글보기</v-btn></td>
         </tr>
         <tr >
           <td></td>
