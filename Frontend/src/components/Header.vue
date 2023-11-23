@@ -4,30 +4,34 @@ import {useRoute, useRouter} from "vue-router";
 const route = useRoute();
 const router = useRouter();
 const goToTrip = () => {
-  router.push("/trip").then(()=>{
-    window.scrollTo(0,0);
+  router.push("/trip").then(() => {
+    window.scrollTo(0, 0);
   });
 };
 const goToHome = () => {
-  router.push("/").then(()=>{
-    window.scrollTo(0,0);
+  router.push("/").then(() => {
+    window.scrollTo(0, 0);
   });
 };
 const goToLogin = () => {
-  router.push("/login").then(()=>{
-    window.scrollTo(0,0);
+  router.push("/login").then(() => {
+    window.scrollTo(0, 0);
   });
 };
 
 const goToBoard = () => {
-  router.push("/board").then(()=>{
-    window.scrollTo(0,0);
+  router.push("/board").then(() => {
+    window.scrollTo(0, 0);
   });
 }
-
+const goToMyPage=()=>{
+  router.push("/mypage").then(() => {
+    window.scrollTo(0, 0);
+  });
+}
 const goToNews = () => {
-  router.push("/news").then(()=>{
-    window.scrollTo(0,0);
+  router.push("/news").then(() => {
+    window.scrollTo(0, 0);
   });
 }
 import {useMemberStore} from "@/stores/member";
@@ -38,8 +42,8 @@ const {userLogout} = memberStore;
 const logout = () => {
   userLogout();
   alert("로그아웃");
-  router.push("/").then(()=>{
-    window.scrollTo(0,0);
+  router.push("/").then(() => {
+    window.scrollTo(0, 0);
   });
 }
 
@@ -50,10 +54,10 @@ const logout = () => {
   <v-app-bar scroll-behavior="elevate" class="cust-app-bar">
     <v-container>
       <v-row align="center">
-        <v-col class="jalnan">
+        <v-col :cols="4" class="jalnan">
           <v-btn @click="goToHome"><h1>역이어때.</h1></v-btn>
         </v-col>
-        <v-col class="buttons">
+        <v-col :cols="8" class="buttons">
           <v-btn @click="goToNews">
             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
               <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
@@ -101,6 +105,14 @@ const logout = () => {
             &nbsp로그인
           </v-btn
           >
+
+          <v-btn @click="goToMyPage" v-if="memberStore.isLogin">
+
+            <v-icon>mdi-clipboard-account</v-icon>
+            &nbsp마이페이지
+          </v-btn>
+
+
           <v-btn @click="logout" v-if="memberStore.isLogin">
             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
               <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->

@@ -47,6 +47,7 @@ export const useMemberStore = defineStore("memberStore", () => {
                     isValidToken.value = true;
                     sessionStorage.setItem("accessToken", accessToken);
                     // sessionStorage.setItem("refreshToken", refreshToken);
+                    getUserInfo(sessionStorage.getItem("accessToken"));
                 } else {
                     console.log("FAIL!!!!!!!");
                     isLogin.value = false;
@@ -61,7 +62,7 @@ export const useMemberStore = defineStore("memberStore", () => {
     };
 
     const getUserInfo = (token) => {
-        // console.log(token);
+        console.log(token);
         let decodeToken = jwtDecode(token);
         findById(
             decodeToken.sub,
@@ -78,6 +79,7 @@ export const useMemberStore = defineStore("memberStore", () => {
                     console.log("유저 정보 없음!!!!");
                     isValidToken.value = false;
                 }
+                console.log("userinfo저장된 내용 : " + userInfo.value.role)
             },
             async (error) => {
                 console.error(
