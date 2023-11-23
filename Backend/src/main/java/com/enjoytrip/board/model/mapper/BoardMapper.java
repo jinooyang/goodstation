@@ -21,9 +21,11 @@ public interface BoardMapper {
 
     List<BoardListDto> getBoardList(int pageSize, int offset);
 
-    List<BoardListDto> searchBoard(String searchType, String keyword);
+    List<BoardListDto> searchBoard(String searchType, String keyword, int pageSize, int offset);
 
     void deleteAllCommentInBoard(int boardId);
 
     int countBoard();
+
+    int countSearchResults(String searchType, String keyword);
 }

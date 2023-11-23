@@ -88,7 +88,26 @@
                 and content like concat('%', #{keyword}, '%')
             </if>
         </where>
+        order by board_id desc
+        limit #{pageSize} offset #{offset};
     </select>
+
+    <select id="countSearchResults" parameterType="map" resultType="int">
+    select count(*)
+    from board
+    <where>
+        <if test="searchType == 'title'">
+            and title like concat('%', #{keyword}, '%')
+        </if>
+        <if test="searchType == 'memberId'">
+            and member_id like concat('%', #{keyword}, '%')
+        </if>
+        <if test="searchType == 'content'">
+            and content like concat('%', #{keyword}, '%')
+        </if>
+    </where>
+    </select>
+
     <select id="countBoard" resultType="int">
         SELECT COUNT(*)
         FROM board
