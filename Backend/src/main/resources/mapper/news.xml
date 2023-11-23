@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.enjoytrip.news.model.mapper.NewsMapper">
+    <resultMap id="newsReading" type="newsDto">
+        <result column="news_id" property="newsId"></result>
+        <result column="title" property="title"></result>
+        <result column="member_role" property="memberRole"></result>
+        <result column="content" property="content"></result>
+        <result column="create_time" property="createTime"></result>
+    </resultMap>
+
+    <insert id="writeNews" parameterType="newsDto">
+        insert into news (title, member_role, content)
+        values (#{title}, #{memberRole}, #{content})
+    </insert>
+
+    <select id="readNews" parameterType="int" resultType="newsDto">
+        select news_id, title, member_role, content, create_time
+        from news
+        where news_id = #{newsId}
+    </select>
+
+    <select id="getNewsList" resultType="newsDto">
+        select *
+        from news
+        order by news_id desc
+        limit #{pageSize} offset #{offset};
+    </select>
+
+</mapper>
