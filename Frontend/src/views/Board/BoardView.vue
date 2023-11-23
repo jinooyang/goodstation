@@ -20,6 +20,13 @@ const items = ref([{}]);
 
 const page = ref(1);
 
+const searchOptions = ref([
+  { text: '제목', value: 'title' },
+  { text: '내용', value: 'content' },
+  { text: '글쓴이', value: 'memberId' },
+]);
+
+
 const fetchDataFromServer = async () => {
   try {
     const response = await axios.get(`http://localhost:8080/board?pageNo=${page.value}`);
@@ -29,8 +36,26 @@ const fetchDataFromServer = async () => {
     console.error('데이터를 불러오는데 실패했습니다.', error);
   }
 };
-
 watch(page, fetchDataFromServer);
+
+const selectedOption = ref(searchOptions.value[0].value);
+const searchKeyword = ref(''); // 사용자가 입력한 검색어를 저장할 변수
+
+const searchBoard = async () => {
+  try {
+    const response = await axios.get('http://localhost:8080/board/search', {
+      params: {
+        searchType: selectedOption.value,
+        keyword: searchKeyword.value,
+      },
+    });
+    console.log("검색이 성공했습니다.")
+    return response.data;
+  } catch (error) {
+    console.error('검색 요청 중 오류가 발생했습니다.', error);
+  }
+};
+
 
 onMounted(() => {
   fetchDataFromServer();
@@ -50,19 +75,19 @@ onMounted(() => {
     <v-row no-gutters class="mt-4">
 
       <v-col class="mt-5 pl-3 d-flex justify-start align-center" :cols="2" offset="2">
-        <v-select :items="searchOptions" v-model="selectedOption" label="검색 옵션" color="red-accent-3" variant="outlined" class="search-option me-5"></v-select>
+        <v-select :items="searchOptions" v-model="selectedOption"
+                  label="검색 옵션" item-title="text" item-value="value"
+                  color="red-accent-3"  variant="outlined" class="search-option me-5"></v-select>
       </v-col>
       <v-col class="d-flex justify-start align-center" :cols="4">
-        <v-text-field hide-details color="red-accent-3" label="게시판 검색" variant="outlined" class="search-box"></v-text-field>
+        <v-text-field v-model="searchKeyword" hide-details color="red-accent-3" label="게시판 검색" variant="outlined" class="search-box"></v-text-field>
       </v-col>
       <v-col class="d-flex justify-start align-center" :cols="2">
-        <v-btn class="search-btn Jalnan">검색</v-btn>
+        <v-btn class="search-btn Jalnan" @click="searchBoard">검색</v-btn>
       </v-col>
       <v-col class="d-flex align-center justify-center" :cols="2">
         <v-btn class="write-btn Jalnan" @click="goToWrite">글쓰기</v-btn>
       </v-col>
-
-
 
     </v-row>
     <v-row class="mb-2">
