@@ -11,7 +11,6 @@ const contents = ref([{
   title: '역이어때 공지사항',
   createTime: '2023-08-10',
   memberId: 'ADMIN',
-
 }]);
 
 console.log("userInfo : " + userInfo);
