@@ -9,6 +9,7 @@ import com.enjoytrip.member.model.service.MemberService;
 import com.enjoytrip.response.ResponseMessage;
 import com.enjoytrip.response.StatusEnum;
 import com.enjoytrip.security.SecurityUser;
+import com.enjoytrip.trip.model.dto.TripDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -182,32 +184,32 @@ public class MemberController {
     }
 
 
-@PostMapping("/updatepassword")
-public ResponseEntity<ResponseMessage> updatePassword(@RequestBody Map<String,String> map){
-        ResponseMessage rm =  new ResponseMessage();
+    @PostMapping("/updatepassword")
+    public ResponseEntity<ResponseMessage> updatePassword(@RequestBody Map<String, String> map) {
+        ResponseMessage rm = new ResponseMessage();
 
-        try{
+        try {
             String password = map.get("password");
             System.out.println("pwd : " + password);
             String encodedpassword = passwordEncoder.encode(password);
 
-            map.put("password",encodedpassword);
+            map.put("password", encodedpassword);
 
             memberService.updateMemberPassword(map);
             rm.setMessage("비밀 번호 변경 성공");
             rm.setStatus(StatusEnum.OK);
-            return new ResponseEntity<>(rm,HttpStatus.OK);
-        }catch(Exception e){
+            return new ResponseEntity<>(rm, HttpStatus.OK);
+        } catch (Exception e) {
             e.printStackTrace();
             rm.setMessage("비밀번호 변경 실패");
             rm.setStatus(StatusEnum.FAIL);
             return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);
         }
 
-}
+    }
 
     @PostMapping("/updateInfo")
-    public ResponseEntity<ResponseMessage> updateMemberInfo(@RequestBody Map<String,String> map) {
+    public ResponseEntity<ResponseMessage> updateMemberInfo(@RequestBody Map<String, String> map) {
 //        System.out.println(securityUser.getMember().toString());
 //        System.out.println("여기까지는 들어온다");
 //        Map<String,String> map= (Map<String, String>) req.get("editUserInformation");
@@ -231,6 +233,26 @@ public ResponseEntity<ResponseMessage> updatePassword(@RequestBody Map<String,St
             rm.setMessage("회원 정보 조회 실패");
             return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);
         }
+    }
+
+
+    @GetMapping("/triplist/{memberId}")
+    public ResponseEntity<ResponseMessage> getMemberTripList(@PathVariable String memberId) {
+
+        ResponseMessage rm = new ResponseMessage();
+        try {
+
+            List<TripDto> list = memberService.getMemberTripList(memberId);
+            rm.setMessage("여행 가져오기 성공");
+            rm.setData("list", list);
+            rm.setStatus(StatusEnum.OK);
+            return new ResponseEntity<>(rm, HttpStatus.OK);
+        } catch (Exception e) {
+            rm.setMessage("여행가져오기 실패");
+            rm.setStatus(StatusEnum.FAIL);
+            return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);
+        }
+
     }
 
 

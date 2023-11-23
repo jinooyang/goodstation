@@ -84,6 +84,13 @@ public class TripServiceImpl implements TripService {
 
     }
 
+//    @Override
+//    public List<TripDto> getMemberTripList(String memberId) throws SQLException {
+//
+//
+//        return tripMapper.getMemberTripList(memberId);
+//    }
+
     @Override
     public void deleteTripStation(Integer tripId) throws SQLException {
         tripMapper.deleteTripStation(tripId);

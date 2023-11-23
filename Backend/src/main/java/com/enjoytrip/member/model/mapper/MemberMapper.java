@@ -1,9 +1,11 @@
 package com.enjoytrip.member.model.mapper;
 
 import com.enjoytrip.member.model.dto.MemberDto;
+import com.enjoytrip.trip.model.dto.TripDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 @Mapper
@@ -19,4 +21,6 @@ public interface MemberMapper {
     void updateMemberNameNickEmail(Map<String,String> map) throws Exception;
 
     void updateMemberPassword(Map<String,String> map) throws Exception;
+
+    List<TripDto> getMemberTripList(String memberId) throws  Exception;
 }

@@ -2,12 +2,23 @@
 
 import {onMounted, ref} from "vue";
 import axios from "axios";
+import {useTripStore} from "@/stores/trip";
+import {useRoute, useRouter} from "vue-router";
+const tripStore = useTripStore();
+const route = useRoute();
+const router = useRouter();
 
 const {VITE_VUE_API_URL} = import.meta.env;
 const axiosInstance = axios.create({
   baseURL: VITE_VUE_API_URL,
 });
-
+const goToResult = (index) => {
+  tripStore.newTripId = index;
+  console.log("마이페이지에서 변경된 newTripId : " , tripStore.newTripId.value);
+  router.push("/result").then(()=>{
+    window.scrollTo(0,0);
+  });
+};
 
 //비밀번호 관련!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 const passwordDialog = ref(false);
@@ -94,19 +105,8 @@ const updateUserInformation = () => {
 }
 
 
-//회원이 작성한 게시글 관련!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// const boardList = ref([]);
-// const getUserBoardList = ()=>{
-//   axiosInstance.get('/member/boardList',userInformation.value.memberId,      {
-//     headers: {
-//       "X-AUTH-TOKEN": sessionStorage.getItem("accessToken")
-//     }
-//   }).then((response)=>{
-//     boardList.value = response.data.data.boardList;
-//   }).catch((error)=>{
-//     console.log("회원 보드 정보 실패");
-//   });
-// }
+//회원 여행 관련!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+const tripList = ref([]);
 
 
 //onMounted!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -125,13 +125,28 @@ const getUserInformation = () => {
         userInformation.value.nickname = response.data.data.memberInfo.nickname;
         userInformation.value.email = response.data.data.memberInfo.email;
         userInformation.value.role = response.data.data.memberInfo.role;
-        console.log("변경된 유저 정보 : " + userInformation.value.memberInfo.name);
+        console.log("변경된 유저 정보 : " + userInformation.value.name);
+        getUserTrip();
       })
       .catch((error) => {
             console.log(error);
           }
       );
 }
+
+const getUserTrip = () => {
+  axiosInstance.get('/member/triplist/' + userInformation.value.memberId)
+      .then((response) => {
+        console.log("여행 목록 가져오기 성공!!");
+        console.log(response.data.data.list);
+        tripList.value = response.data.data.list;
+  })
+      .catch((error) => {
+        console.log("여행 목록 가져오기 실패ㅠㅠ");
+        console.log(error);
+  });
+}
+
 
 onMounted(() => {
   console.log("mounted");
@@ -146,8 +161,8 @@ onMounted(() => {
     </v-container>
   </div>
   <v-container>
+    <!--회원 정보 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
     <v-col :cols="4" class="text-left">
-      <!--회원 정보 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
       <div class="title mt-9 Jalnan"><h1>회원정보</h1></div>
     </v-col>
     <hr/>
@@ -254,6 +269,34 @@ onMounted(() => {
 
         </tbody>
       </v-table>
+<!--!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+      <v-col :cols="4" class="text-left">
+        <div class="title mt-9 Jalnan"><h1>여행 내역</h1></div>
+      </v-col>
+      <hr/>
+      <v-table fixed-header>
+        <thead>
+        <tr>
+          <th class="text-center Jalnan">여행아이디</th>
+          <th class="text-center Jalnan">여행이름</th>
+          <th class="text-center Jalnan">보기</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr v-for="(trip,index) in tripList" :key="index">
+          <td>{{ trip.tripId }}</td>
+          <td>{{ trip.tripName }}</td>
+          <td>
+            <v-btn variant="plain" @click="goToResult(trip.tripId)">
+              <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+          </td>
+        </tr>
+
+        </tbody>
+      </v-table>
+
 
       <!--비밀번호 수정하기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
       <v-col :cols="4" class="text-left">
@@ -341,63 +384,11 @@ onMounted(() => {
 
         </tbody>
       </v-table>
-      <v-row class="pt-9 pb-9 mt-5"></v-row>
+
       <!--&lt;!&ndash; 회원BOARD관련!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! &ndash;&gt;-->
-      <!--      <v-col :cols="4" class="text-left">-->
-      <!--        <div class="title mt-9 Jalnan"><h1>내가 쓴 글</h1></div>-->
-      <!--      </v-col>-->
-      <!--      <hr/>-->
-      <!--      <v-table fixed-header>-->
-      <!--        <thead>-->
-      <!--        <tr>-->
-      <!--          <th class="text-center Jalnan">글 번호</th>-->
-      <!--          <th class="text-center Jalnan">제목</th>-->
-      <!--          <th class="text-center Jalnan">아이디</th>-->
-      <!--          <th class="text-center Jalnan">작성일</th>-->
-      <!--          <th class="text-center Jalnan">좋아요</th>-->
-
-      <!--        </tr>-->
-      <!--        </thead>-->
-      <!--        <tbody>-->
-
-      <!--        <tr v-for="(item,index) in boardList">-->
-      <!--          <td>{{ item.boardId }}</td>-->
-      <!--          <td>{{ item.title }}</td>-->
-      <!--          <td>{{ item.memberId }}</td>-->
-      <!--          <td>{{ item.createTime }}</td>-->
-      <!--          <td>{{ item.likes }}</td>-->
-      <!--        </tr>-->
-
-      <!--        </tbody>-->
-      <!--      </v-table>-->
-      <!--      &lt;!&ndash; 회원COMMENT관련!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! &ndash;&gt;-->
-      <!--      <v-col :cols="4" class="text-left">-->
-      <!--        <div class="title mt-9 Jalnan"><h1>내가 쓴 댓글</h1></div>-->
-      <!--      </v-col>-->
-      <!--      <hr/>-->
-      <!--      <v-table fixed-header>-->
-      <!--        <thead>-->
-      <!--        <tr>-->
-      <!--          <th class="text-center Jalnan">댓글 번호</th>-->
-      <!--          <th class="text-center Jalnan">댓글 내용</th>-->
-      <!--          <th class="text-center Jalnan">아이디</th>-->
-      <!--          <th class="text-center Jalnan">작성일</th>-->
-      <!--          <th class="text-center Jalnan">좋아요</th>-->
 
 
-      <!--        </tr>-->
-      <!--        </thead>-->
-      <!--        <tbody>-->
-
-      <!--        <tr v-for="(item,index) in commentList">-->
-      <!--          <td>{{ item.commentId }}</td>-->
-      <!--          <td>{{ item.content }}</td>-->
-      <!--          <td>{{ item.memberId }}</td>-->
-      <!--          <td>{{ userInformation.createTime }}</td>-->
-      <!--        </tr>-->
-
-      <!--        </tbody>-->
-      <!--      </v-table>-->
+      <v-row class="pt-9 pb-9 mt-5"></v-row>
     </div>
   </v-container>
 </template>

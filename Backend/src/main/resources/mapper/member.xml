@@ -13,6 +13,17 @@
         <result column="nickname" property="nickname"></result>
     </resultMap>
 
+
+    <resultMap id="trip" type="tripDto">
+        <result column="trip_id" property="tripId"></result>
+        <result column="trip_name" property="tripName"></result>
+        <result column="start_date" property="startDate"></result>
+        <result column="end_date" property="endDate"></result>
+        <result column="member_id" property="memberId"></result>
+        <result column="start_station_id" property="startStationId"></result>
+        <result column="end_station_id" property="endStationId"></result>
+    </resultMap>
+
     <select id="findMemberById" parameterType="String" resultMap="member">
         select member_id, name, password, role, email, nickname
         from member
@@ -56,5 +67,11 @@
         set password = #{password}
         where member_id = #{memberId}
     </update>
+
+    <select id="getMemberTripList" parameterType="string" resultMap="trip">
+        select *
+        from trip
+        where member_id = #{memberId}
+    </select>
 
 </mapper>

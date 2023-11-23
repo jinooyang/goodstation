@@ -4,11 +4,13 @@ import com.enjoytrip.jwt.JwtTokenProvider;
 import com.enjoytrip.member.model.dto.MemberDto;
 import com.enjoytrip.member.model.dto.Role;
 import com.enjoytrip.member.model.mapper.MemberMapper;
+import com.enjoytrip.trip.model.dto.TripDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -60,6 +62,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void updateMemberPassword(Map<String, String> map) throws Exception {
         memberMapper.updateMemberPassword(map);
+    }
+
+    @Override
+    public List<TripDto> getMemberTripList(String memberId) throws Exception {
+        return memberMapper.getMemberTripList(memberId);
     }
 
 }

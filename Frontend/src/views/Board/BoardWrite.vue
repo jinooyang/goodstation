@@ -13,7 +13,7 @@ const writeForm = ref({
   title: "",
   content: "",
   memberId: "",
-  tripId: 2
+  tripId: 85
 });
 
 const summitForm = async () => {

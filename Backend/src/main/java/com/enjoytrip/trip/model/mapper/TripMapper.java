@@ -31,4 +31,6 @@ public interface TripMapper {
     List<StationsInTripDto> searchStationsInTrip(Integer tripId) throws SQLException;
 
     List<TripResultDto> getResultByTripId(TripIdAndStationIdDto tripIdAndStationIdDto) throws  SQLException;
+
+
 }
