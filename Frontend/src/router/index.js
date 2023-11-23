@@ -2,7 +2,8 @@ import {createRouter, createWebHistory} from 'vue-router'
 import MainView from '../views/MainView.vue'
 
 import axios from "axios";
-const { VITE_VUE_API_URL, VITE_ELECTRIC_CHARGING_STATION_URL } = import.meta.env;
+
+const {VITE_VUE_API_URL, VITE_ELECTRIC_CHARGING_STATION_URL} = import.meta.env;
 const axiosInstance = axios.create({
     baseURL: VITE_VUE_API_URL,
 });
@@ -77,9 +78,17 @@ const router = createRouter({
             name: 'detail',
             component: () => import('../views/Board/BoardDetailView.vue')
         }, {
+            path: "/news-write",
+            name: "NewsWrite",
+            component: () => import('../views/Board/NewsWrite.vue')
+        }, {
             path: '/news',
             name: 'news',
             component: () => import('../views/Board/NewsView.vue')
+        }, {
+            path: "/news/:newsId",
+            name: "NewsDetail",
+            component: () => import('../views/Board/NewsDetail.vue')
         }, {
             path: '/board/write',
             name: 'write',
@@ -98,9 +107,9 @@ const router = createRouter({
             beforeEnter: checkAuth
         },
         {
-            path : '/mypage',
-            name : 'mypage',
-            component : ()=>import('../views/MyPage/MyPage.vue'),
+            path: '/mypage',
+            name: 'mypage',
+            component: () => import('../views/MyPage/MyPage.vue'),
             beforeEnter: checkAuth
         }
 

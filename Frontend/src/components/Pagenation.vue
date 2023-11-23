@@ -2,10 +2,10 @@
 import axios from 'axios';
 
 export default {
+  props: ['totalItems'],
   data () {
     return {
       page: 1,
-      totalItems: 0,
       itemsPerPage: 8,
     }
   },  watch: {
@@ -18,16 +18,6 @@ export default {
       return Math.ceil(this.totalItems / this.itemsPerPage);
     }
   },
-  mounted() {
-    axios.get('http://localhost:8080/board/count')
-        .then(response => {
-          console.log(response.data);
-          this.totalItems = response.data;
-        })
-        .catch(error => {
-          console.error(error);
-        });
-  },
 }
 </script>
 <template>
@@ -38,7 +28,7 @@ export default {
             v-model="page"
             class="my-4"
             :length="totalPages"
-        ></v-pagination>
+        >{{ totalItems }}</v-pagination>
       </v-container>
     </v-col>
   </v-row>

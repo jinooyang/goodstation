@@ -5,7 +5,6 @@ import com.enjoytrip.board.model.dto.BoardReadDto;
 import com.enjoytrip.board.model.dto.BoardUpdateDto;
 import com.enjoytrip.board.model.dto.BoardWritingDto;
 import com.enjoytrip.board.model.mapper.BoardMapper;
-import com.enjoytrip.comment.model.mapper.CommentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -69,8 +68,9 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardListDto> searchBoard(String searchType, String keyword) {
-        return boardMapper.searchBoard(searchType, keyword);
+    public List<BoardListDto> searchBoard(String searchType, String keyword, int pageNo, int pageSize) {
+        int offset = (pageNo - 1) * pageSize;
+        return boardMapper.searchBoard(searchType, keyword, pageSize, offset);
     }
 
     @Override
@@ -81,5 +81,10 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public int countBoard() {
         return boardMapper.countBoard();
+    }
+
+    @Override
+    public int countSearchResults(String searchType, String keyword) {
+        return boardMapper.countSearchResults(searchType, keyword);
     }
 }

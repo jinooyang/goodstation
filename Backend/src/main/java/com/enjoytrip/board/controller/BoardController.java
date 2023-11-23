@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/board")
@@ -55,10 +57,17 @@ public class BoardController {
 
 
     @GetMapping("/search")
-    public List<BoardListDto> searchBoard(@RequestParam String searchType,
-                                          @RequestParam String keyword) {
+    public ResponseEntity<Map<String, Object>> searchBoard(@RequestParam String searchType, @RequestParam String keyword,
+                                                           @RequestParam(name = "pageNo", defaultValue = "1") int pageNo,
+                                                           @RequestParam(name = "pageSize", defaultValue = "8") int pageSize) {
+        List<BoardListDto> content = boardService.searchBoard(searchType, keyword, pageNo, pageSize);
+        int totalElements = boardService.countSearchResults(searchType, keyword);
 
-        return boardService.searchBoard(searchType, keyword);
+        Map<String, Object> response = new HashMap<>();
+        response.put("content", content);
+        response.put("totalElements", totalElements);
+
+        return ResponseEntity.ok(response);
     }
 
 

@@ -10,8 +10,12 @@ import java.time.LocalDateTime;
 public class BoardReadDto {
 
     private String title;
+
     private String content;
+
     private LocalDateTime createTime;
+
     private String memberId;
+
     private String tripId;
 }
