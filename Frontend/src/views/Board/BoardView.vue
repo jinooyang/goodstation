@@ -7,11 +7,12 @@ import Pagenation from "@/components/Pagenation.vue";
 
 const route = useRoute();
 const router = useRouter();
+
+
 const goToDetail = (boardId) => {
   router.push(`/board/${boardId}`);
   console.log(boardId);
 };
-
 const goToWrite = () => {
   router.push('/board/write');
 }
@@ -46,17 +47,22 @@ onMounted(() => {
   </div>
   <v-container>
 
-    <v-row class="mt-4">
+    <v-row no-gutters class="mt-4">
 
-      <v-col :cols="4" class="d-flex justify-center align-center" offset="4">
-        <v-text-field hide-details color="red-accent-3" label="게시판 검색" variant="outlined" class="search-box"></v-text-field>
-        <v-btn class="search-btn Jalnan">검색</v-btn>
-
+      <v-col class="mt-5 pl-3 d-flex justify-start align-center" :cols="2" offset="2">
+        <v-select :items="searchOptions" v-model="selectedOption" label="검색 옵션" color="red-accent-3" variant="outlined" class="search-option me-5"></v-select>
       </v-col>
-
-      <v-col :cols="4" class = "d-flex align-center justify-center">
+      <v-col class="d-flex justify-start align-center" :cols="4">
+        <v-text-field hide-details color="red-accent-3" label="게시판 검색" variant="outlined" class="search-box"></v-text-field>
+      </v-col>
+      <v-col class="d-flex justify-start align-center" :cols="2">
+        <v-btn class="search-btn Jalnan">검색</v-btn>
+      </v-col>
+      <v-col class="d-flex align-center justify-center" :cols="2">
         <v-btn class="write-btn Jalnan" @click="goToWrite">글쓰기</v-btn>
       </v-col>
+
+
 
     </v-row>
     <v-row class="mb-2">
