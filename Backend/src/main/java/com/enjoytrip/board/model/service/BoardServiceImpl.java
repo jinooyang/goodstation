@@ -5,6 +5,7 @@ import com.enjoytrip.board.model.dto.BoardReadDto;
 import com.enjoytrip.board.model.dto.BoardUpdateDto;
 import com.enjoytrip.board.model.dto.BoardWritingDto;
 import com.enjoytrip.board.model.mapper.BoardMapper;
+import com.enjoytrip.comment.model.mapper.CommentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +58,7 @@ public class BoardServiceImpl implements BoardService {
         if (boardReadDto == null) {
             throw new RuntimeException();
         }
-
+        boardMapper.deleteAllCommentInBoard(boardId);
         boardMapper.deleteBoard(boardId);
     }
 
@@ -75,5 +76,10 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public boolean existsBoard(int boardId) {
         return boardMapper.readBoard(boardId) != null;
+    }
+
+    @Override
+    public int countBoard() {
+        return boardMapper.countBoard();
     }
 }

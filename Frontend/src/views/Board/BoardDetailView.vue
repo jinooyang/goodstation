@@ -13,6 +13,8 @@ const isLogin = memberStore.isLogin;
 const memberId = memberStore.userInfo.memberId;
 const comments = ref([]);
 const newComment = ref('');
+const isLiked = ref(false);
+
 
 const fetchDataFromServer = async () => {
   try {
@@ -23,19 +25,6 @@ const fetchDataFromServer = async () => {
     console.error('데이터를 불러오는데 실패했습니다.', error);
   }
 };
-
-const fetchComments = async () => {
-  try {
-    const response = await axios.get(`http://localhost:8080/board/${route.params.boardId}/comments`);
-    comments.value = response.data.data.commentList;
-  } catch (error) {
-    console.error('댓글 데이터를 불러오는데 실패했습니다.', error);
-  }
-};
-
-const reversedComments = computed(() => {
-  return [...comments.value].reverse();
-});
 
 const goToListPage = () => {
   router.push('/board').then(() => {
@@ -103,14 +92,81 @@ const like = async (memberId) => {
   try {
     const response = await axios.put(`http://localhost:8080/board/${route.params.boardId}/like?memberId=${memberId}`);
     console.log(response.data);
+    await getLikesCount();
+    isLiked.value = !isLiked.value;
   } catch (error) {
-    console.error(error);
+    if (error.response && error.response.data) {
+      alert(error.response.data);
+    } else {
+      console.error(error);
+    }
   }
 };
 
-onMounted(() => {
+const likesCount = ref(0);
+
+const getLikesCount = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8080/board/${route.params.boardId}/likes`);
+    likesCount.value = response.data;
+  } catch (error) {
+    console.error('좋아요 수를 불러오는데 실패했습니다.', error);
+  }
+};
+
+
+const fetchComments = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8080/board/${route.params.boardId}/comments`);
+    const commentLikesPromises = response.data.data.commentList.map(async comment => {
+      const likesResponse = await axios.get(`http://localhost:8080/board/${route.params.boardId}/comments/${comment.commentId}/likes`);
+      return {
+        ...comment,
+        commentLikeCount: likesResponse.data,
+      };
+    });
+    comments.value = await Promise.all(commentLikesPromises);
+  } catch (error) {
+    console.error('댓글 데이터를 불러오는데 실패했습니다.', error);
+  }
+};
+
+
+const likeComment = async (commentId) => {
+  console.log(commentId);
+  try {
+    await axios.put(`http://localhost:8080/board/${route.params.boardId}/comments/like`, {
+      commentId: commentId,
+      memberId: memberId
+    });
+    console.log("댓글에 좋아요 성공!")
+    const commentToUpdate = comments.value.find(comment => comment.commentId === commentId);
+    if (commentToUpdate) {
+      // 좋아요를 누른 댓글의 좋아요 수를 업데이트합니다.
+      const response = await axios.get(`http://localhost:8080/board/${route.params.boardId}/comments/${commentId}/likes`);
+      commentToUpdate.commentLikeCount = response.data;
+      // console.log(commentToUpdate.commentLikeCount);
+    }
+  } catch (error) {
+    if (error.response && error.response.data) {
+      alert(error.response.data.message);
+    } else {
+      console.error(error);
+    }
+  }
+};
+
+
+
+const reversedComments = computed(() => {
+  return [...comments.value].reverse();
+});
+
+
+onMounted(async () => {
   fetchDataFromServer();
   fetchComments();
+  await getLikesCount();
 });
 const goToTripStation = () => {
   router.push("/trip/create");
@@ -153,8 +209,10 @@ const goToTripStation = () => {
     <v-row class="mt-6 mb-6">
       <v-col cols="12" class="text-center mb-5  " >
         <v-btn  icon color="white" @click="like(memberId)">
-          <v-icon color="red">mdi-heart</v-icon>
+          <v-icon color="red" v-if="isLiked">mdi-heart-outline</v-icon>
+          <v-icon color="red" v-else>mdi-heart</v-icon>
         </v-btn>
+        <span class="ml-4 Jalnan">{{ likesCount }}</span>
       </v-col>
       <v-col cols="12" class="text-center">
         <v-btn class="custom-btn mr-3 Jalnan" @click="goToListPage">글목록</v-btn>
@@ -171,11 +229,8 @@ const goToTripStation = () => {
         <v-card v-for="comment in reversedComments" :key="comment.commentId" class="mb-5">
           <v-row>
             <v-col cols="9">
-              <v-card-title>
-                작성자 : {{ comment.memberId }}
-              </v-card-title>
-              <v-card-text>
-                댓글 내용 : {{ comment.content }}
+              <v-card-text class="comment-text">
+                {{ comment.memberId }} : {{ comment.content }}
               </v-card-text>
             </v-col>
             <v-col cols="3" class="text-end">
@@ -190,6 +245,10 @@ const goToTripStation = () => {
                   <v-btn small class="custom-btn Jalnan" @click="deleteComment(comment)"
                          v-if="isLogin && memberId === comment.memberId">댓글 삭제
                   </v-btn>
+                  <v-btn small icon color="white" @click="likeComment(comment.commentId)">
+                    <v-icon color="red">mdi-heart</v-icon>
+                  </v-btn>
+                  <span class="mr-4 Jalnan">{{ comment.commentLikeCount }}</span>
                 </v-col>
               </v-card-actions>
             </v-col>
@@ -206,7 +265,7 @@ const goToTripStation = () => {
     </v-row>
     <v-row>
       <v-col cols="12" class="text-center">
-        <v-btn class="custom-btn Jalnan" @click="addComment">댓글 작성</v-btn>
+        <v-btn class="mb-5 custom-btn Jalnan" @click="addComment">댓글 작성</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -222,5 +281,10 @@ const goToTripStation = () => {
   background-color: rgb(247, 50, 63);
   color: rgb(255, 255, 255);
   caret-color: rgb(255, 255, 255);
+}
+
+.comment-text{
+  font-size: 15px;
+  font-family: Jalnan;
 }
 </style>

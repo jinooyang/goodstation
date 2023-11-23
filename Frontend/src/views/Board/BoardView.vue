@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import { onMounted, ref, watch } from "vue";
 import axios from "axios";
 import BoardItem from "@/components/Board/BoardItem.vue";
 import {useRoute, useRouter} from "vue-router";
@@ -7,28 +7,35 @@ import Pagenation from "@/components/Pagenation.vue";
 
 const route = useRoute();
 const router = useRouter();
+
+
 const goToDetail = (boardId) => {
   router.push(`/board/${boardId}`);
   console.log(boardId);
 };
-
 const goToWrite = () => {
   router.push('/board/write');
 }
 const items = ref([{}]);
 
+const page = ref(1);
+
 const fetchDataFromServer = async () => {
   try {
-    const response = await axios.get('http://localhost:8080/board');
+    const response = await axios.get(`http://localhost:8080/board?pageNo=${page.value}`);
     items.value = response.data;
+    console.log("페이지 성공적으로 불러왔습니다.")
   } catch (error) {
     console.error('데이터를 불러오는데 실패했습니다.', error);
   }
 };
 
+watch(page, fetchDataFromServer);
+
 onMounted(() => {
   fetchDataFromServer();
 });
+
 </script>
 
 <template>
@@ -40,38 +47,35 @@ onMounted(() => {
   </div>
   <v-container>
 
+    <v-row no-gutters class="mt-4">
 
-    <v-row class="mt-4">
-
-      <v-col :cols="4" class="d-flex justify-center align-center" offset="4">
-        <v-text-field hide-details color="red-accent-3" label="게시판 검색" variant="outlined" class="search-box"></v-text-field>
-        <v-btn class="search-btn Jalnan">검색</v-btn>
-
+      <v-col class="mt-5 pl-3 d-flex justify-start align-center" :cols="2" offset="2">
+        <v-select :items="searchOptions" v-model="selectedOption" label="검색 옵션" color="red-accent-3" variant="outlined" class="search-option me-5"></v-select>
       </v-col>
-
-      <v-col :cols="4" class = "d-flex align-center justify-center">
+      <v-col class="d-flex justify-start align-center" :cols="4">
+        <v-text-field hide-details color="red-accent-3" label="게시판 검색" variant="outlined" class="search-box"></v-text-field>
+      </v-col>
+      <v-col class="d-flex justify-start align-center" :cols="2">
+        <v-btn class="search-btn Jalnan">검색</v-btn>
+      </v-col>
+      <v-col class="d-flex align-center justify-center" :cols="2">
         <v-btn class="write-btn Jalnan" @click="goToWrite">글쓰기</v-btn>
       </v-col>
+
+
 
     </v-row>
     <v-row class="mb-2">
 
     </v-row>
-    <v-sheet
-        class="d-flex align-content-start flex-wrap justify-space-evenly"
-        min-height="200"
-    >
-      <v-sheet
-          v-for="item in items"
-          :key="item.id"
-          class="ma-2 pa-2"
-      >
-        <div @click="goToDetail(item.boardId)">
+    <v-row>
+      <v-col v-for="(item, index) in Array(8).fill().map((_, i) => items[i] || {})" :key="index" :cols="3">
+        <div v-if="item.boardId" @click="goToDetail(item.boardId)">
           <BoardItem :title="item.title" :memberId="item.memberId" />
         </div>
-      </v-sheet>
-    </v-sheet>
-    <Pagenation/>
+      </v-col>
+    </v-row>
+    <Pagenation v-model="page" />
   </v-container>
 </template>
 
@@ -94,9 +98,4 @@ th {
   color: rgb(255, 255, 255);
   caret-color: rgb(255, 255, 255);
 }
-
-
-
-
-
 </style>

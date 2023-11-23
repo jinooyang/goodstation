@@ -60,6 +60,12 @@
         from board
         where board_id = #{boardId}
     </delete>
+
+    <delete id="deleteAllCommentInBoard" parameterType="int">
+        delete
+        from comment
+        where board_id = #{boardId}
+    </delete>
     
     <select id="getBoardList" resultMap="boardList">
         select board_id, title, member_id, create_time
@@ -82,5 +88,9 @@
                 and content like concat('%', #{keyword}, '%')
             </if>
         </where>
+    </select>
+    <select id="countBoard" resultType="int">
+        SELECT COUNT(*)
+        FROM board
     </select>
 </mapper>

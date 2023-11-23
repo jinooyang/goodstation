@@ -44,9 +44,15 @@ public class BoardController {
 
     @GetMapping()
     public List<BoardListDto> getBoardList(@RequestParam(name = "pageNo", defaultValue = "1") int pageNo,
-                                           @RequestParam(name = "pageSize", defaultValue = "12") int pageSize) {
+                                           @RequestParam(name = "pageSize", defaultValue = "8") int pageSize) {
         return boardService.getBoardList(pageNo, pageSize);
     }
+
+    @GetMapping("/count")
+    public int countBoard() {
+        return boardService.countBoard();
+    }
+
 
     @GetMapping("/search")
     public List<BoardListDto> searchBoard(@RequestParam String searchType,

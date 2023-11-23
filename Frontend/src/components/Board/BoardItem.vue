@@ -47,9 +47,6 @@ const props = defineProps(['title', 'memberId'])
             size="small"
         ></v-rating>
 
-        <div class="text-grey ms-4">
-          3.3 (413)
-        </div>
       </v-row>
 
       <div class="my-4 text-subtitle-1">
