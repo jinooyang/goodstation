@@ -52,4 +52,14 @@ public class MemberServiceImpl implements MemberService {
         memberMapper.updateMemberInfo(member);
     }
 
+    @Override
+    public void updateMemberNameNickEmail(Map<String, String> map) throws Exception {
+        memberMapper.updateMemberNameNickEmail(map);
+    }
+
+    @Override
+    public void updateMemberPassword(Map<String, String> map) throws Exception {
+        memberMapper.updateMemberPassword(map);
+    }
+
 }

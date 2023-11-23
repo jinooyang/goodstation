@@ -4,6 +4,7 @@ import com.enjoytrip.member.model.dto.MemberDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 @Mapper
 public interface MemberMapper {
@@ -14,4 +15,8 @@ public interface MemberMapper {
     int findMemberByNickname(String nickname) throws Exception;
 
     void updateMemberInfo(MemberDto member) throws Exception;
+
+    void updateMemberNameNickEmail(Map<String,String> map) throws Exception;
+
+    void updateMemberPassword(Map<String,String> map) throws Exception;
 }

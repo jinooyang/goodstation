@@ -42,4 +42,19 @@
         set name = #{name}, password = #{password}, nickname = #{nickname}
         where member_id = #{memberId}
     </update>
+
+
+    <update id = "updateMemberNameNickEmail" parameterType="map">
+        update member
+        set name = #{name}, nickname = #{nickname}, email = #{email}
+        where member_id = #{memberId}
+    </update>
+
+
+    <update id = "updateMemberPassword" parameterType="map">
+        update member
+        set password = #{password}
+        where member_id = #{memberId}
+    </update>
+
 </mapper>

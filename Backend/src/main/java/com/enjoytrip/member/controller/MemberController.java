@@ -171,6 +171,59 @@ public class MemberController {
             rm.setStatus(StatusEnum.OK);
             rm.setMessage("회원 정보 조회 성공");
             rm.setData("memberInfo", member);
+            System.out.println(rm.getData().toString());
+            return new ResponseEntity<>(rm, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            rm.setStatus(StatusEnum.FAIL);
+            rm.setMessage("회원 정보 조회 실패");
+            return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+@PostMapping("/updatepassword")
+public ResponseEntity<ResponseMessage> updatePassword(@RequestBody Map<String,String> map){
+        ResponseMessage rm =  new ResponseMessage();
+
+        try{
+            String password = map.get("password");
+            System.out.println("pwd : " + password);
+            String encodedpassword = passwordEncoder.encode(password);
+
+            map.put("password",encodedpassword);
+
+            memberService.updateMemberPassword(map);
+            rm.setMessage("비밀 번호 변경 성공");
+            rm.setStatus(StatusEnum.OK);
+            return new ResponseEntity<>(rm,HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+            rm.setMessage("비밀번호 변경 실패");
+            rm.setStatus(StatusEnum.FAIL);
+            return new ResponseEntity<>(rm, HttpStatus.BAD_REQUEST);
+        }
+
+}
+
+    @PostMapping("/updateInfo")
+    public ResponseEntity<ResponseMessage> updateMemberInfo(@RequestBody Map<String,String> map) {
+//        System.out.println(securityUser.getMember().toString());
+//        System.out.println("여기까지는 들어온다");
+//        Map<String,String> map= (Map<String, String>) req.get("editUserInformation");
+//        System.out.println(map);
+        ResponseMessage rm = new ResponseMessage();
+        try {
+
+
+            memberService.updateMemberNameNickEmail(map);
+
+
+            MemberDto member = memberService.findMemberById(map.get("memberId"));
+            rm.setStatus(StatusEnum.OK);
+            rm.setMessage("회원 정보 업데이트 성공");
+            rm.setData("memberInfo", member);
+            System.out.println(rm.getData().toString());
             return new ResponseEntity<>(rm, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

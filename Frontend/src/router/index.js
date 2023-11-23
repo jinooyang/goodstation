@@ -19,13 +19,13 @@ const checkAuth = (to, from, next) => {
             if (response.data.data.auth) {
                 next();
             } else {
-                alert("1로그인이 필요한 페이지입니다. 로그인 페이지로 이동합니다.");
+                alert("로그인이 필요한 페이지입니다. 로그인 페이지로 이동합니다.");
                 next('/login');
             }
         })
         .catch(error => {
             console.error(error);
-            alert("2로그인이 필요한 페이지입니다. 로그인 페이지로 이동합니다.");
+            alert("로그인이 필요한 페이지입니다. 로그인 페이지로 이동합니다.");
             next('/login');
         });
 };
