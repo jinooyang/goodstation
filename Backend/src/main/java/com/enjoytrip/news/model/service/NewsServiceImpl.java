@@ -18,7 +18,9 @@ public class NewsServiceImpl implements NewsService {
         if (newsMapper.writeNews(NewsDto) == 0) {
             throw new RuntimeException();
         }
-        return NewsDto.getNewsId();
+
+        Integer last = newsMapper.lastNews();
+        return last;
     }
 
     @Override

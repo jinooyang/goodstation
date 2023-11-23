@@ -20,7 +20,7 @@ const createNotion = () => {
       .then(response => {
         console.log("공지사항이 작성되었습니다.", response.data);
         // 작성한 공지사항을 확인할 수 있는 경로로 이동하도록 설정하시면 됩니다.
-        router.push(`/news/${response.data.newsId}`);
+        router.push(`/news/${response.data}`);
       })
       .catch(error => {
         console.error("공지사항 작성 중 오류가 발생했습니다.", error);

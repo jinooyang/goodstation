@@ -9,4 +9,6 @@ public interface NewsService {
     List<NewsDto> getNewsList(int pageNo, int pageSize);
 
     NewsDto readNews(int newId);
+
+
 }

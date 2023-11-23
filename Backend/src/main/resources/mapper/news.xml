@@ -16,6 +16,10 @@
         values (#{title}, #{memberRole}, #{content})
     </insert>
 
+    <select id="lastNews" >
+        select last_insert_id();
+    </select>
+
     <select id="readNews" parameterType="int" resultType="newsDto">
         select news_id, title, content, create_time, member_role
         from news

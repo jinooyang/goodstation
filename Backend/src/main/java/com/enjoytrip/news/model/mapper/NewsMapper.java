@@ -13,4 +13,7 @@ public interface NewsMapper {
     List<NewsDto> getNewsList(int pageSize, int offset);
 
     NewsDto readNews(int newsId);
+
+
+    Integer lastNews();
 }
